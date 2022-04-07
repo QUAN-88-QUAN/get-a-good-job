@@ -13,6 +13,8 @@
       // 第一种方法
       // 使用数组原生的flat(指定嵌套数组结构应该展平的深度级别。默认为 1。)
       // console.log(arr.flat(2)); //这里也可以写比2大的，得到的结果一样
+
+      // 第二种方法
       let result = [];
       Array.prototype.myFlat = function () {
         let arr = this;
@@ -25,7 +27,6 @@
         });
         return result;
       };
-
       console.log(arr.myFlat());
     </script>
   </body>

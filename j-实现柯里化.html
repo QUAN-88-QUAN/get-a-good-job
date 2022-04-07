@@ -8,27 +8,76 @@
   </head>
   <body>
     <script>
-      function curry(fn, args = []) {
-        return function () {
-          let rest = [...args, ...arguments];
-          console.log(rest)
-          console.log(args)
-          console.log(arguments)
-          if (rest.length < fn.length) {
-            return curry.call(this, fn, rest);
-          } else {
-            return fn.apply(this, rest);
-          }
-        };
-      }
+      // function curry(fn) {
+      //   console.log(this);
+      //   console.log(arguments);
+      //   return function () {
+      //     console.log(this);
+      //     console.log(arguments);
+      //   };
+      // }
+
+      // 这里插入一条argument的理解
+      // console.log(curry(sum)(11)); //这样调用11在第二个arguments里面
+      // console.log(curry(sum, 11, 22, 33)()); //这样调用11,22,33在第一个arguments里面
 
       function sum(a, b, c) {
         return a + b + c;
       }
 
-      let sumFn = curry(sum);
-      console.log(sumFn(1)(2)(3)); //6
-      // console.log(sumFn(1)(2, 3)); //6
+      // 一开始还可以带参数版本
+      // function curry(fn, args) {
+      //   // let _args = args || []
+      //   let _args
+      //   if(!Array.isArray(args) && args){
+      //     _args = [args]
+      //   }else{
+      //    _args = args || []
+      //   }
+      //   return function () {
+      //     // let wei = curry(sum)
+      //     // console.log(wei(1,2,3))
+      //     // 这样写不支持上面这样调用
+      //     // let rest = [...args, ...arguments];
+
+      //     let rest = _args.concat([...arguments])
+      //     if (rest.length < fn.length) {
+      //       return curry.call(this, fn, rest);
+      //     } else {
+      //       return fn.apply(this, rest);
+      //     }
+      //   };
+      // }
+
+      // 一开始不带参数版本(ES6实现)
+      // function curry(fn) {
+      //   let judge = (...args) => {
+      //     if (args.length == fn.length) return fn(...args);
+      //     return (...arg) => judge(...args, ...arg);
+      //   };
+      //   return judge;
+      // }
+
+      // 这个也支持一开始带参数
+      function curry(fn) {
+        // let args = Array.prototype.slice.call(arguments, 1);
+        let args = [...arguments].slice(1)
+        return function () {
+          let newArgs = args.concat([...arguments]);
+          if (newArgs.length < fn.length) {
+            return curry.call(this, fn, ...newArgs);
+          } else {
+            return fn.apply(this, newArgs);
+          }
+        };
+      }
+
+      let quan = curry(sum,11)
+      console.log(quan(22, 33));
+      let wei = curry(sum);
+      console.log(wei(1)(2)(3));
+      let ding = curry(sum);
+      console.log(ding(111, 222, 333));
     </script>
   </body>
 </html>

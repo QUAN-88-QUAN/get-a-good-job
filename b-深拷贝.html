@@ -1,126 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <script>
-        let obj = {
-            name: 'quan',
-            age: 22,
-            like: [11, 22, 33],
-            v: { a: 'a', b: 'b', c: { d: 'd' } }
+      let obj = {
+        name: "quan",
+        age: 22,
+        like: [11, 22, 33],
+        v: { a: "a", b: "b", c: { d: "d" } },
+      };
+
+      // let obj = ['aa', 'bb', 'cc']
+
+      // 这里是加入循环引入
+      obj.z = obj;
+
+      // -------------------------------------------------------------------------------------------------------------------------
+
+      // 方法一(这是传参数版本)
+      // let newObj = {}
+      // let newObj = []
+      // function deepClone(obj, newObj) {
+      //     for (let k in obj) {
+      //         if (Array.isArray(obj[k])) {
+      //             newObj[k] = [];
+      //             deepClone(obj[k], newObj[k])
+      //         } else if (typeof obj[k] === 'object') {
+      //             newObj[k] = {};
+      //             deepClone(obj[k], newObj[k])
+      //         } else {
+      //             newObj[k] = obj[k]
+      //         }
+      //     }
+      //     return newObj
+      // }
+      // console.log(deepClone(obj, newObj))   //实现对象格式深拷贝
+      // obj.v.a = 'aa'
+      // console.log(obj.v.a)
+      // console.log(newObj.v.a)
+
+      // deepClone(obj, newObj)       //实现数组格式深拷贝
+      // newObj = Object.assign(obj)  //实现数组格式浅拷贝
+      // obj[0] = 'aaa'
+      // console.log(obj)
+      // console.log(newObj)
+
+      // 方法二(不传参数版本)
+      let set = new Set();
+      function deepClone(obj) {
+        let newObj = Array.isArray(obj) ? [] : {};
+        // 这里是解决循环引用(也相当于设置了一层缓存---自我理解)
+        if (set.has(obj)) {
+          return obj;
         }
+        set.add(obj);
+        for (let k in obj) {
+          // 最简便
+          newObj[k] = typeof obj[k] === "object" ? deepClone(obj[k]) : obj[k];
 
-        // let obj = ['aa', 'bb', 'cc']
-
-        // 这里是加入循环引入
-        obj.z = obj
-
-        // -------------------------------------------------------------------------------------------------------------------------
-
-        // 方法一(这是传参数版本)
-        // let newObj = {}
-        // let newObj = []
-        // function deepClone(obj, newObj) {
-        //     for (let k in obj) {
-        //         if (Array.isArray(obj[k])) {
-        //             newObj[k] = [];
-        //             deepClone(obj[k], newObj[k])
-        //         } else if (typeof obj[k] === 'object') {
-        //             newObj[k] = {};
-        //             deepClone(obj[k], newObj[k])
-        //         } else {
-        //             newObj[k] = obj[k]
-        //         }
-        //     }
-        //     return newObj
-        // }
-        // console.log(deepClone(obj, newObj))   //实现对象格式深拷贝
-        // obj.v.a = 'aa'
-        // console.log(obj.v.a)
-        // console.log(newObj.v.a)
-
-        // deepClone(obj, newObj)       //实现数组格式深拷贝
-        // newObj = Object.assign(obj)  //实现数组格式浅拷贝
-        // obj[0] = 'aaa'
-        // console.log(obj)
-        // console.log(newObj)
-
-        // 方法二(不传参数版本)
-        let set = new Set();
-        function deepClone(obj) {
-            let newObj = Array.isArray(obj) ? [] : {}
-            // 这里是解决循环引用(也相当于设置了一层缓存---自我理解)
-            if (set.has(obj)) {
-                return obj;
-            }
-            set.add(obj);
-            for (let k in obj) {
-                // 最简便
-                newObj[k] = typeof obj[k] === "object" ? deepClone(obj[k]) : obj[k]
-
-                // 沿用方法一
-                // if (typeof obj[k] === 'object') {
-                //     newObj[k] = deepClone(obj[k])
-                // } else {
-                //     newObj[k] = obj[k]
-                // }
-            }
-            return newObj
+          // 沿用方法一
+          // if (typeof obj[k] === 'object') {
+          //     newObj[k] = deepClone(obj[k])
+          // } else {
+          //     newObj[k] = obj[k]
+          // }
         }
-        let newObj = deepClone(obj)
-        console.log(newObj)
+        return newObj;
+      }
+      let newObj = deepClone(obj);
+      console.log(newObj);
 
-        // obj.v.a = 'aa'
-        // console.log(obj.v.a)
-        // console.log(newObj.v.a)
+      // obj.v.a = 'aa'
+      // console.log(obj.v.a)
+      // console.log(newObj.v.a)
 
-        // obj[0] = 'aaa'
-        // console.log(obj)
-        // console.log(newObj)
+      // obj[0] = 'aaa'
+      // console.log(obj)
+      // console.log(newObj)
 
-        // 方法三（非递归方式）
-        // let deepClone = source => {
+      // 方法三（非递归方式）
+      // let deepClone = source => {
 
-        //     let dest = Array.isArray(source) ? [] : {};
-        //     let queue = [{ source, dest }];
+      //     let dest = Array.isArray(source) ? [] : {};
+      //     let queue = [{ source, dest }];
 
-        //     while (queue.length) {
-        //         let { dest, source } = queue.shift();
+      //     while (queue.length) {
+      //         let { dest, source } = queue.shift();
 
-        //         for (let x in source) {
-        //             dest[x] = Array.isArray(source[x]) ? [] : {}
-        //             if (typeof source[x] === "object") {
-        //                 queue.push({
-        //                     source: source[x],
-        //                     // 记住上次赋值的位置
-        //                     dest: dest[x]
-        //                 });
-        //             } else {
-        //                 dest[x] = source[x]
-        //             }
-        //         }
-        //     }
-        //     return dest;
-        // };
+      //         for (let x in source) {
+      //             dest[x] = Array.isArray(source[x]) ? [] : {}
+      //             if (typeof source[x] === "object") {
+      //                 queue.push({
+      //                     source: source[x],
+      //                     // 记住上次赋值的位置
+      //                     dest: dest[x]
+      //                 });
+      //             } else {
+      //                 dest[x] = source[x]
+      //             }
+      //         }
+      //     }
+      //     return dest;
+      // };
 
-        // let newObj = deepClone(obj)
-        // console.log(newObj)
+      // let newObj = deepClone(obj)
+      // console.log(newObj)
 
-        // obj.v.a = 'aa'
-        // console.log(obj.v.a)
-        // console.log(newObj.v.a)
+      // obj.v.a = 'aa'
+      // console.log(obj.v.a)
+      // console.log(newObj.v.a)
 
-        // obj[0] = 'aaa'
-        // console.log(obj)
-        // console.log(newObj)
+      // obj[0] = 'aaa'
+      // console.log(obj)
+      // console.log(newObj)
     </script>
-</body>
-
+  </body>
 </html>
