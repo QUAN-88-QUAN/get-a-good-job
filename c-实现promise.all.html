@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let p1 = new Promise((resolve, reject) => {
+        resolve("p1成功了");
+      });
+      let p2 = new Promise((resolve, reject) => {
+        resolve("p2成功了");
+      });
+      let p3 = new Promise((resolve, reject) => {
+        reject("p3失败了");
+      });
+      Promise.myAll = function (arr) {
+        let result = [];
+        let i = 0;
+        return new Promise((resolve, reject) => {
+          arr.forEach((item, index) => {
+            Promise.resolve(item)
+              .then((val) => {
+                i++;
+                result[i] = val;
+                if (i === arr.length) {
+                  resolve(result);
+                }
+              })
+              .catch((err) => {
+                reject(err);
+              });
+          });
+        });
+      };
+      // let a = Promise.myAll([p1, p2, p3]);
+      // a.then((res) => {
+      //   console.log(res);
+      // });
+      // console.log(a);
+
+      let a = Promise.myAll([p1, p2]);
+      a.then((res) => {
+        console.log(res);
+      });
+      console.log(a);
+    </script>
+  </body>
+</html>
