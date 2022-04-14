@@ -25,7 +25,7 @@
             Promise.resolve(item)
               .then((val) => {
                 i++;
-                result[i] = val;
+                result[index] = val;
                 if (i === arr.length) {
                   resolve(result);
                 }
@@ -36,15 +36,12 @@
           });
         });
       };
-      // let a = Promise.myAll([p1, p2, p3]);
-      // a.then((res) => {
-      //   console.log(res);
-      // });
-      // console.log(a);
 
-      let a = Promise.myAll([p1, p2]);
+      let a = Promise.myAll([p1, p2, p3]);
       a.then((res) => {
         console.log(res);
+      }).catch((err) => {
+        console.log(err);
       });
       console.log(a);
     </script>

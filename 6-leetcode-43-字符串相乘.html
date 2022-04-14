@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // https://www.cnblogs.com/flix/p/12687561.html
+      // https://zhuanlan.zhihu.com/p/107785859
+
+      // 方法二(利用简化的竖式乘法，更加简单)
+      var multiply = function (num1, num2) {
+        let len1 = num1.length;
+        let len2 = num2.length;
+        // 生成全部都为0的数组
+        let result = Array(len1 + len2).fill(0);
+        // 反转（为了方便生成的数组是第一位在第一个，不够的在后面用0补齐，后面循环得按照这个顺序计算）
+        num1 = num1.split('').reverse();
+        num2 = num2.split('').reverse();
+        for (let i = 0; i < len1; i++) {
+          for (let j = 0; j < len2; j++) {
+            result[i + j] += num1[i] * num2[j];
+          }
+        }
+        // console.log(result);
+        for (let k = 0; k < result.length; k++) {
+          if (result[k] > 9) {
+            result[k + 1] += Math.floor(result[k] / 10);
+            result[k] = result[k] % 10;
+          }
+        }
+        // console.log(result);
+        result.reverse();
+        result = result.join("").replace(/^0*/g, "");
+        // 为空就返回0
+        return result ? result : "0";
+      };
+
+      // 方法一
+      // var multiply = function (num1, num2) {
+      //   let result = [];
+      //   for (let i = num1.length - 1; i >= 0; i--) {
+      //     for (let j = num2.length - 1; j >= 0; j--) {
+      //       // num1[i] 和 num2[j] 的乘积对应的就是 result[i+j] 和 result[i+j+1] 这两个位置。
+      //       let index1 = i + j;
+      //       let index2 = i + j + 1;
+      //       // 乘积结果和前面的相加 这里就是依靠result[index2],相当于上一次的result[index1]
+      //       let sum = num1[i] * num2[j] + (result[index2] || 0);
+      //       // 十位处理
+      //       result[index1] = Math.floor(sum / 10) + (result[index1] || 0);
+      //       // 个位处理
+      //       result[index2] = sum % 10;
+      //     }
+      //   }
+      //   // console.log(result)
+      //   // 去除前面的0
+      //   result = result.join('').replace(/^0*/g,'')
+      //   // 为空就返回0
+      //   return result ? result : '0'
+      // };
+
+      // console.log(multiply("111", "1111"));
+      // console.log(multiply("9", "9"));
+      console.log(multiply("123", "456"));
+      // console.log(multiply("0", "0"));
+    </script>
+  </body>
+</html>
