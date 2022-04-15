@@ -51,7 +51,7 @@
         let len1 = num1.length;
         let len2 = num2.length;
         // 生成全部都为0的数组
-        let result = Array(len1 + len2).fill(0);
+        let result = new Array(len1 + len2).fill(0);
         // 反转（为了方便生成的数组是第一位在第一个，不够的在后面用0补齐，后面循环得按照这个顺序计算）
         num1 = num1.split("").reverse();
         num2 = num2.split("").reverse();
