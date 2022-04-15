@@ -9,28 +9,43 @@
   <body>
     <script>
       // 方法二 时间复杂度O(n)
-      
-
-      // 方法一 时间复杂度O(n)
       function partitionArray(nums, k) {
         if (nums.length < 1) return 0;
-        let left = [];
-        let right = [];
-        nums.forEach((item) => {
-          if (item < k) {
-            left.push(item);
-          } else if (item === k) {
-            right.unshift(item);
-          } else {
-            right.push(item);
+        let left = 0;
+        let right = nums.length - 1;
+        while (left <= right) {
+          while (left <= right && nums[left] < k) left++;
+          while (left <= right && nums[right] >= k) right--;
+          if (left >= right) return left;
+          if (left <= right) {
+            let temp = nums[left];
+            nums[left++] = nums[right];
+            nums[right--] = temp;
           }
-        });
-        let arr = left.concat(right);
-        if (arr[arr.length - 1] < k) return arr.length;
-        if (arr[0] > k) return 0;
-        return left.length;
+        }
+        return left
       }
-      console.log(partitionArray([7, 7, 9, 8, 6, 6, 8, 7, 9, 8, 6, 6], 10));
+
+      // 方法一 时间复杂度O(n)
+      // function partitionArray(nums, k) {
+      //   if (nums.length < 1) return 0;
+      //   let left = [];
+      //   let right = [];
+      //   nums.forEach((item) => {
+      //     if (item < k) {
+      //       left.push(item);
+      //     } else if (item === k) {
+      //       right.unshift(item);
+      //     } else {
+      //       right.push(item);
+      //     }
+      //   });
+      //   let arr = left.concat(right);
+      //   if (arr[arr.length - 1] < k) return arr.length;
+      //   if (arr[0] > k) return 0;
+      //   return left.length;
+      // }
+      // console.log(partitionArray([7, 7, 9, 8, 6, 6, 8, 7, 9, 8, 6, 6], 10));
     </script>
   </body>
 </html>
