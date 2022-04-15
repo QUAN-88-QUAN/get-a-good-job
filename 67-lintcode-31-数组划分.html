@@ -14,8 +14,10 @@
         let left = 0;
         let right = nums.length - 1;
         while (left <= right) {
-          while (left <= right && nums[left] < k) left++;
+          // 找小的
           while (left <= right && nums[right] >= k) right--;
+          // 找大的
+          while (left <= right && nums[left] < k) left++;
           if (left >= right) return left;
           if (left <= right) {
             let temp = nums[left];
