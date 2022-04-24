@@ -8,54 +8,26 @@
   </head>
   <body>
     <script>
-      var multiply = function (num1, num2) {
-        let ret = "";
-        for (let i = num1.length - 1; i >= 0; i--) {
-          let tmp = "";
-          for (let j = num2.length - 1; j >= 0; j--) {
-            let num = num2[j] * num1[i];
-            // 非0 才补0
-            if (num) {
-              num =
-                String(num) +
-                new Array(num2.length - 1 - j + num1.length - 1 - i)
-                  .fill(0)
-                  .join("");
-            } else {
-              num = String(num);
-            }
-            tmp = add(tmp, num);
+      function cheng(num1, num2) {
+        let result = new Array(num1.length + num2.length).fill(0);
+        num1 = num1.split("").reverse();
+        num2 = num2.split("").reverse();
+        for (let i = 0; i < num1.length; i++) {
+          for (let j = 0; j < num2.length; j++) {
+            result[i + j] += num1[i] * num2[j];
           }
-          ret = add(ret, tmp);
         }
-        return ret;
-      };
-
-      // 字符串相加
-      function add(num1, num2) {
-        let maxLength = Math.max(num1.length, num2.length);
-        // 补0
-        num1 = num1.padStart(maxLength, "0");
-        num2 = num2.padStart(maxLength, "0");
-        // 结果
-        let sum = "";
-        // 进位
-        let j = 0;
-        // 暂存
-        let temp = 0;
-        for (let i = num1.length - 1; i >= 0; i--) {
-          temp = parseInt(num1[i]) + parseInt(num2[i]) + j;
-          sum = (temp % 10) + sum;
-          j = Math.floor(temp / 10);
+        for (let k = 0; k < result.length; k++) {
+          if (result[k] > 9) {
+            result[k + 1] += Math.floor(result[k] / 10);
+            result[k] = result[k] % 10;
+          }
         }
-        if (j === 1) {
-          sum = "1" + sum;
-        }
-        return sum;
+        result.reverse()
+        result = result.join('').replace(/^0*/g,'')
+        return result ? result : '0'
       }
-
-      console.log(multiply("123", "0"));
-      // console.log(multiply("9", "9"));
+      console.log(cheng('0','0'));
     </script>
   </body>
 </html>
