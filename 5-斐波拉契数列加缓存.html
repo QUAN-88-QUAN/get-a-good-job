@@ -8,14 +8,20 @@
   </head>
   <body>
     <script>
-      function add(n) {
+      let cache = {};
+      function fib(n) {
+        debugger;
         if (n === 1 || n === 0) {
           return 1;
         }
-        let res = add(n - 1) + add(n - 2);
-        return res;
+        if (cache[n]) {
+          return cache[n];
+        }
+        let result = fib(n - 1) + fib(n - 2);
+        cache[n] = result;
+        return result;
       }
-      console.log(add(5));
+      console.log(fib(4));
     </script>
   </body>
 </html>

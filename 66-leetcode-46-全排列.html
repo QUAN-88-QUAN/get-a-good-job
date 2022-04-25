@@ -8,7 +8,48 @@
   </head>
   <body>
     <script>
-      
+      var permute = function (nums) {
+        // let result = [];
+        // for (let i = 0; i < nums.length; i++) {
+        //   let arr = [nums[i]];
+        //   for (let j = 0; j < nums.length; j++) {
+        //     arr.push(nums[j]);
+        //   }
+        //   result.push(arr);
+        // }
+        // return result;
+        let len = nums.length,
+          result = [],
+          visited = new Array(len).fill(false);
+
+        const dfs = (depth, path, visited) => {
+          // 遍历到叶子结点了，可以返回了
+          debugger;
+          console.log(depth)
+          if (depth === len) {
+            result.push([...path]);
+          }
+
+          for (let i = 0; i < len; i++) {
+            // 如果没遍历过
+            if (!visited[i]) {
+              // 压入 path 数组，然后是否遍历过的数组此下标处变为 true
+              path.push(nums[i]);
+              console.log(path)
+              visited[i] = true;
+              // 继续 dfs，直到最后一层
+              dfs(depth + 1, path, visited);
+              // 进行回溯，还原，以便下一次使用
+              visited[i] = false;
+              path.pop();
+            }
+          }
+        };
+
+        dfs(0, [], visited);
+        return result;
+      };
+      console.log(permute([1, 2, 3]));
     </script>
   </body>
 </html>
