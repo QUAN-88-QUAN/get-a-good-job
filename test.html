@@ -5,8 +5,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      .scale {
+        width: 100%;
+        padding-bottom: 56.25%;
+        height: 0;
+        position: relative;
+      }
+
+      .item {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: #9e56;
+      }
+    </style>
   </head>
   <body>
+    <div class="scale">
+      <div class="item">这里是所有子元素的容器</div>
+    </div>
     <script>
       function add(n) {
         if (n === 1 || n === 0) {
