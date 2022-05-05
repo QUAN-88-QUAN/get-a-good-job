@@ -18,7 +18,7 @@
 
       // let obj = ['aa', 'bb', 'cc']
 
-      // 这里是加入循环引入
+      // 这里是加入循环引用
       obj.z = obj;
 
       // -------------------------------------------------------------------------------------------------------------------------
@@ -53,13 +53,19 @@
 
       // 方法二(不传参数版本)
       let set = new Set();
+      let map = new Map();
       function deepClone(obj) {
         let newObj = Array.isArray(obj) ? [] : {};
         // 这里是解决循环引用(也相当于设置了一层缓存---自我理解)
-        if (set.has(obj)) {
-          return obj;
+        // if (set.has(obj)) {
+        //   return obj;
+        // }
+        // set.add(obj);
+        // 网上很多人写的都是用map（自我认为差不多）
+        if(map.get(obj)){
+          return map.get(obj)
         }
-        set.add(obj);
+        map.set(obj,newObj)
         for (let k in obj) {
           // 最简便
           newObj[k] = typeof obj[k] === "object" ? deepClone(obj[k]) : obj[k];
