@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 可能并不是对的，这是自己的理解
+      // 参考：
+      // https://www.jianshu.com/p/f254ec665e57
+      // https://segmentfault.com/a/1190000017569816
+      // https://juejin.cn/post/6957919292352364551
+
+      // 创造节点
+      function Node(el) {
+        this.el = el;
+        this.next = null;
+      }
+
+      // 链表类
+      function LList() {
+        this.head = new Node("head");
+        this.find = find;
+        this.insert = insert;
+        this.remove = remove;
+        this.findPre = findPre;
+        this.display = display;
+      }
+
+      // 查找
+      function find(el) {
+        let node = this.head;
+        // 找到就返回，找不到就返回null
+        while (node) {
+          if (node.el === el) {
+            return node;
+          }
+          node = node.next;
+        }
+        return null;
+      }
+
+      // 插入
+      function insert(insertEl, el) {
+        let insertNode = new Node(insertEl);
+        let findNode = this.find(el);
+        // 如果传了旧的节点就插入到旧的节点下面，没传就插入到head后面
+        if (el) {
+          // 插入节点的前节点根本不存在
+          if (!findNode) {
+            console.log(new Error("找不到要插入节点的前节点！"));
+            return;
+          }
+          insertNode.next = findNode.next;
+          findNode.next = insertNode;
+        } else {
+          insertNode.next = this.head.next;
+          this.head.next = insertNode;
+        }
+      }
+
+      // 移除
+      function remove(el) {
+        let findPreNode = this.findPre(el);
+        if (!findPreNode) {
+          console.log(new Error("找不到要删除的节点！"));
+          return;
+        }
+        findPreNode.next = findPreNode.next.next;
+      }
+
+      // 查找前一个节点
+      function findPre(el) {
+        let node = this.head;
+        // 找到就返回，找不到就返回null
+        // 加node.next就是为了在删除的节点为不存在的节点的时候不报错，因为遍历到最后的时候node.next已经为null了，node.next.el为undefined
+        while (node.next && node.next.el !== el) {
+          node = node.next;
+        }
+        return node.next ? node : null;
+      }
+
+      // 显示链表
+      function display() {
+        let node = this.head;
+        while (node) {
+          if (node.next.el) {
+            console.log(node.next.el);
+          }
+          node = node.next;
+        }
+      }
+
+      let fruits = new LList();
+
+      // 插入
+      fruits.insert("Apple");
+      // fruits.insert('Apple','head')
+      fruits.insert("Banana", "Apple");
+      fruits.insert("Pear", "Banana");
+
+      // 删除
+      // fruits.remove("Pear");
+      // fruits.remove("Apple");
+      // fruits.remove("Banana");
+
+      // 查找
+      // console.log(fruits.find('Apple'))
+      // console.log(fruits.find('Apple1'))
+      // console.log(fruits.findPre('Pear'))
+      // console.log(fruits.findPre('Pear1'))
+
+      // 显示
+      fruits.display();
+
+      console.log(fruits);
+    </script>
+  </body>
+</html>
