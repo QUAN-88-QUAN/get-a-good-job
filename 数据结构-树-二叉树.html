@@ -14,60 +14,183 @@
       // https://juejin.cn/post/6957919292352364551（最全面）
       // https://segmentfault.com/a/1190000017569816（有一些补充）
 
-      let treeData = {
-        value: "1",
-        children: [
-          {
-            value: "1-1",
-            children: [
-              {
-                value: "1-1-1",
-                children: [],
-              },
-              {
-                value: "1-1-2",
-                children: [
-                  {
-                    value: "1-1-2-1",
-                    children: [],
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            value: "1-2",
-            children: [
-              {
-                value: "1-2-1",
-                children: [],
-              },
-            ],
-          },
-        ],
-      };
-
-      // 深度优先遍历
-      function des(root) {
-        console.log(root.value);
-        root.children.length > 0 &&
-          root.children.forEach((item) => {
-            des(item);
-          });
+      // 定义节点
+      function Node(data, left, right) {
+        this.data = data;
+        this.left = left;
+        this.right = right;
       }
-      des(treeData);
 
-      // 广度优先遍历
-      function bfs(root) {
-        let arr = [root];
-        while ((a = arr.shift())) {
-          console.log(a.value);
-          a.children.forEach((item) => {
-            arr.push(item);
-          });
+      // 二叉查找树类
+      function BST() {
+        this.root = null;
+        this.insert = insert;
+        this.preOrder = preOrder;
+        this.inOrder = inOrder;
+        this.postOrder = postOrder;
+        this.find = find;
+        this.getMin = getMin;
+        this.getMax = getMax;
+        this.remove = remove;
+      }
+
+      // 插入
+      function insert(data) {
+        let n = new Node(data, null, null);
+        // 如果根节点是空,那插入的节点就作为根节点
+        if (this.root === null) {
+          this.root = n;
+        } else {
+          let current = this.root;
+          // 当前要插入结点的上一个节点
+          let parent;
+          while (true) {
+            // 记录上一个节点的位置,如果下一个节点合适就得插入到这里
+            parent = current;
+            if (data < current.data) {
+              current = current.left;
+              // 如果当前节点的左节点不存在,就将新节点放到这个位置,右节点同理
+              if (current === null) {
+                parent.left = n;
+                break;
+              }
+            } else {
+              current = current.right;
+              if (current === null) {
+                parent.right = n;
+                break;
+              }
+            }
+          }
         }
       }
-      bfs(treeData);
+
+      // 查找
+      function find(data) {
+        let current = this.root;
+        while (current) {
+          if (data === current.data) {
+            return current;
+          } else if (data < current.data) {
+            current = current.left;
+          } else {
+            current = current.right;
+          }
+        }
+        return null;
+      }
+
+      // 删除
+      function remove(data) {
+        return removeNode(this.root, data);
+      }
+      // 真正的删除方法
+      function removeNode(node, data) {
+        if (!node) {
+          return null;
+        }
+        if (data === node.data) {
+          if (!node.left && !node.right) {
+            return null;
+          }
+          if (!node.left) {
+            return node.right;
+          }
+          if (!node.right) {
+            return node.left;
+          }
+          let tempNode = getMinNode(node.right);
+          node.data = tempNode.data;
+          node.right = removeNode(node.right, tempNode.data);
+        } else if (data < node.data) {
+          node.left = removeNode(node.left, data);
+        } else {
+          node.right = removeNode(node.right, data);
+        }
+        return node;
+      }
+      // 查找最小值的节点
+      function getMinNode(node) {
+        if (!node.left) {
+          return node;
+        } else {
+          return getMinNode(node.left);
+        }
+      }
+
+      // 先序遍历
+      function preOrder(node) {
+        if (node) {
+          console.log(node.data);
+          preOrder(node.left);
+          preOrder(node.right);
+        }
+      }
+
+      // 中序遍历
+      function inOrder(node) {
+        if (node) {
+          inOrder(node.left);
+          console.log(node.data);
+          inOrder(node.right);
+        }
+      }
+
+      // 后序遍历
+      function postOrder(node) {
+        if (node) {
+          postOrder(node.left);
+          postOrder(node.right);
+          console.log(node.data);
+        }
+      }
+
+      // 查找最大值
+      function getMax() {
+        let current = this.root;
+        while (current.right) {
+          current = current.right;
+        }
+        return current.data;
+      }
+
+      // 查找最小值
+      function getMin() {
+        let current = this.root;
+        while (current.left) {
+          current = current.left;
+        }
+        return current.data;
+      }
+
+      // 初始化
+      let nums = new BST();
+
+      // 调用
+      nums.insert(23);
+      nums.insert(45);
+      nums.insert(16);
+      nums.insert(37);
+      nums.insert(3);
+      nums.insert(99);
+      nums.insert(22);
+
+      // preOrder(nums.root);
+      // console.log('---------------------------')
+      // inOrder(nums.root);
+      // console.log('---------------------------')
+      // postOrder(nums.root);
+
+      console.log(nums.find(45));
+
+      // console.log(nums.getMax());
+      // console.log(nums.getMin());
+
+      nums.remove(23);
+      inOrder(nums.root);
+
+      // 查看
+      console.log(nums);
     </script>
   </body>
 </html>
