@@ -10,9 +10,13 @@
     <script>
       // 可能并不是对的，这是自己的理解
       // 参考：
-      // https://www.jianshu.com/p/f254ec665e57
-      // https://segmentfault.com/a/1190000017569816
-      // https://juejin.cn/post/6957919292352364551
+      // https://www.jianshu.com/p/f254ec665e57（最详细）
+      // https://juejin.cn/post/6957919292352364551（最全面）
+      // https://segmentfault.com/a/1190000017569816（有一些补充）
+      // 接下来还有：可以多参考第一个链接
+      // 双向链表（每个节点加了一个pre属性，指向它的前节点，head的pre指向null。查找、插入改变不大的时候记得复制pre，在删除的时候就不用在去找它的前节点了，因为用pre属性就能访问到）
+      // 循环链表（将最后一个节点的next指向head。这样就连起来了）
+      // 双向循环链表（将最后一个节点的next指向head的pre。这样就连起来了）
 
       // 创造节点
       function Node(el) {

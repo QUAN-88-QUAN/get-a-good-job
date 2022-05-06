@@ -8,21 +8,7 @@
   </head>
   <body>
     <script>
-      Array.prototype.myMap = function (fn) {
-        let arr = this;
-        let result = [];
-        arr.reduce((total, cur, curIndex, arr) => {
-          result.push(fn(cur, curIndex, arr));
-        }, 0);
-        return result;
-      };
-      res = [1, 2, 3, 4, 5].myMap((item) => {
-        // console.log(item);
-        return item * 3;
-      });
-      console.log(res);
-      // 原生map
-      console.log([1, 2, 3, 4, 5].map((item) => item * 2));
+      
     </script>
   </body>
 </html>

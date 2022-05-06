@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 可能并不是对的，这是自己的理解
+      // 参考：
+      // https://www.jianshu.com/p/f254ec665e57（最详细）
+      // https://juejin.cn/post/6957919292352364551（最全面）
+      // https://segmentfault.com/a/1190000017569816（有一些补充）
+
+      let treeData = {
+        value: "1",
+        children: [
+          {
+            value: "1-1",
+            children: [
+              {
+                value: "1-1-1",
+                children: [],
+              },
+              {
+                value: "1-1-2",
+                children: [
+                  {
+                    value: "1-1-2-1",
+                    children: [],
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            value: "1-2",
+            children: [
+              {
+                value: "1-2-1",
+                children: [],
+              },
+            ],
+          },
+        ],
+      };
+
+      // 深度优先遍历
+      function des(root) {
+        console.log(root.value);
+        root.children.length > 0 &&
+          root.children.forEach((item) => {
+            des(item);
+          });
+      }
+      des(treeData);
+
+      // 广度优先遍历
+      function bfs(root) {
+        let arr = [root];
+        while ((a = arr.shift())) {
+          console.log(a.value);
+          a.children.forEach((item) => {
+            arr.push(item);
+          });
+        }
+      }
+      bfs(treeData);
+    </script>
+  </body>
+</html>
