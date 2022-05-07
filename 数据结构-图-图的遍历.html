@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 可能并不是对的，这是自己的理解
+      // 参考：
+      // https://juejin.cn/post/6957919292352364551
+
+      // 图可以用邻接表和邻接矩阵表示，这是用邻接表表示图
+      let graph = {
+        A: ["B"],
+        B: ["C", "D"],
+        C: ["E"],
+        D: ["B"],
+        E: ["A"],
+      };
+
+      // 记录遍历过的节点
+      let visited = new Set();
+
+      // 深度遍历
+      function dfs(node) {
+        console.log(node);
+        visited.add(node);
+        graph[node].forEach((item) => {
+          if (!visited.has(item)) {
+            dfs(item);
+          }
+        });
+      }
+      // 输出 A B C E D
+      // dfs("A");
+
+      // 广度遍历
+      function bfs(node) {
+        let arr = [node];
+        // 根元素在遍历时要手动添加至已访问队列，后面只是添加了根元素的相邻结点
+        visited.add(node);
+        while ((a = arr.shift())) {
+          console.log(a);
+          graph[a].forEach((item) => {
+            if (!visited.has(item)) {
+              visited.add(item)
+              arr.push(item)
+            }
+          });
+        }
+      }
+      // 输出 A B C D E
+      bfs("A");
+    </script>
+  </body>
+</html>
