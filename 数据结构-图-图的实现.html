@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 可能并不是对的，这是自己的理解
+      // 参考：
+      // https://blog.csdn.net/ladream/article/details/119918093
+      // https://blog.csdn.net/weixin_46056955/article/details/116888092
+
+      function Graph() {
+        // 存储顶点
+        this.vertices = [];
+        // 存储边
+        this.edgeList = {};
+        // 添加顶点
+        this.addVertex = addVertex;
+        // 添加边
+        this.addEdge = addEdge;
+        // 显示图
+        this.showGraph = showGraph;
+      }
+
+      // 添加顶点
+      function addVertex(v) {
+        this.vertices.push(v);
+        this.edgeList[v] = [];
+      }
+
+      // 添加边
+      function addEdge(a, b) {
+        this.edgeList[a].push(b);
+        this.edgeList[b].push(a);
+      }
+
+      // 显示图
+      function showGraph() {
+        let str = "";
+        this.vertices.forEach((item) => {
+          let temp = item + "=>";
+          this.edgeList[item].forEach((ite) => {
+            temp += ite;
+          });
+          str += temp + "\n";
+        });
+        return str;
+      }
+
+      // 初始化
+      let graph = new Graph();
+
+      graph.addVertex("A");
+      graph.addVertex("B");
+      graph.addVertex("C");
+      graph.addVertex("D");
+      graph.addVertex("E");
+      graph.addVertex("F");
+
+      graph.addEdge("A", "B");
+      graph.addEdge("B", "C");
+      graph.addEdge("B", "F");
+      graph.addEdge("C", "D");
+
+      console.log(graph.showGraph());
+
+      console.log(graph);
+    </script>
+  </body>
+</html>
