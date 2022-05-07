@@ -99,9 +99,13 @@
           if (!node.right) {
             return node.left;
           }
-          let tempNode = getMinNode(node.right);
+          // 这里方法就是找到被删除节点左边的最大节点或者被删除节点右边的最小节点,让这个节点替代当前删除节点的位置,
+          // 然后再去删除找到的这个节点,就这样一递归,直到当前要删除的节点下面没有两个不为null的节点,然后进入上面的几种判断情况
+          // let tempNode = getMinNode(node.right);
+          let tempNode = getMaxNode(node.left);
           node.data = tempNode.data;
-          node.right = removeNode(node.right, tempNode.data);
+          // node.right = removeNode(node.right, tempNode.data);
+          node.left = removeNode(node.left, tempNode.data);
         } else if (data < node.data) {
           node.left = removeNode(node.left, data);
         } else {
@@ -115,6 +119,14 @@
           return node;
         } else {
           return getMinNode(node.left);
+        }
+      }
+      // 查找最大值的节点
+      function getMaxNode(node) {
+        if (!node.right) {
+          return node;
+        } else {
+          return getMaxNode(node.right);
         }
       }
 
