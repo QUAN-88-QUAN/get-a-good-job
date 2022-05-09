@@ -8,48 +8,45 @@
   </head>
   <body>
     <script>
+      // 回溯法的核心框架
+      // for 选择 in 选择列表:
+      // # 做选择
+      // 将该选择从选择列表移除
+      // 路径.add(选择)
+      // backtrack(路径, 选择列表)
+      // # 撤销选择
+      // 路径.remove(选择)
+      // 将该选择再加入选择列表
+      let res = [];
       var permute = function (nums) {
-        // let result = [];
-        // for (let i = 0; i < nums.length; i++) {
-        //   let arr = [nums[i]];
-        //   for (let j = 0; j < nums.length; j++) {
-        //     arr.push(nums[j]);
-        //   }
-        //   result.push(arr);
-        // }
-        // return result;
-        let len = nums.length,
-          result = [],
-          visited = new Array(len).fill(false);
-
-        const dfs = (depth, path, visited) => {
-          // 遍历到叶子结点了，可以返回了
-          debugger;
-          console.log(depth)
-          if (depth === len) {
-            result.push([...path]);
-          }
-
-          for (let i = 0; i < len; i++) {
-            // 如果没遍历过
-            if (!visited[i]) {
-              // 压入 path 数组，然后是否遍历过的数组此下标处变为 true
-              path.push(nums[i]);
-              console.log(path)
-              visited[i] = true;
-              // 继续 dfs，直到最后一层
-              dfs(depth + 1, path, visited);
-              // 进行回溯，还原，以便下一次使用
-              visited[i] = false;
-              path.pop();
-            }
-          }
-        };
-
-        dfs(0, [], visited);
-        return result;
+        let used = new Array(nums.length).fill(false);
+        let track = [];
+        backtrack(nums, track, used);
+        return res;
       };
-      console.log(permute([1, 2, 3]));
+
+      function backtrack(nums, track, used) {
+        if (track.length === nums.length) {
+          res.push([...track]);
+          return;
+        }
+        for (let i = 0; i < nums.length; i++) {
+          if (used[i]) {
+            continue;
+          }
+          track.push(nums[i]);
+          // 做选择
+          // 将该选择从选择列表移除
+          used[i] = true;
+          backtrack(nums, track, used);
+          // 撤销选择
+          // 将该选择再加入选择列表
+          track.pop();
+          used[i] = false;
+        }
+      }
+
+      console.log(permute([0,1]));
     </script>
   </body>
 </html>
