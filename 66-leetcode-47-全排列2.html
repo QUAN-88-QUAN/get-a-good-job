@@ -17,7 +17,56 @@
       // # 撤销选择
       // 路径.remove(选择)
       // 将该选择再加入选择列表
-      
+      let res = [];
+      var permuteUnique = function (nums) {
+        nums.sort();
+        let used = new Array(nums.length).fill(false);
+        let track = [];
+        backtrack(nums, track, used);
+        return res;
+      };
+
+      function backtrack(nums, track, used) {
+        if (track.length === nums.length) {
+          // 这样写可以，但是花的时间太久了
+          // let flag = true;
+          // for (let i = 0; i < res.length; i++) {
+          //   if (res[i].join("") === track.join("")) {
+          //     flag = false;
+          //     break;
+          //   } else {
+          //     flag = true;
+          //   }
+          // }
+          // if (flag) {
+          res.push([...track]);
+          return;
+          // }
+        }
+        for (let i = 0; i < nums.length; i++) {
+          if (used[i]) {
+            continue;
+          }
+          // 新添加的剪枝逻辑，固定相同的元素在排列中的相对位置
+          if (nums[i] == nums[i - 1] && !used[i - 1]) {
+            // 如果前面的相邻相等元素没有用过，则跳过
+            // 也就是说只有前面的相等元素用过了才可以组合后面的，也就固定了元素在排列中的相对位置
+            continue;
+          }
+          track.push(nums[i]);
+          // 做选择
+          // 将该选择从选择列表移除
+          used[i] = true;
+          backtrack(nums, track, used);
+          // 撤销选择
+          // 将该选择再加入选择列表
+          track.pop();
+          used[i] = false;
+        }
+      }
+
+      // console.log(permuteUnique([1, 1, 0, 0, 1, -1, -1, 1]));
+      console.log(permuteUnique([3,3,0,3]));
     </script>
   </body>
 </html>
