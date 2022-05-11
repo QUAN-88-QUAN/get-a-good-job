@@ -8,7 +8,25 @@
   </head>
   <body>
     <script>
-      
+      let arr = [1, 22, 3, 45, 6];
+      function rrr(arr) {
+        // for (let i = 0; i < arr.length; i++) {
+        //   console.log(arr[i]);
+        //   if (arr[i] > 20) {
+        //     return true;
+        //   }
+        //   return false
+        // }
+        arr.forEach((item) => {
+          if (item > 20) {
+            return true;
+          }
+          console.log(item);
+          return false;
+        });
+      }
+
+      console.log(rrr(arr));
     </script>
   </body>
 </html>

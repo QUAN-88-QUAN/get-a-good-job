@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 回溯法的核心框架
+      // for 选择 in 选择列表:
+      // # 做选择
+      // 将该选择从选择列表移除
+      // 路径.add(选择)
+      // backtrack(路径, 选择列表)
+      // # 撤销选择
+      // 路径.remove(选择)
+      // 将该选择再加入选择列表
+
+      // 这里写法认为的就是,所有的数得取完,而且不能有多余
+      // 这个方法时间会超出时间限制
+      var canPartitionKSubsets = function (nums, k) {
+        // 排除一些基本情况
+        if (k > nums.length) return false;
+        let sum = 0;
+        // 把原数组分成k个数组,每个都相等就相当于原数组的和除以k会得到一个固定的值,和%k一定等于0
+        sum = nums.reduce((pre, item, index, arr) => {
+          return pre + item;
+        }, 0);
+        if (sum % k !== 0) return false;
+        // k 个桶（集合），记录每个桶装的数字之和
+        let bucket = new Array(k).fill(0);
+        // 理论上每个桶（集合）中数字的和
+        let target = sum / k;
+        return backtrack(nums, 0, bucket, target);
+
+        // 穷举，看看 nums 是否能划分成 k 个和为 target 的子集
+        function backtrack(nums, index, bucket, target) {
+          // debugger;
+          if (index === nums.length) {
+            // 检查所有桶的数字之和是否都是 target
+            for (let i = 0; i < bucket.length; i++) {
+              if (bucket[i] !== target) {
+                return false;
+              }
+            }
+            return true;
+          }
+
+          for (let i = 0; i < bucket.length; i++) {
+            // 剪枝，桶装满了
+            if (bucket[i] + nums[index] > target) {
+              continue;
+            }
+            bucket[i] += nums[index];
+            // 递归穷举下一个数字的选择
+            if (backtrack(nums, index + 1, bucket, target)) {
+              return true;
+            }
+            // 撤销选择
+            bucket[i] -= nums[index];
+          }
+          return false;
+        }
+      };
+      // console.log(canPartitionKSubsets([4, 3, 2, 3, 5, 2, 1], 4));
+      console.log(canPartitionKSubsets([1, 1, 1, 1, 2, 2, 2, 2], 4));
+      // console.log(canPartitionKSubsets([2, 2, 2, 2, 3, 4, 5], 4));
+      // console.log(canPartitionKSubsets([3,3,10,2,6,5,10,6,8,3,2,1,6,10,7,2], 6));
+    </script>
+  </body>
+</html>
