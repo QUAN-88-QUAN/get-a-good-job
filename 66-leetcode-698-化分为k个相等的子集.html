@@ -19,8 +19,56 @@
       // 将该选择再加入选择列表
 
       // 这里写法认为的就是,所有的数得取完,而且不能有多余
-      // 这个方法时间会超出时间限制
+      // (以数字的视角)这个方法时间会超出时间限制
+      // var canPartitionKSubsets = function (nums, k) {
+      //   // 排除一些基本情况
+      //   if (k > nums.length) return false;
+      //   let sum = 0;
+      //   // 把原数组分成k个数组,每个都相等就相当于原数组的和除以k会得到一个固定的值,和%k一定等于0
+      //   sum = nums.reduce((pre, item, index, arr) => {
+      //     return pre + item;
+      //   }, 0);
+      //   if (sum % k !== 0) return false;
+      //   // k 个桶（集合），记录每个桶装的数字之和
+      //   let bucket = new Array(k).fill(0);
+      //   // 理论上每个桶（集合）中数字的和
+      //   let target = sum / k;
+      //   return backtrack(nums, 0, bucket, target);
+
+      //   // 穷举，看看 nums 是否能划分成 k 个和为 target 的子集
+      //   function backtrack(nums, index, bucket, target) {
+      //     // debugger;
+      //     if (index === nums.length) {
+      //       // 检查所有桶的数字之和是否都是 target
+      //       for (let i = 0; i < bucket.length; i++) {
+      //         if (bucket[i] !== target) {
+      //           return false;
+      //         }
+      //       }
+      //       return true;
+      //     }
+
+      //     for (let i = 0; i < bucket.length; i++) {
+      //       // 剪枝，桶装满了
+      //       if (bucket[i] + nums[index] > target) {
+      //         continue;
+      //       }
+      //       bucket[i] += nums[index];
+      //       // 递归穷举下一个数字的选择
+      //       if (backtrack(nums, index + 1, bucket, target)) {
+      //         return true;
+      //       }
+      //       // 撤销选择
+      //       bucket[i] -= nums[index];
+      //     }
+      //     return false;
+      //   }
+      // };
+
+      // (以桶的视角)
       var canPartitionKSubsets = function (nums, k) {
+        // 备忘录，存储 used 数组的状态(优化方法，但是好像和位操作优化了之后时间还会超限了,可能是因为语言的限制,解析用的是java)
+        // let memo = new Map();
         // 排除一些基本情况
         if (k > nums.length) return false;
         let sum = 0;
@@ -29,45 +77,74 @@
           return pre + item;
         }, 0);
         if (sum % k !== 0) return false;
-        // k 个桶（集合），记录每个桶装的数字之和
-        let bucket = new Array(k).fill(0);
+        // 数是否已经被用过了
+        let used = new Array(nums.length).fill(false);
+        // 使用位操作替换used
+        // let used = 0;  // (优化方法，但是好像和加上备忘录优化了之后时间还会超限了,可能是因为语言的限制,解析用的是java)
         // 理论上每个桶（集合）中数字的和
         let target = sum / k;
-        return backtrack(nums, 0, bucket, target);
+        return backtrack(k, 0, nums, 0, used, target);
 
-        // 穷举，看看 nums 是否能划分成 k 个和为 target 的子集
-        function backtrack(nums, index, bucket, target) {
-          // debugger;
-          if (index === nums.length) {
-            // 检查所有桶的数字之和是否都是 target
-            for (let i = 0; i < bucket.length; i++) {
-              if (bucket[i] !== target) {
-                return false;
-              }
-            }
+        function backtrack(k, bucket, nums, start, used, target) {
+          // 所有桶都被装满了，而且 nums 一定全部用完了
+          // 因为 target == sum / k
+          if (k === 0) {
             return true;
           }
+          // 将 used 的状态转化成形如 [true, false, ...] 的字符串存入 Map
+          // let state = used+''; //(优化方法，但是好像和位操作优化了之后时间还会超限了,可能是因为语言的限制,解析用的是java)
 
-          for (let i = 0; i < bucket.length; i++) {
-            // 剪枝，桶装满了
-            if (bucket[i] + nums[index] > target) {
+          // 装满了当前桶，递归穷举下一个桶的选择
+          // 让下一个桶从 nums[0] 开始选数字
+          if (bucket === target) {
+            let res = backtrack(k - 1, 0, nums, 0, used, target);
+            // 将 used 的状态转化成形如 [true, false, ...] 的字符串存入 Map
+            // memo.set(state, res); //(优化方法，但是好像和位操作优化了之后时间还会超限了,可能是因为语言的限制,解析用的是java)
+            return res;
+          }
+          // 如果当前状态曾今计算过，就直接返回，不要再递归穷举了(优化方法，但是好像和位操作优化了之后时间还会超限了,可能是因为语言的限制,解析用的是java)
+          // if (memo.get(state)) {
+          //   return memo.get(state);
+          // }
+          // 从 start 开始向后探查有效的 nums[i] 装入当前桶
+          for (let i = start; i < nums.length; i++) {
+            // nums[i] 已经被装入别的桶中
+            // 用位运算判断第 i 位是否是 1
+            // if (((used >> i) & 1) === 1) {  // (优化方法，但是好像和加上备忘录优化了之后时间还会超限了,可能是因为语言的限制,解析用的是java)
+            if (used[i]) {
               continue;
             }
-            bucket[i] += nums[index];
-            // 递归穷举下一个数字的选择
-            if (backtrack(nums, index + 1, bucket, target)) {
+            // 当前桶装不下 nums[i]
+            if (bucket + nums[i] > target) {
+              continue;
+            }
+            // 做选择，将 nums[i] 装入当前桶中
+            bucket += nums[i];
+            used[i] = true;
+            // used |= 1 << i; // 将第 i 位置为 1  // (优化方法，但是好像和加上备忘录优化了之后时间还会超限了,可能是因为语言的限制,解析用的是java)
+            // 递归穷举下一个数字是否装入当前桶
+            if (backtrack(k, bucket, nums, i + 1, used, target)) {
               return true;
             }
             // 撤销选择
-            bucket[i] -= nums[index];
+            bucket -= nums[i];
+            used[i] = false;
+            // used ^= 1 << i; // 使用异或运算将第 i 位恢复 0  // (优化方法，但是好像和加上备忘录优化了之后时间还会超限了,可能是因为语言的限制,解析用的是java)
           }
+          // 穷举了所有数字，都无法装满当前桶
           return false;
         }
       };
+
       // console.log(canPartitionKSubsets([4, 3, 2, 3, 5, 2, 1], 4));
-      console.log(canPartitionKSubsets([1, 1, 1, 1, 2, 2, 2, 2], 4));
-      // console.log(canPartitionKSubsets([2, 2, 2, 2, 3, 4, 5], 4));
-      // console.log(canPartitionKSubsets([3,3,10,2,6,5,10,6,8,3,2,1,6,10,7,2], 6));
+      // console.log(canPartitionKSubsets([1, 1, 1, 1, 2, 2, 2, 2], 4));
+      console.log(canPartitionKSubsets([2, 2, 2, 2, 3, 4, 5], 4));
+      console.log(
+        canPartitionKSubsets(
+          [3, 3, 10, 2, 6, 5, 10, 6, 8, 3, 2, 1, 6, 10, 7, 2],
+          6
+        )
+      );
     </script>
   </body>
 </html>
