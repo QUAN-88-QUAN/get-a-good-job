@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 回溯法的核心框架
+      // for 选择 in 选择列表:
+      // # 做选择
+      // 将该选择从选择列表移除
+      // 路径.add(选择)
+      // backtrack(路径, 选择列表)
+      // # 撤销选择
+      // 路径.remove(选择)
+      // 将该选择再加入选择列表
+
+      var combinationSum2 = function (candidates, target) {
+        let res = [];
+        let track = [];
+        let sum = 0;
+        candidates.sort();
+        backtrack(candidates, target, 0);
+        return res;
+
+        function backtrack(candidates, target, start) {
+          if (sum === target) {
+            res.push([...track]);
+            return;
+          }
+          for (let i = start; i < candidates.length; i++) {
+            if (sum + candidates[i] > target) {
+              continue;
+            }
+            // 剪枝逻辑，值相同的树枝，只遍历第一条
+            if (i > start && candidates[i] === candidates[i - 1]) {
+              continue;
+            }
+            sum += candidates[i];
+            track.push(candidates[i]);
+            backtrack(candidates, target, i + 1);
+            sum -= candidates[i];
+            track.pop();
+          }
+        }
+      };
+
+      console.log(combinationSum2([10, 1, 2, 7, 6, 1, 5], 8));
+    </script>
+  </body>
+</html>
