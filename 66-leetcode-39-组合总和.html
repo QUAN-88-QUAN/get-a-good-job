@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 回溯法的核心框架
+      // for 选择 in 选择列表:
+      // # 做选择
+      // 将该选择从选择列表移除
+      // 路径.add(选择)
+      // backtrack(路径, 选择列表)
+      // # 撤销选择
+      // 路径.remove(选择)
+      // 将该选择再加入选择列表
+
+      var combinationSum = function (candidates, target) {
+        let res = [];
+        let track = [];
+        let sum = 0;
+        candidates.sort();
+        backtrack(candidates, target, 0);
+        return res;
+
+        function backtrack(candidates, target, start) {
+          if (sum === target) {
+            res.push([...track]);
+            return;
+          }
+          for (let i = start; i < candidates.length; i++) {
+            if (sum + candidates[i] > target) {
+              continue;
+            }
+            sum += candidates[i];
+            track.push(candidates[i]);
+            // 同一元素可重复使用，注意参数
+            backtrack(candidates, target, i);
+            sum -= candidates[i];
+            track.pop();
+          }
+        }
+      };
+
+      console.log(combinationSum([2,3,6,7], 7));
+      // console.log(combinationSum([2,3,5], 8));
+    </script>
+  </body>
+</html>
