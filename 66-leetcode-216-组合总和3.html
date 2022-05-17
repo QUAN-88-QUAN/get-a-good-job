@@ -32,9 +32,10 @@
           res.push([...track])
         }
         for (let i = start; i <= 9; i++) {
-          // if (sum + i > target || track.length > k) {
-          //   continue;
-          // }
+          // 剪枝逻辑
+          if (sum + i > target || track.length > k) {
+            continue;
+          }
           track.push(i)
           sum += i
           backtrack(k, target, i+1)
