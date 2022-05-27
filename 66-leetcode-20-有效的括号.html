@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var isValid = function (s) {
+      // 不是双数就不可能匹配
+      if (s.length % 2) return false;
+      let arr = s.split('')
+      let res = []
+      let map = {
+        '}': '{',
+        ']': '[',
+        ')': '(',
+      }
+
+      // 自己写的（两种方法核心思想差不多）
+      // 只需要将全部在左边，或者全部在右边的括号放入到栈里去，之后只有在把栈顶的元素匹配掉之后再能匹配其他的
+      // for (let i = 0; i < arr.length; i++) {
+      //   // debugger;
+      //   if (map[arr[i]]) {
+      //     if (map[arr[i]] === res[0]) {
+      //       res.shift()
+      //     } else {
+      //       res.unshift(arr[i])
+      //     }
+      //   } else {
+      //     res.unshift(arr[i])
+      //   }
+      // }
+      
+      // 官方解法
+      // 先把其中一边先存起来，当遇到另外一边的时候就去栈顶找和他匹配的，如果没有就不满足条件了，返回false
+      for (let i = 0; i < arr.length; i++) {
+        debugger;
+        if (map[arr[i]]) {
+          if (!res.length || res[res.length - 1] !== map[arr[i]]) {
+            return false;
+          }
+          res.pop();
+        }
+        else {
+          res.push(arr[i]);
+        }
+      };
+      return !res.length
+    };
+    // console.log(isValid("()[]{}"))
+    // console.log(isValid("([)]"))
+    console.log(isValid("([}}])"))
+    // console.log(isValid("({[]})"))
+  </script>
+</body>
+
+</html>
