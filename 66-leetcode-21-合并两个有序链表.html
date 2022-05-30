@@ -10,126 +10,36 @@
 
 <body>
   <script>
-    // var mergeTwoLists = function (list1, list2) {
-    //   let newList = {}
-    //   while ((list1 && list1.next) || (list1 && list2.next)) {
-    //     if(list1.data>=list2.next){
-    //       newList.data = list1.data
-    //       newList.next = list1.next
-    //     }else{
-    //       newList.data = list2.data
-    //       newList.next = list2.next
-    //     }
-    //     list1 = list1.next
-    //     list2 = list2.next
-    //   }
-    //   return list1
-    // };
-    // console.log(
-    //   mergeTwoLists(
-    //     {
-    //       data: 1, next: {
-    //         data: 2, next: {
-    //           data: 4, next: null
-    //         }
-    //       }
-    //     },
-    //     {
-    //       data: 1, next: {
-    //         data: 3, next: {
-    //           data: 4, next: null
-    //         }
-    //       }
-    //     },
-    //   )
-    // );
-    function Node(element) {
-  this.element = element;//当前节点的元素
-  this.next = null;//下一个节点链接
-}
-function List() {
-  this.head = new Node("head");//头节点
-  this.find = find;//查找节点
-  this.insert = insert;//插入节点
-  this.remove = remove;//删除节点
-  this.display = display;//显示链表
-  this.findPrevious = findPrevious; //查找前一个节点
-}
-//下面的函数是操作方法：对应List类构造函数中的名称
-//查找给定节点
-function find(item) {
-  var currNode = this.head;
-  while(currNode.element != item) {
-    currNode = currNode.next;
-  }
-  return currNode;
-}
-//向链表插入一个节点
-function insert(newElement,item) {
-  var newNode = new Node(newElement);
-  var current = this.find(item);
-  if(current == null)
-    return console.log("can't find the item");
-  newNode.next = current.next;
-  current.next = newNode;
-}
-//删除节点
-function remove(item) {
-  var prevNode = this.findPrevious(item);
-  if(prevNode.next != null)
-    prevNode.next = prevNode.next.next;
-}
-//从链表中删除节点时，我们先要找个待删除节点的前一个节点，找到后，我们修改它的 next 属性，使其不在指向待删除的节点，而是待删除节点的下一个节点。那么，我们就得需要定义一个 findPrevious 方法遍历链表，检查每一个节点的下一个节点是否存储待删除的数据。如果找到，返回该节点，这样就可以修改它的 next 属性了。
-//查找带删除节点的前一个节点
-function findPrevious(item) {
-  var currNode = this.head;
-  while(currNode.next != null && currNode.next.element != item) {
-    currNode = currNode.next;
-  }
-  return currNode;
-}
-//显示链表元素
-function display() {
-  var current = this.head;
-  while(current.next != null) {
-    console.log(current.next.element);
-    current = current.next;
-  }
-}
-/**
- * @param {Node} l1
- * @param {Node} l2
- * @return {Node}
- */
-var mergeTwoLists = function(l1, l2) {
-  // 模仿链表的数据结构
-  var mergedHead = { element : -1, next : null },
-    cur = mergedHead;
-  while (l1 && l2){
-    if(l1.element <= l2.element){
-      cur.next = l1;
-      l1 = l1.next;
-    }
-    else {
-      cur.next = l2;
-      l2 = l2.next;
-    }
-    cur = cur.next;
-  }
-  cur.next = l1 || l2
-  return mergedHead.next;
-};
-let list1 = new List();
-list1.insert(1,'head');
-list1.insert(2,1);
-list1.insert(4,2);
-console.log(list1.display());
-let list2 = new List();
-list2.insert(1,'head');
-list2.insert(3,1);
-list2.insert(4,3);
-console.log(list2.display());
-console.log(mergeTwoLists(list1.head,list2.head))
+    // 没有测试的数据源
+    var mergeTwoLists = function (list1, list2) {
+      // const prehead = new ListNode(-1);
+      // let prev = prehead;
+      // while (list1 != null && list2 != null) {
+      //     if (list1.val <= list2.val) {
+      //         prev.next = list1;
+      //         list1 = list1.next;
+      //     } else {
+      //         prev.next = list2;
+      //         list2 = list2.next;
+      //     }
+      //     prev = prev.next;
+      // }
+      // // 合并后 l1 和 l2 最多只有一个还未被合并完，我们直接将链表末尾指向未合并完的链表即可
+      // prev.next = list1 === null ? list2 : list1;
+      // return prehead.next;
+
+      if (list1 === null) {
+        return list2;
+      } else if (list2 === null) {
+        return list1;
+      } else if (list1.val < list2.val) {
+        list1.next = mergeTwoLists(list1.next, list2);
+        return list1;
+      } else {
+        list2.next = mergeTwoLists(list1, list2.next);
+        return list2;
+      }
+    };
   </script>
 </body>
 
