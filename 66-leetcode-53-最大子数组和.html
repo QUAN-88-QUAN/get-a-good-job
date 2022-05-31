@@ -11,7 +11,7 @@
 <body>
   <script>
     var maxSubArray = function (nums) {
-      // 方法一：动态规划求解
+      // 方法一：动态规划求解---时间：O（n）---空间：O（1）（只需要常数的空间存放若干变量）
       let res = nums[0]
       let pre = 0
       // 在这里好像forEach还快一些
