@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var maxSubArray = function (nums) {
+      // 方法一：动态规划求解
+      let res = nums[0]
+      let pre = 0
+      // 在这里好像forEach还快一些
+      // for (let i = 0; i < nums.length; i++) {
+      //   pre = Math.max(pre + nums[i], nums[i])
+      //   res = Math.max(res, pre)
+      // }
+      nums.forEach(item=>{
+        // item加入到pre还是自成一段取决于pre+item和item的大小
+        pre = Math.max(pre + item, item)
+        res = Math.max(res, pre)
+      })
+      return res
+
+      // 方法二：分治法（比较复杂）
+    };
+    console.log(maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]))
+  </script>
+</body>
+
+</html>
