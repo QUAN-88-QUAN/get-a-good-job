@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var twoSum = function (nums, target) {
+      // 方法一：使用对象---时间：O（n）---空间：O（n）
+      // let obj = {}
+      // for (let i = 0; i < nums.length; i++) {
+      //   let temp = target - nums[i]
+      //   if (obj[temp] !== undefined) {
+      //     return [obj[temp], i]
+      //   } else {
+      //     obj[nums[i]] = i
+      //   }
+      // }
+
+      // 方法二：使用数组---时间：O（n）---空间：O（n）
+      // let arr = []
+      // for (let i = 0; i < nums.length; i++) {
+      //   let temp = target - nums[i]
+      //   if (arr[temp] !== undefined) {
+      //     return [arr[temp], i]
+      //   } else {
+      //     arr[nums[i]] = i
+      //   }
+      // }
+
+      // 方法三：暴力求解---时间：O（n*n）---空间：O（1）（自认为：定义i啥的应该也算）
+      // for (let i = 0; i < nums.length - 1; i++) {
+      //   for (let j = i + 1; j < nums.length; j++) {
+      //     if (i === j) continue
+      //     if (nums[i] + nums[j] === target) {
+      //       return [i, j]
+      //     }
+      //   }
+      // }
+
+      // 方法四：暴力求解---时间：O（n*(n-1)）（自认为：因为pop一次，indexOf的时候会少一次）---空间：O（1）（自认为：定义i或者last啥的应该也算）
+      let i = nums.length
+      while (i > 1) {
+        let last = nums.pop()
+        let index = nums.indexOf(target - last)
+        if (index > -1) {
+          // 这里不是nums.length-1的原因是pop出去了一个，所以就没必要了
+          return [index, nums.length]
+        }
+        i--
+      }
+    };
+    console.log(twoSum([2, 7, 11, 15], 9));
+  </script>
+</body>
+
+</html>

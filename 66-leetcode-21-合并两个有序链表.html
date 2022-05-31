@@ -12,6 +12,7 @@
   <script>
     // 没有测试的数据源
     var mergeTwoLists = function (list1, list2) {
+      // 方法一：---循环---时间：O（n+m）（n，m分别是两个链表的长度）---空间：O（1）（只需要常数的空间存放若干变量）
       // const prehead = new ListNode(-1);
       // let prev = prehead;
       // while (list1 != null && list2 != null) {
@@ -28,6 +29,7 @@
       // prev.next = list1 === null ? list2 : list1;
       // return prehead.next;
 
+      // 方法二：---递归---时间：O（n+m）（n，m分别是两个链表的长度）---空间：O（n+m）（递归调用会消耗栈空间）
       if (list1 === null) {
         return list2;
       } else if (list2 === null) {
