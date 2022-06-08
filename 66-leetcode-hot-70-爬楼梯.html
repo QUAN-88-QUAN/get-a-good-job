@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 理解
+    // 我们可以通过在 n-1 阶的那块一次性爬 1 步来达到 n 楼层，以及通过在 n - 2 阶 一次性爬 2 步来达到 n 楼层。所以就是这两种情况的总和
+    let cache = {}
+    var climbStairs = function (n) {
+      // 方法一：使用斐波拉契数列---时间O（2^n）---空间：O（n）---会超出时间限制
+      // if (n === 1 || n === 0) {
+      //   return 1
+      // }
+      // return climbStairs(n - 1) + climbStairs(n - 2)
+
+      // 方法二：使用缓存版本斐波拉契数列---时间O（2^n）---空间：O（n）---能通过全部测试用例
+      // if (cache[n]) return cache[n];
+      // if (n === 1 || n === 0) {
+      //   return 1
+      // }
+      // let result = climbStairs(n - 1) + climbStairs(n - 2)
+      // cache[n] = result
+      // return result
+
+      // 方法三：使用不递归版本斐波拉契数列---时间O（n）---空间：O（1）
+      // let a = 1, b = 0, res = 0
+      // for (let i = 0; i <= n; i++) {
+      //   res = a + b
+      //   a = b
+      //   b = res
+      // }
+      // return res
+
+      // 方法四：利用数学求得斐波拉契数列的通项公司
+      let sqrt5 = Math.sqrt(5)
+      // 爬楼梯是从1开始的，但是斐波拉契是从0开始的，所以要+1
+      let fibn = Math.pow((1 + sqrt5) / 2, n + 1) - Math.pow((1 - sqrt5) / 2, n + 1)
+      return Math.round(fibn / sqrt5)
+    };
+    console.log(climbStairs(9))
+    console.log(climbStairs(1))
+    console.log(climbStairs(0))
+  </script>
+</body>
+
+</html>
