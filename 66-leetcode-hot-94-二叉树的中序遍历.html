@@ -10,12 +10,38 @@
 
 <body>
   <script>
-    var lengthOfLongestSubstring = function (s) {
+    var inorderTraversal = function (root) {
+      // 方法一：递归---时间O（n）（二叉树的遍历中每个节点会被访问一次且只会被访问一次）---空间：O（n）（取决于递归的栈深度，而栈深度在二叉树为一条链的情况下会达到 O(n) 的级别）
+      // let res = []
+      // function inOrder(root) {
+      //   if (!root) {
+      //     return
+      //   }
+      //   inOrder(root.left)
+      //   res.push(root.val)
+      //   inOrder(root.right)
+      // }
+      // inOrder(root)
+      // return res
 
+      // 方法二：遍历---时间O（n）---空间：O（n）
+      let res = [], stack = []
+      while (root || stack.length>0) {
+        debugger;
+        // 这里一直收集左子树
+        while(root){
+          stack.push(root)
+          root=root.left
+        }
+        // 收集完了之后，后进先出把值放入结果数组
+        root = stack.pop()
+        res.push(root.val)
+        // 如果左子树下面还有右子树,就root等于右子树,通过上面的方法继续收集
+        // 可以结合,数据结构-树-二叉树现成的数据debugger一下就可以很清楚的看出来
+        root = root.right
+      }
+      return res
     };
-
-    console.log(lengthOfLongestSubstring('abcabcbb'));
-      // console.log(combinationSum([2,3,5], 8));
   </script>
 </body>
 
