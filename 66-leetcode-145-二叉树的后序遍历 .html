@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var postorderTraversal = function (root) {
+      // 方法一：递归---时间O（n）（）---空间：O（n）（）
+      // const stack = []
+      // function postOrder(root) {
+      //   if (!root) return
+      //   postOrder(root.left)
+      //   postOrder(root.right)
+      //   stack.push(root.val)
+      // }
+      // postOrder(root)
+      // return stack
+
+      // 方法一：遍历---时间O（n）（）---空间：O（2n）（）
+      // 先用类似先序遍历的方式，按 根右左 的顺序将二叉树存入到一个栈中
+      // 利用栈先进后出的特性，将这个栈逐个出栈，就实现了 左右根 的遍历了
+      // const stack = [root]
+      // const tempStack = []
+      // const res = []
+      // if (!root) return res
+      // while (stack.length) {
+      //   let a = stack.pop()
+      //   tempStack.push(a)
+      //   a.left && stack.push(a.left)
+      //   a.right && stack.push(a.right)
+      // }
+      // while (tempStack.length) {
+      //   let b = tempStack.pop()
+      //   res.push(b.val)
+      // }
+      // return res
+
+      // 方法一：遍历---时间O（n）（）---空间：O（n）（）
+      const stack = []
+      const res = []
+      while (stack.length) {
+        while (root) {
+          stack.push(root)
+          root = root.left
+        }
+        let a = stack.pop()
+        if (a.right === null) {
+          res.push(a.val)
+        }else{
+          root = a.right
+        }
+      }
+      return res
+      // if (root.right == null || root.right == prev) {
+      //           res.add(root.val);
+      //           prev = root;
+      //           root = null;
+      //       } else {
+      //           stack.push(root);
+      //           root = root.right;
+      //       }
+    };
+  </script>
+</body>
+
+</html>

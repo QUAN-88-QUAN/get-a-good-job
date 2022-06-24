@@ -34,11 +34,11 @@
           root=root.left
         }
         // 收集完了之后，后进先出把值放入结果数组
-        root = stack.pop()
-        res.push(root.val)
+        let r = stack.pop()
+        res.push(r.val)
         // 如果左子树下面还有右子树,就root等于右子树,通过上面的方法继续收集
         // 可以结合,数据结构-树-二叉树现成的数据debugger一下就可以很清楚的看出来
-        root = root.right
+        root = r.right
       }
       return res
     };

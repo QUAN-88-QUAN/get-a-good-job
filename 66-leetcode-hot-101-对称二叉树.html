@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var isSymmetric = function (root) {
+      // 方法一：递归---时间O（n）（二叉树的遍历中每个节点会被访问一次且只会被访问一次）---空间：O（n）（如果用注释掉的部分，空间复杂度为O（n+2）去掉2，还是O（n））
+      // const left = root.left
+      // const left = root
+      // // const right = root.right
+      // const right = root
+      // return recursion(left, right)
+
+      // function recursion(left, right) {
+      //   if (!left && !right) return true
+      //   // 这个写在后面就排除了前面left和right都为空的情况
+      //   if (!left || !right) return false
+      //   return left.val === right.val && recursion(left.left, right.right) && recursion(left.right, right.left)
+      // }
+
+      // 方法一：遍历---时间O（n）（）---空间：O（n）（）
+      const stack = [root.left, root.right]
+      return recursion()
+      function recursion() {
+        while (stack.length) {
+          const right = stack.pop()
+          const left = stack.pop()
+          // 如果一样都是null,那就跳过这层循环继续比
+          if (!right && !left) continue
+          // 两种情况:一个为null,一个不为null;都是不为null,但是值不相等
+          if ((!right || !left) || (right.val !== left.val)) return false
+
+          stack.push(left.left,right.right)
+          stack.push(left.right,right.left)
+        }
+        return true
+      }
+    };
+  </script>
+</body>
+
+</html>
