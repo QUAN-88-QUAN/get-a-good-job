@@ -25,17 +25,27 @@
     let arr = [1, 2]
     async function fun1() {
       // 能卡住
-      // await Promise.all(arr.map(async item => {
-      //   let _ = await f1()
-      //   console.log(item)
-      //   console.log(_)
-      // }));
-      // 卡不住
-      arr.forEach(async item => {
+      await Promise.all(arr.map(async item => {
         let _ = await f1()
         console.log(item)
         console.log(_)
-      });
+      }));
+
+      // 能卡住
+      // await arr.reduce(async (pre,next) => {
+      //   let _ = await f1()
+      //   console.log(next)
+      //   console.log(_)
+      // });
+
+      // 能卡住(按理说是卡不住的)
+      // await arr.forEach(async item => {
+      //   let _ = await f1()
+      //   console.log(item)
+      //   console.log(_)
+      // });
+
+      // reduce和map的卡住的顺序也很奇怪，暂时理解不了，正常的顺序反而是原理上卡不住的forEach
       console.log('-------------------------')
     }
     async function fun2() {
