@@ -16,10 +16,14 @@
                 return this
             }
             resolve(val){
+                // 状态不可变
+                if(this.status !== 'pending') return
                 this.status = 'fulfilled'
                 this.msg = val
             }
             reject(err){
+                // 状态不可变
+                if(this.status !== 'pending') return
                 this.status = 'rejected'
                 this.msg = err
             }
