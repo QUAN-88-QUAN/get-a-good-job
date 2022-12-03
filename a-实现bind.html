@@ -17,6 +17,7 @@
         function sayName(obj) {
             console.log(this.name)
             console.log(obj)
+            console.log(arguments)
         }
 
         // 比较好理解的
@@ -38,18 +39,56 @@
         //     }
         // }
 
-        // 简化版
-        Function.prototype.myBind = function (context) {
+        // 简化方法--2022-12-03
+        Function.prototype.myBind = function (context,...args) {
+            if (typeof this !== 'function') {
+                throw new TypeError('not function')
+            }
             let _this = this
-            let args = [...arguments].slice(1)
-            return function F() {
-                return _this.apply(context, args)
+            console.log(args)
+            // 处理函数使用new的情况
+            return function F(...args2) {
+                if (this instanceof F) {
+                    return new _this(...args, ...args2)
+                } else {
+                    // call和apply的arguments的数据结构不一样
+                    // return _this.apply(context, args.concat(...args2))
+                    return _this.apply(context, [...args,...args2])
+                    // return _this.call(context, args,args2)
+                }
+            }
+        }
+
+        // 简化版(自己写的)(处理不了new的情况)
+        // Function.prototype.myBind = function (context) {
+        //     let _this = this
+        //     let args = [...arguments].slice(1)
+        //     return function F() {
+        //         return _this.apply(context, args)
+        //     }
+        // }
+
+        // 简化方法(处理不了new的情况)--2022-12-03
+        Function.prototype.myBind2 = function (context, ...args) {
+            if (typeof this !== 'function') {
+                throw new TypeError('not function')
+            }
+            return ()=>{
+                console.log(this)
+                console.log(context)
+                console.log(args)
+                return this.apply(context, args)
             }
         }
 
         sayName()
-        let _ = sayName.myBind(quan, 'tt')
-        _()
+        let _ = sayName.myBind(quan, 'tt','tt2')
+        _('tt3')
+        // 采用new
+        // let _ = sayName.myBind(quan)
+        // new _('tt3')
+        // let vv = sayName.myBind2(quan, 'tt','tt2')
+        // vv()
     </script>
 </body>
 

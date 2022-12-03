@@ -32,8 +32,22 @@
             delete context.fn
             return result;
         }
+        // 简化方法--2022-12-03
+        Function.prototype.myAplly2 = function(context,args){
+            if(typeof this !== 'function'){
+                throw new TypeError('not function')
+            }
+            console.log(this)
+            console.log(context)
+            console.log(args)
+            context.fn = this
+            const result = context.fn(args)
+            delete context.fn
+            return result;
+        }
         sayName()
         sayName.myAplly(quan,['tt'])
+        sayName.myAplly2(quan,['tt'],['tt2'])
     </script>
 </body>
 </html>
