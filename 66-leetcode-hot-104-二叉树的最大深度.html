@@ -1,21 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
-</head>
+  <body>
+    <script>
+      var maxDepth = function (root) {
+        // 方法一：深度优先---时间O（n）（其中 nn 为二叉树节点的个数。每个节点在递归中只被遍历一次）---空间：O（height）（其中height 表示二叉树的高度。递归函数需要栈空间，而栈空间取决于递归的深度，因此空间复杂度等价于二叉树的高度）
+        // if (!root) {
+        //   return 0;
+        // }
+        // return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
 
-<body>
-  <script>
-    var maxDepth = function(root) {
-
-    };
-
-    
-  </script>
-</body>
-
+        // 方法二：广度优先---时间O（n）（其中 nn 为二叉树的节点个数）---空间：（此方法空间的消耗取决于队列存储的元素数量，其在最坏情况下会达到 O(n)）
+        if (!root) {
+          return 0;
+        }
+        const arr = [root];
+        let depth = 0;
+        while (arr.length) {
+          const node = arr.shift();
+          while (node) {
+            if (node.left) {
+              arr.push(node.left);
+            }
+            if (node.right) {
+              arr.push(node.right);
+            }
+            depth++;
+          }
+          depth--;
+        }
+        return depth;
+      };
+    </script>
+  </body>
 </html>
