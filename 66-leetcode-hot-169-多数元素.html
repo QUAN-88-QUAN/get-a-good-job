@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      var majorityElement = function (nums) {
+        // 方法一：暴力法（枚举数组中的每个元素，再遍历一遍数组统计其出现次数）---时间：O（n^2）---空间：O（1）
+
+        // 方法二：暴力法改进（使用对象）---时间：O（m+n/n）（n是数组长度，m是对象长度/n是数组长度，对象不计算长度）---空间：O（n+2=>n）（）
+        // const obj = {};
+        // for (let i = 0; i < nums.length; i++) {
+        //   if (obj[nums[i]]) {
+        //     obj[nums[i]]++;
+        //   } else {
+        //     obj[nums[i]] = 1;
+        //   }
+        // }
+        // let maxKey = null;
+        // let maxVal = 0;
+        // for (let key in obj) {
+        //   if (obj[key] > maxVal) {
+        //     maxKey = key;
+        //     maxVal = obj[key];
+        //   }
+        // }
+        // return maxKey;
+
+        // 方法三：排序法（先排序，再取中间值，因为他说多数元素是指在数组中出现次数 大于 ⌊ n/2 ⌋ 的元素）---时间：O（nlogn）---空间：O（logn）（如果使用语言自带的排序算法，需要使用 O(log⁡n) 的栈空间。如果自己编写堆排序，则只需要使用 O(1) 的额外空间）
+        // nums.sort()
+        // return nums[Math.floor(nums.length / 2)]
+
+        // 方法四：随机法（）---时间：O（正无穷大）---空间：O（1）
+        // let count = 0;
+        // while (true) {
+        //   position = Math.floor(Math.random() * nums.length);
+        //   for (let i = 0; i < nums.length; i++) {
+        //     if (nums[i] === nums[position]) {
+        //       count++;
+        //     }
+        //   }
+        //   if (count > nums.length / 2) {
+        //     return nums[position];
+        //   } else {
+        //     count = 0;
+        //   }
+        // }
+
+        // 方法四：Boyer-Moore投票算法（自我理解就是抵消法,因为众数是一半还多）---时间：O（n）---空间：O（1）
+        let count = 0;
+        let candidate = 0;
+        for (let i = 0; i < nums.length; i++) {
+          if(count === 0){
+            candidate = nums[i]
+          }
+          count = nums[i] === candidate ? count + 1 : count - 1;
+        }
+        return candidate;
+
+        // 方法五：分治法（不理解，搞懂了分治法在来）
+      };
+      // console.log(majorityElement([3, 2, 3]));
+      // console.log(majorityElement([2,2,1,1,1,2,2]));
+    </script>
+  </body>
+</html>

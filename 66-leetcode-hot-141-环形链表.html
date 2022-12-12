@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      var hasCycle = function (head) {
+        // 方法一：采用map---时间：O（n）（其中 n 是链表中的节点数。最坏情况下我们需要遍历每个节点一次）---空间：O（n）（其中 n 是链表中的节点数。主要为哈希表的开销，最坏情况下我们需要将每个节点插入到哈希表中一次）
+        // const map = new Map();
+        // while (head) {
+        //   if (map.has(head)) {
+        //     return true;
+        //   }
+        //   map.set(head, true);
+        //   head = head.next;
+        // }
+        // return false;
+
+        // 鸡贼法：采用JSON.stringify遇到循环引用会报错
+        // try {
+        //   JSON.stringify(head);
+        //   return false;
+        // } catch (error) {
+        //   return true;
+        // }
+
+        // 方法二：采用快慢指针---时间：O（n）（）---空间：O（1）（）
+        let slow = head;
+        let fast = head;
+        while (fast && fast.next) {
+          slow = slow.next;
+          fast = fast.next.next;
+          if (slow === fast) {
+            return true;
+          }
+        }
+        return false
+      };
+      console.log(hasCycle([3, 2, 0, -4]));
+    </script>
+  </body>
+</html>

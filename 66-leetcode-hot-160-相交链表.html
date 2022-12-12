@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      var getIntersectionNode = function (headA, headB) {
+        // 方法一：采用map双层循环---时间：O（m+n）（其中 m 和 n 是分别是链表 headA 和 headB 的长度。需要遍历两个链表各一次）---空间：O（n）（其中 m 是链表 headA 的长度。需要使用哈希集合存储链表 headA 中的全部节点。）
+        // const map = new Map();
+        // while (headA) {
+        //   map.set(headA, true);
+        //   headA = headA.next;
+        // }
+        // while (headB) {
+        //   if (map.has(headB)) {
+        //     return headB;
+        //   }
+        //   headB = headB.next;
+        // }
+        // 方法二：采用双指针：假设a链表的长度为m，b链表的长度为n，假设a链表的不相交部分有a个节点，b链表的不相交部分有b个节点，两链表相交的部分有c个节点，那么有：m=a+c，n=b+c，那么有：m+n=a+b+c+c，
+        // a+c+b=b+c+a 也就是说，a链表的指针和b链表的指针分别遍历完自己的链表后，再遍历对方的链表，那么两个指针一定会在相交的节点处相遇。
+
+        // ---时间：O（m+n）（）---空间：O（1）（）
+        // let flag = true;
+        // let value = null;
+        // let a = headA;
+        // let b = headB;
+        // while (flag) {
+        //   if (a === b) {
+        //     value = a;
+        //     flag = false;
+        //   } else {
+        //     a = a.next;
+        //     b = b.next;
+        //     if (!a && !b) {
+        //       return null;
+        //     }
+        //     if (!a) {
+        //       a = headB;
+        //     }
+        //     if (!b) {
+        //       b = headA;
+        //     }
+        //   }
+        // }
+        // return value;
+
+        // 官方方法：
+        let a = headA;
+        let b = headB;
+        while (a !== b) {
+          a = a === null ? headB : a.next;
+          b = b === null ? headA : b.next;
+        }
+        return a;
+      };
+    </script>
+  </body>
+</html>
