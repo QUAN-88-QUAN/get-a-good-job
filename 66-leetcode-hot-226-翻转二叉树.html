@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      var invertTree = function (root) {
+        // // 方法一：递归（自下而上）---时间：O（n）---空间：O（n）
+        // if (!root) {
+        //   return null;
+        // }
+        // const left = invertTree(root.left);
+        // const right = invertTree(root.right);
+        // root.left = left;
+        // root.right = right;
+        // return root;
+
+        // 方法二：递归（自上问下）---时间：O（n）---空间：O（n）
+        // if (!root) {
+        //   return null;
+        // }
+        // const temp = root.left;
+        // root.left = root.right
+        // root.right = temp
+        // invertTree(root.left);
+        // invertTree(root.right);
+        // return root;
+
+        // 方法三：遍历（）---时间：O（n）---空间：O（n）（n表示数组长度）
+        let stack = [root];
+        while (stack.length) {
+          const node = stack.pop();
+          if (!node) continue;
+          if (node.left || node.right) {
+            const temp = node.left;
+            node.left = node.right;
+            node.right = temp;
+          }
+          stack.push(node.left);
+          stack.push(node.right);
+        }
+        return root;
+      };
+      const obj = {
+        val: 4,
+        left: {
+          val: 2,
+          left: {
+            val: 1,
+            left: null,
+            right: null,
+          },
+          right: {
+            val: 3,
+            left: null,
+            right: null,
+          },
+        },
+        right: {
+          val: 7,
+          left: {
+            val: 6,
+            left: null,
+            right: null,
+          },
+          right: {
+            val: 9,
+            left: null,
+            right: null,
+          },
+        },
+      };
+      console.log(invertTree(obj));
+    </script>
+  </body>
+</html>

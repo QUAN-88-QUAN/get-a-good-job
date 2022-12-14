@@ -10,7 +10,7 @@
   <body>
     <script>
       var reverseList = function (head) {
-        // 方法一：使用外部空间反转之后再赋值给原来的链表（）---时间：O（3n）---空间：O（1）
+        // 方法一：使用外部空间反转之后再赋值给原来的链表（）---时间：O（3n）---空间：O（n+2）（n是数组的长度）
         // let arr = []
         // let curr1 = head
         // let curr2 = head
@@ -24,6 +24,7 @@
         //   curr2 = curr2.next
         // }
         // return head
+        
         // 方法二：双指针遍历（）---时间：O（n）---空间：O（1）
         // let prev = null;
         // let curr = head;
@@ -34,6 +35,7 @@
         //   curr = temp;
         // }
         // return prev
+
         // 方法三：递归（https://leetcode.cn/problems/reverse-linked-list/solutions/36710/dong-hua-yan-shi-206-fan-zhuan-lian-biao-by-user74/?orderBy=hot）---时间：O（n）---空间：O（1）
         if (!head || !head.next) {
           return head;

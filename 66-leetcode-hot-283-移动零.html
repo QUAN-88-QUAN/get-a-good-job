@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      var moveZeroes = function (nums) {
+        // 方法一：双指针一次遍历（https://leetcode.cn/problems/move-zeroes/solutions/90229/dong-hua-yan-shi-283yi-dong-ling-by-wang_ni_ma/?orderBy=most_votes）---时间：O（n）（）---空间：O（1）（）
+        // let j = 0;
+        // debugger;
+        // for (let i = 0; i < nums.length; i++) {
+        //   if (nums[i] !== 0) {
+        //     const temp = nums[i];
+        //     nums[i] = nums[j];
+        //     nums[j++] = temp;
+        //   }
+        // }
+        // return nums;
+
+        // 方法二：双指针两次遍历（遇到一个非0元素就将其往数组左边挪，第一次遍历完后，j指针的下标就指向了最后一个非0元素下标，
+        // 第二次遍历的时候，起始位置就从j开始到结束，将剩下的这段区域内的元素全部置为0）
+        // ---时间：O（n）（）---空间：O（1）（）
+        let j = 0;
+        for (let i = 0; i < nums.length; i++) {
+          if (nums[i] !== 0) {
+            nums[j++] = nums[i];
+          }
+        }
+        for (let i = j; i < nums.length; i++) {
+          nums[i] = 0;
+        }
+        return nums;
+
+        // 方法三：使用多余的数组(不符合要求)---时间：O（2n）（）---空间：O（n）（）
+        // const newArr = []
+        // const length = nums.length
+        // for (let i = 0; i < length; i++) {
+        //   if(nums[i]===0){
+        //     nums.push(nums[i])
+        //     nums[i]='666'
+        //   }
+        // }
+        // for (let i = 0; i < nums.length; i++) {
+        //   if(nums[i]!=='666'){
+        //     newArr.push(nums[i])
+        //   }
+        // }
+        // return newArr
+      };
+      console.log(moveZeroes([0, 1, 0, 3, 12]));
+      console.log(moveZeroes([0, 0, 1]));
+    </script>
+  </body>
+</html>
