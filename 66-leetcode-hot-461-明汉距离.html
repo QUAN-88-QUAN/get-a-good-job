@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      var hammingDistance = function (x, y) {
+        // 方法一：Brian Kernighan 算法（）---时间：O（logC）（其中C是元素的数据范围，再本题中logC=log2^31=31）---空间：O（1）（）
+        // let xy = x ^ y;
+        // let count = 0;
+        // while (xy > 0) {
+        //   xy = xy & (xy - 1);
+        //   count++;
+        // }
+        // 没有想到上面这种方法，还可以xy.toString(2)之后用暴力法
+        // return count;
+
+        // 方法二：位运算（）---时间：O（logC）（其中C是元素的数据范围，再本题中logC=log2^31=31）---空间：O（1）（）
+        // let xy = x ^ y;
+        // let count = 0;
+        // while (xy !== 0) {
+        //   count += xy & 1;
+        //   xy = xy >> 1;
+        // }
+        // return count;
+
+        // 方法三：暴力法（先把两个数都toString，然后取最长的位数的length把短的位数前面补0，padStar(length,'0')，之后遍历就行）
+
+        // 方法四：取模（模之后如果不等，就可以加1）
+        let count = 0;
+        while (x || y) {
+          if (x % 2 !== y % 2) {
+            count++;
+          }
+          // 这里用右移好一些，
+          x >>= 1;
+          y >>= 1;
+          // 这样会存在小数
+          // x/=2
+          // y/=2
+        }
+        return count;
+      };
+
+      console.log(hammingDistance(1, 4));
+      console.log(hammingDistance(3, 1));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      var findDisappearedNumbers = function (nums) {
+        // 方法一：暴力法（）---时间：O（n*n）（）---空间：O（n）（数组长度）
+        // const length = nums.length;
+        // const arr = [];
+        // for (let i = 1; i <= length; i++) {
+        //   if (!nums.includes(i)) {
+        //     arr.push(i);
+        //   }
+        // }
+        // return arr;
+
+        // 官方方法：（每个数字本身都对应一个i-1的数组下标）---时间：O（n）（没算遍历对象,应该是2n，不过2n也可以写成n）---空间：O（1）（没算数组长度）
+        const n = nums.length;
+        const arr = [];
+        for (let i = 0; i < n; i++) {
+          // 得到自己的下标，% n是因为原来这个下标的数，可能已经增加了n，得还原去找他自己的下标
+          const x = (nums[i] - 1) % n;
+          // 这样之后，只要出现过的数都会大于n
+          nums[x] += n;
+        }
+        for (let j = 0; j < n; j++) {
+          // 再遍历一次，如果小于n，就是不存在的，但是因为是下标得加1
+          if (nums[j] <= n) {
+            arr.push(j + 1);
+          }
+        }
+        return arr;
+      };
+
+      console.log(findDisappearedNumbers([4, 3, 2, 7, 18, 2, 3, 1]));
+      console.log(findDisappearedNumbers([1, 1]));
+    </script>
+  </body>
+</html>
