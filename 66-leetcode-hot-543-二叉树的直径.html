@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      var diameterOfBinaryTree = function (root) {
+        // 方法一：递归（通过算节点）---时间：O（N）（其中 N 为二叉树的节点数，即遍历一棵二叉树的时间复杂度，每个结点只被访问一次）---空间：O（Height）（树的高度）
+        // let maxD = 0;
+        // depth(root);
+        // // 这是总结点数，路径=节点数-1
+        // return maxD-1;
+
+        // function depth(root) {
+        //   if (!root) {
+        //     return 0;
+        //   }
+        //   const left = depth(root.left);
+        //   const right = depth(root.right);
+        //   maxD = Math.max(maxD, left + right + 1);
+        //   // 返回左子树，右子树较深的那一棵树的深度
+        //   return Math.max(left, right) + 1;
+        // }
+
+        // 方法一：递归（通过算路径）
+        let maxD = 0;
+        depth(root);
+        return maxD;
+
+        function depth(root) {
+          if (!root) {
+            return 0;
+          }
+          const left = depth(root.left);
+          const right = depth(root.right);
+          maxD = Math.max(maxD, (left + right));
+          return Math.max(left, right) + 1;
+        }
+      };
+      const obj = {
+        val: 4,
+        left: {
+          val: 2,
+          left: {
+            val: 1,
+            left: null,
+            right: null,
+          },
+          right: {
+            val: 3,
+            left: null,
+            right: null,
+          },
+        },
+        right: {
+          val: 7,
+          left: {
+            val: 6,
+            left: null,
+            right: null,
+          },
+          right: {
+            val: 9,
+            left: null,
+            right: null,
+          },
+        },
+      };
+      console.log(diameterOfBinaryTree(obj));
+    </script>
+  </body>
+</html>

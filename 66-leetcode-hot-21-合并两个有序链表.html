@@ -1,48 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
-</head>
+  <body>
+    <script>
+      var mergeTwoLists = function (list1, list2) {
+        // 方法一：---循环---时间：O（n+m）（n，m分别是两个链表的长度）---空间：O（1）（只需要常数的空间存放若干变量）
+        // const prehead = new ListNode(-1);
+        // let prev = prehead;
+        // while (list1 != null && list2 != null) {
+        //     if (list1.val <= list2.val) {
+        //         prev.next = list1;
+        //         list1 = list1.next;
+        //     } else {
+        //         prev.next = list2;
+        //         list2 = list2.next;
+        //     }
+        //     prev = prev.next;
+        // }
+        // // 合并后 l1 和 l2 最多只有一个还未被合并完，我们直接将链表末尾指向未合并完的链表即可
+        // prev.next = list1 === null ? list2 : list1;
+        // return prehead.next;
 
-<body>
-  <script>
-    // 没有测试的数据源
-    var mergeTwoLists = function (list1, list2) {
-      // 方法一：---循环---时间：O（n+m）（n，m分别是两个链表的长度）---空间：O（1）（只需要常数的空间存放若干变量）
-      // const prehead = new ListNode(-1);
-      // let prev = prehead;
-      // while (list1 != null && list2 != null) {
-      //     if (list1.val <= list2.val) {
-      //         prev.next = list1;
-      //         list1 = list1.next;
-      //     } else {
-      //         prev.next = list2;
-      //         list2 = list2.next;
-      //     }
-      //     prev = prev.next;
-      // }
-      // // 合并后 l1 和 l2 最多只有一个还未被合并完，我们直接将链表末尾指向未合并完的链表即可
-      // prev.next = list1 === null ? list2 : list1;
-      // return prehead.next;
+        // 方法二：---递归---时间：O（n+m）（n，m分别是两个链表的长度）---空间：O（n+m）（递归调用会消耗栈空间）
+        // if (list1 === null) {
+        //   return list2;
+        // } else if (list2 === null) {
+        //   return list1;
+        // } else if (list1.val < list2.val) {
+        //   list1.next = mergeTwoLists(list1.next, list2);
+        //   return list1;
+        // } else {
+        //   list2.next = mergeTwoLists(list1, list2.next);
+        //   return list2;
+        // }
 
-      // 方法二：---递归---时间：O（n+m）（n，m分别是两个链表的长度）---空间：O（n+m）（递归调用会消耗栈空间）
-      if (list1 === null) {
-        return list2;
-      } else if (list2 === null) {
-        return list1;
-      } else if (list1.val < list2.val) {
-        list1.next = mergeTwoLists(list1.next, list2);
-        return list1;
-      } else {
-        list2.next = mergeTwoLists(list1, list2.next);
-        return list2;
-      }
-    };
-  </script>
-</body>
-
+        // 想在原链表上修改（没成功）（不能这么写，因为链表会一直next直到为null）
+        // while (list1 && list2) {
+        //   debugger;
+        //   if (list1.val <= list2.val) {
+        //     list1 = list1.next;
+        //   } else {
+        //     const temp = list1.next.next;
+        //     list1.next = list2;
+        //     list1.next.next = temp;
+        //     list1 = list1.next;
+        //     list2 = list2.next
+        //   }
+        // }
+        // if(list2){
+        //   return list1.next = list2
+        // }else {
+        //   return list1
+        // }
+      };
+      const obj1 = {
+        val: "head",
+        next: {
+          val: 1,
+          next: {
+            val: 2,
+            next: {
+              val: 4,
+              next: null,
+            },
+          },
+        },
+      };
+      const obj2 = {
+        val: "head",
+        next: {
+          val: 1,
+          next: {
+            val: 3,
+            next: {
+              val: 4,
+              next: null,
+            },
+          },
+        },
+      };
+      console.log(mergeTwoLists(obj1.next, obj2.next));
+    </script>
+  </body>
 </html>
