@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var mergeKLists = function (lists) {
+        // 方法一：暴力法---时间：O（）（不好算）---空间：O（1）（）
+        // let list = new ListNode(-1);
+        // let head = list;
+        // const arr = [];
+        // for (let i = 0; i < lists.length; i++) {
+        //   let node = lists[i];
+        //   while (node) {
+        //     arr.push(node.val);
+        //     node = node.next;
+        //   }
+        // }
+        // arr.sort((a, b) => a - b);
+        // for (let i = 0; i < arr.length; i++) {
+        //   // 不要在一开始就next，会结果不对
+        //   list.next = new ListNode(arr[i]);
+        //   list = list.next;
+        // }
+        // return head.next;
+
+        // 方法二：两两合并---时间：O（nk^2）（官方）---空间：O（1）（官方）
+        // let resList = new ListNode(-1)
+        // resList = resList.next
+        // for(let i=0;i<lists.length;i++){
+        //   resList = mergeTwoLists(resList,lists[i])
+        // }
+        // 上面还能这么写
+        // let resList = lists[0] || null;//防止lists为[]
+        // for (let i = 1; i < lists.length; i++) {
+        //   resList = mergeTwoLists(resList, lists[i]);
+        // }
+        // return resList;
+
+        function mergeTwoLists(list1, list2) {
+          let newList = new ListNode(-1);
+          let head = newList;
+          while (list1 && list2) {
+            if (list1.val < list2.val) {
+              newList.next = list1;
+              list1 = list1.next;
+            } else {
+              newList.next = list2;
+              list2 = list2.next;
+            }
+            newList = newList.next;
+          }
+          newList.next = list1 ? list1 : list2;
+          return head.next;
+        }
+
+        // 方法三：分治法（递归）---时间：O（kn * logk）（官方）---空间：O（logk）（官方）
+        return merge(lists, 0, lists.length - 1);
+
+        function merge(lists, left, right) {
+          if (left === right) {
+            return lists[left];
+          }
+          // 为什么要加这个，按理说不会出现left大于right的情况？（自我理解是处理传空数组进来）
+          // 所以也可以这么写
+          // if (right===-1) {
+          //   return null;
+          // }
+          if (left > right) {
+            return null;
+          }
+          const mid = Math.floor((left + right) / 2);
+          // 另一种写法
+          // const mid = parseInt((left+right)/2)
+          // const mid = (left+right)>>1
+          return mergeTwoLists(
+            merge(lists, left, mid),
+            merge(lists, mid + 1, right)
+          );
+        }
+        // 方法四：分治法（遍历）
+        // 方法五：也算一种暴力法，不使用PriorityQueue
+        // （每次都去遍历lists找出最小值，然后把这个最小值删除，维护两个变量，一个记录最小值的节点，一个记录最小值节点再lists的下标）
+        // （https://leetcode.cn/problems/merge-k-sorted-lists/solutions/220518/4-chong-fang-fa-xiang-jie-bi-xu-miao-dong-by-sweet/?orderBy=most_votes）
+        // 方法六：java有种数据结构优先级队列（PriorityQueue）
+      };
+    </script>
+  </body>
+</html>

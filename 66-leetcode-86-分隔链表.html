@@ -9,7 +9,29 @@
   <body>
     <script>
       var partition = function (head, x) {
-        // 方法一：循环---时间：O（）（）---空间：O（）（）
+        // 方法一：---时间：O（n）（）---空间：O（1）（）
+        let list1 = new ListNode(-1);
+        let head1 = list1;
+        let list2 = new ListNode(-1);
+        let head2 = list2;
+        while (head) {
+          if (head.val < x) {
+            list1.next = head;
+            list1 = list1.next;
+          } else {
+            list2.next = head;
+            list2 = list2.next;
+          }
+          head = head.next;
+        }
+        // 注意这里
+        // 遍历结束之后，得将list2.next置空，因为当前节点是复用的原链表的节点，而其next指针可能指向小于x的节点，需要切断这个引用
+        list2.next = null;//不太懂，按理说next赋值之后再next应该为null了呀
+        list1.next = head2.next;
+        return head1.next;
+
+        // 其他解法
+        // https://leetcode.cn/problems/partition-list/solutions/544705/lian-tou-shu-zu-shuang-zhi-zhen-7xing-da-baxz/?orderBy=most_votes
       };
     </script>
   </body>
