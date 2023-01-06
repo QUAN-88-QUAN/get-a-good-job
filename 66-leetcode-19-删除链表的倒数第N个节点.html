@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var removeNthFromEnd = function (head, n) {
+        // 方法一：暴力法（把所有节点的值都放到数组里删除，然后再生成新的链表）---时间：O（3n）（链表的长度）---空间：O（n）（数组长度）
+        // const arr = [];
+        // let list = new ListNode(-1);
+        // const listHead = list;
+        // while (head) {
+        //   arr.push(head.val);
+        //   head = head.next;
+        // }
+        // arr.splice(arr.length - n, 1);
+        // for (let i = 0; i < arr.length; i++) {
+        //   list.next = new ListNode(arr[i]);
+        //   list = list.next
+        // }
+        // return listHead.next;
+
+        // 方法二：双指针（）---时间：O（n）（链表的长度）---空间：O（1）（）
+        // 这是符合下面输入的输出（如果删除的是倒数最后一个节点，也就是第一个节点，这样就不行，因为找不到它更前面的节点）
+        // const tempHead = head
+        // const delNode = findIndex(head,n+1)
+        // delNode.next = delNode.next.next
+        // return tempHead
+
+        // 符合测试用例的输出
+        // const list = new ListNode(-1)
+        // let listHead = list
+        // list.next = head
+        // 这里也可以不用+1，下面i<=k就行了
+        // const delNode = findIndex(list,n+1)
+        // delNode.next = delNode.next.next
+        // return listHead.next
+
+        // function findIndex(head, k) {
+        //   let p1 = head
+        //   let p2 = head
+        //   for (let i = 0; i < k; i++) {
+        //     p2 = p2.next;
+        //   }
+        //   while (p2) {
+        //     p2 = p2.next;
+        //     p1 = p1.next;
+        //   }
+        //   return p1;
+        // }
+
+        // 方法三：暴力法（）---时间：O（2n）（链表的长度）---空间：O（1）（）
+        let list = new ListNode(-1);
+        let length = 0;
+        const listHead = list;
+        list.next = head;
+        while (head) {
+          length++;
+          head = head.next;
+        }
+        for (let i = 0; i < length - n; i++) {
+          list = list.next;
+        }
+        list.next = list.next.next;
+        return listHead.next;
+      };
+      const obj1 = {
+        val: "head",
+        next: {
+          val: 1,
+          next: {
+            val: 2,
+            next: {
+              val: 3,
+              next: {
+                val: 4,
+                next: {
+                  val: 5,
+                  next: null,
+                },
+              },
+            },
+          },
+        },
+      };
+      console.log(removeNthFromEnd(obj1.next, 5));
+    </script>
+  </body>
+</html>
