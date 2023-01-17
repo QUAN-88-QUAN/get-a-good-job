@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      var detectCycle = function (head) {
+        // 方法一：采用map---时间：O（n）（）---空间：O（n）（）
+        // const map = new Map();
+        // let index = 0;
+        // while (head) {
+        //   if (map.has(head)) {
+        //     return head;
+        //   }
+        //   map.set(head, index);
+        //   head = head.next;
+        //   index++;
+        // }
+
+        // 方法二：快慢指针---时间：O（2n）（两次遍历）---空间：O（1）（两个指针）
+        // ---------------错误写法（因为你不能确定快慢指针相交的节点就是起点，比如[3,2,0,-4]的测试用例，起点是2，但是快慢指针相交的点是-4）
+        // let fast = head
+        // let slow = head
+        // while(fast && fast.next){
+        //   slow = slow.next
+        //   fast = fast.next.next
+        //   if(fast===slow){
+        //     return slow
+        //   }
+        // }
+        // return null
+        // ---------------正确写法
+        //（）
+      };
+    </script>
+  </body>
+</html>

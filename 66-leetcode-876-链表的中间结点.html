@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var middleNode = function (head) {
+        // 方法一：暴力法（把所有节点的值都放到数组去掉一半的节点，然后再生成新的链表）---时间：O（2n）（链表的长度）---空间：O（n）（数组长度）
+        // 方法二：暴力法（先遍历得到长度，在遍历得到结果）---时间：O（2n）（链表的长度）---空间：O（n）（数组长度）
+        // let list = new ListNode(-1);
+        // let length = 0;
+        // list.next = head;
+        // while (head) {
+        //   length++;
+        //   head = head.next;
+        // }
+        // length = Math.floor(length / 2);
+        // for (let i = 1; i <= length; i++) {
+        //   list = list.next;
+        // }
+        // return list.next;
+
+        // 方法三：快慢指针（）---时间：O（n）（）---空间：O（1）（）
+        // let fast = head
+        // let slow = head
+        // while(fast && fast.next){
+        //   fast = fast.next.next
+        //   slow = slow.next
+        // }
+        // return slow
+
+        
+      };
+      const obj1 = {
+        val: "head",
+        next: {
+          val: 1,
+          next: {
+            val: 2,
+            next: {
+              val: 3,
+              next: {
+                val: 4,
+                next: {
+                  val: 5,
+                  next: null,
+                },
+              },
+            },
+          },
+        },
+      };
+      const obj2 = {
+        val: "head",
+        next: {
+          val: 1,
+          next: {
+            val: 2,
+            next: {
+              val: 3,
+              next: {
+                val: 4,
+                next: {
+                  val: 5,
+                  next: {
+                    val:6,
+                    next:null
+                  },
+                },
+              },
+            },
+          },
+        },
+      };
+      console.log(middleNode(obj1.next));
+      // console.log(middleNode(obj2.next));
+    </script>
+  </body>
+</html>
