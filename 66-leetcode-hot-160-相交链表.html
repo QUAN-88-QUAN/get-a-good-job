@@ -51,13 +51,43 @@
         // return value;
 
         // 官方方法：
-        let a = headA;
-        let b = headB;
-        while (a !== b) {
-          a = a === null ? headB : a.next;
-          b = b === null ? headA : b.next;
+        // let a = headA;
+        // let b = headB;
+        // while (a !== b) {
+        //   a = a === null ? headB : a.next;
+        //   b = b === null ? headA : b.next;
+        // }
+        // return a;
+
+        // 双指针转换思路：（核心在于让两个指针能够同时到达相交节点，那么可以通过预先计算两条链表的长度来做到这一点，长的链表先走长的那一部分，然后再一起走）
+        let pA = headA;
+        let lengthA = 0;
+        let pB = headB;
+        let lengthB = 0;
+        while (pA) {
+          lengthA++;
+          pA = pA.next;
         }
-        return a;
+        while (pB) {
+          lengthB++;
+          pB = pB.next;
+        }
+        pA = headA;
+        pB = headB;
+        if (lengthA > lengthB) {
+          for (let i = 0; i < lengthA - lengthB; i++) {
+            pA = pA.next;
+          }
+        } else {
+          for (let i = 0; i < lengthB - lengthA; i++) {
+            pB = pB.next;
+          }
+        }
+        while (pA !== pB) {
+          pA = pA.next;
+          pB = pB.next;
+        }
+        return pA;
       };
     </script>
   </body>
