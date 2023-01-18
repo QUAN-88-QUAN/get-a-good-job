@@ -13,7 +13,6 @@
     var twoSum = function (nums, target) {
       // 方法一：使用对象---时间：O（n）---空间：O（n）
       let obj = {}
-      debugger;
       for (let i = 0; i < nums.length; i++) {
         let temp = target - nums[i]
         if (obj[temp] !== undefined) {
