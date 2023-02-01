@@ -10,19 +10,44 @@
   <body>
     <script>
       var twoSum = function (numbers, target) {
-        // 方法一：对象（）---时间：O（m+n）（）---空间：O（n）（）
-        const obj = {};
-        for (let i = 0; i < numbers.length; i++) {
-          const temp = target - numbers[i];
-          if (obj[temp] !== undefined) {
-            return [obj[temp] + 1, i + 1];
-          } else {
-            obj[numbers[i]] = i;
+        // 方法一：对象（）---时间：O（n）（）---空间：O（n）（对象空间）
+        // const obj = {};
+        // for (let i = 0; i < numbers.length; i++) {
+        //   const temp = target - numbers[i];
+        //   if (obj[temp] !== undefined) {
+        //     return [obj[temp] + 1, i + 1];
+        //   } else {
+        //     obj[numbers[i]] = i;
+        //   }
+        // }
+
+        // 方法二：暴力法（）---时间：O（n^2）（）---空间：O（0）（）
+        // for(let i=0;i<numbers.length;i++){
+        //   for(let j=i+1;j<numbers.length;j++){
+        //     if(numbers[i]+numbers[j]===target){
+        //       return [i+1,j+1]
+        //     }
+        //   }
+        // }
+
+        // 方法三：双指针（）---时间：O（n）（）---空间：O（1）（）
+        let left = 0;
+        let right = numbers.length - 1;
+        while (left < right) {
+          if (numbers[left] + numbers[right] > target) {
+            right--;
+          }
+          if (numbers[left] + numbers[right] < target) {
+            left++;
+          }
+          if (numbers[left] + numbers[right] === target) {
+            return [left + 1, right + 1];
           }
         }
       };
       console.log(twoSum([2, 7, 11, 15], 9));
       console.log(twoSum([2, 3, 4], 6));
+      console.log(twoSum([5, 25, 75], 100));
     </script>
   </body>
 </html>
