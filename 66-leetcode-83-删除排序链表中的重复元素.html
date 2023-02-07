@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      var deleteDuplicates = function (head) {
+        // 方法一：暴力法（）---时间：O（n）（）---空间：O（1）（）
+        // const listHead = head;
+        // while (head && head.next) {
+        //   if (head.val === head.next.val) {
+        //     head.next = head.next.next
+        //   }else{
+        //     head = head.next;
+        //   }
+        // }
+        // return listHead;
+
+        // 方法二：双指针（）---时间：O（n）（）---空间：O（1）（）
+        let fast = head;
+        let slow = head;
+        while (fast) {
+          if (fast.val !== slow.val) {
+            slow.next = fast;
+            slow = slow.next;
+          }
+          fast = fast.next;
+        }
+        slow = slow ? (slow.next = null) : null;
+        return head;
+      };
+      const obj = {
+        val: "head",
+        next: {
+          val: 1,
+          next: {
+            val: 1,
+            next: {
+              val: 2,
+              next: null,
+            },
+          },
+        },
+      };
+      const obj1 = {
+        val: "head",
+        next: {
+          val: 1,
+          next: {
+            val: 2,
+            next: {
+              val: 3,
+              next: {
+                val: 3,
+                next: {
+                  val: 3,
+                  next: {
+                    val: 10,
+                    next: null,
+                  },
+                },
+              },
+            },
+          },
+        },
+      };
+      console.log(deleteDuplicates(obj.next));
+      console.log(deleteDuplicates(obj1.next));
+    </script>
+  </body>
+</html>
