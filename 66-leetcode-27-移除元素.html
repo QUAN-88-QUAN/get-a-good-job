@@ -22,21 +22,27 @@
         // }
         // return slow;
 
-        // 方法一：双指针优化（）---时间：O（n）（）---空间：O（1）（）
+        // 方法一：双指针优化（还不是特别理解https://leetcode.cn/problems/remove-element/solutions/730203/yi-chu-yuan-su-by-leetcode-solution-svxi/?orderBy=most_votes）
+        // ---时间：O（n）（）---空间：O（1）（）
         // 当nums=[1,2,3,4,5,6],val=1时每个数都得移动一遍
         let slow = 0;
-        let fast = nums.length - 1;
+        // 为什么不是nums.length-1，
+        // 改fast=nums.length-1，下面fast-1改为fast不行
+        let fast = nums.length;
         while (slow < fast) {
           if (nums[slow] === val) {
-            nums[slow] = nums[fast--];
-          }else{
-            slow++
+            nums[slow] = nums[fast-1];
+            fast--
+          } else {
+            slow++;
           }
         }
-        return slow;
+        return slow
       };
-      console.log(removeElement([3, 2, 2, 3], 3));
-      console.log(removeElement([1,2,3,4,5,6], 1));
+      // console.log(removeElement([3, 2, 2, 3], 3));
+      // console.log(removeElement([1,2,3,4,5,6], 1));
+      console.log(removeElement([2], 3));
+      console.log(removeElement([1], 1));
     </script>
   </body>
 </html>
