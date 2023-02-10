@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      var reverseString = function (s) {
+        // 方法一：双指针（）---时间：O（n）（）---空间：O（1）（）
+        let left = 0;
+        let right = s.length - 1;
+        while (left < right) {
+          // const temp = s[left];
+          // s[left] = s[right];
+          // s[right] = temp;
+
+          // 利用位运算^交换顺序(好像只有数字可以)
+          // 假设s[left]=1,s[right]=2
+          // s[left]^=s[right] //s[left]=1^2=3 
+          // s[right]^=s[left] //s[right]=2^3=1
+          // s[left]^=s[right] //s[left]=3^1=2
+
+          left++;
+          right--;
+        }
+        return s;
+
+        // 方法二：使用数组api（）---时间：O（n）（）---空间：O（1）（）
+        // return s.reverse()
+
+        // 方法二：双指针优化（）---时间：O（n/2,简化之后也是n）（）---空间：O（1）（）
+        // let left = 0;
+        // let length = s.length - 1;
+        // let mid = length >> 1;
+        // while (left <= mid) {
+        //   const temp = s[left];
+        //   const index = length - left;
+        //   s[left] = s[index];
+        //   s[index] = temp;
+        //   left++
+        // }
+        // return s;
+      };
+      console.log(reverseString(["h", "e", "l", "l", "o"]));
+      console.log(reverseString(["1", "2", "3", "4", "5"]));//[5, 4, '3', 2, 1]
+    </script>
+  </body>
+</html>
