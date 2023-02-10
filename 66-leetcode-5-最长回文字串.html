@@ -10,39 +10,49 @@
   <body>
     <script>
       var longestPalindrome = function (s) {
-        // 方法一：暴力法（）---时间：O（n）（）---空间：O（1）（）
-        let slow = 0;
-        let fast = slow;
-        let maxStr = "";
-        while (slow < s.length) {
-          while (fast < s.length) {
-            if (s[fast] === s[slow]) {
-              const str = s.substring(slow, fast + 1);
-              // 这样会超出时间限制
-              // if ( str === str.split('').reverse().join('') && str.length > maxStr.length) {
-              // 这样不会
-                if (isPalindrome(str) && str.length > maxStr.length) {
-                maxStr = str;
-              }
-            }
-            fast++;
-          }
-          slow++;
-          fast = slow;
-        }
-        return maxStr;
+        // 方法一：暴力法（）---时间：O（n^3）（）---空间：O（1）（）
+        // let slow = 0;
+        // let fast = slow;
+        // let maxStr = "";
+        // while (slow < s.length) {
+        //   while (fast < s.length) {
+        //     if (s[fast] === s[slow]) {
+        //       const str = s.substring(slow, fast + 1);
+        //       // 加入支剪逻辑
+        //       if (str.length <= maxStr.length){
+        //         fast++;
+        //         continue
+        //       };
+        //       // 这样会超出时间限制（加入支剪逻辑之后这里写也可以）
+        //       // if ( str === str.split('').reverse().join('') && str.length > maxStr.length) {
+        //       // 这样不会
+        //       // if (isPalindrome(str) && str.length > maxStr.length) {
+        //         maxStr = str;
+        //       }
+        //     }
+        //     fast++;
+        //   }
+        //   slow++;
+        //   fast = slow;
+        // }
+        // return maxStr;
 
-        // 判断是不是回文字符串用双指针
-        function isPalindrome(str) {
-          let left = 0;
-          let right = str.length - 1;
-          while (left < right) {
-            if (str[left++] !== str[right--]) {
-              return false;
-            }
-          }
-          return true;
-        }
+        // // 判断是不是回文字符串用双指针
+        // function isPalindrome(str) {
+        //   let left = 0;
+        //   let right = str.length - 1;
+        //   while (left < right) {
+        //     if (str[left++] !== str[right--]) {
+        //       return false;
+        //     }
+        //   }
+        //   return true;
+        // }
+
+        // 方法一：动态规划（用一个二维数组的空间换掉了判断是不是回文字符的事件）---时间：O（n^2）（）---空间：O（n^2）（）
+        // 状态转移方程如下链接
+        // https://leetcode.cn/problems/longest-palindromic-substring/solutions/255195/zui-chang-hui-wen-zi-chuan-by-leetcode-solution/?orderBy=most_votes
+        
       };
       console.log(longestPalindrome("babad"));
       console.log(longestPalindrome("aacabdkacaa"));
