@@ -26,7 +26,7 @@
         //       // 这样会超出时间限制（加入支剪逻辑之后这里写也可以）
         //       // if ( str === str.split('').reverse().join('') && str.length > maxStr.length) {
         //       // 这样不会
-        //       // if (isPalindrome(str) && str.length > maxStr.length) {
+        //       if (isPalindrome(str) && str.length > maxStr.length) {
         //         maxStr = str;
         //       }
         //     }
@@ -49,13 +49,74 @@
         //   return true;
         // }
 
-        // 方法一：动态规划（用一个二维数组的空间换掉了判断是不是回文字符的事件）---时间：O（n^2）（）---空间：O（n^2）（）
+        // 方法二：动态规划（用一个二维数组的空间换掉了判断是不是回文字符的时间）---时间：O（n^2）（）---空间：O（n^2）（）
         // 状态转移方程如下链接
         // https://leetcode.cn/problems/longest-palindromic-substring/solutions/255195/zui-chang-hui-wen-zi-chuan-by-leetcode-solution/?orderBy=most_votes
-        
+        // const length = s.length;
+        // let start = 0;
+        // // 不能为0,不然在只有两个字符的时候判断不出来
+        // // let maxLength = 0;
+        // let maxLength = 1;
+        // if (length < 2) {
+        //   return s;
+        // }
+        // // 错误方法
+        // // const arr = Array(length).fill(Array(length))
+        // // 优雅创建二维数组
+        // const arr = Array(length)
+        //   .fill()
+        //   .map(() => Array(length));
+        // // Array.from的第二个参数表示新数组中的每个元素会执行该回调函数
+        // // const arr = Array.from(Array(length),()=>(Array(length)))
+        // for (let i = 0; i < length; i++) {
+        //   arr[i][i] = true;
+        // }
+        // const charArray = s.split("");
+        // for (let i = 1; i < length; i++) {
+        //   for (let j = 0; j < i; j++) {
+        //     if (charArray[i] === charArray[j]) {
+        //       if (i - j + 1 < 3) {
+        //         arr[i][j] = true;
+        //       } else {
+        //         arr[i][j] = arr[i - 1][j + 1];
+        //       }
+        //     } else {
+        //       arr[i][j] = false;
+        //     }
+        //     if (arr[i][j] && i - j + 1 > maxLength) {
+        //       start = j;
+        //       maxLength = i - j + 1;
+        //     }
+        //   }
+        // }
+        // return s.slice(start, start+maxLength);
+
+        // 方法三：水波扩散法（）---时间：O（n^2）（）---空间：O（n^2）（）
+        const length = s.length;
+        let maxLengthStr = "";
+        function palindrome(s, l, r) {
+          // 这里必须等于0，因为第一个也可能算
+          while (l >= 0 && r < length && s[l] === s[r]) {
+            l--;
+            r++;
+          }
+          return s.substring(l + 1, r);
+        }
+
+        for (let i = 0; i < length; i++) {
+          const res1 = palindrome(s, i, i);
+          const res2 = palindrome(s, i, i + 1);
+          maxLengthStr =
+            res1.length > maxLengthStr.length ? res1 : maxLengthStr;
+          maxLengthStr =
+            res2.length > maxLengthStr.length ? res2 : maxLengthStr;
+        }
+        return maxLengthStr;
       };
       console.log(longestPalindrome("babad"));
       console.log(longestPalindrome("aacabdkacaa"));
+      console.log(longestPalindrome("hyhyh"));
+      console.log(longestPalindrome("ac"));
     </script>
   </body>
 </html>
