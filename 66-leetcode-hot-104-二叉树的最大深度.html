@@ -23,20 +23,51 @@
         const arr = [root];
         let depth = 0;
         while (arr.length) {
-          const node = arr.shift();
-          while (node) {
+          let length = arr.length;
+          while (length > 0) {
+            const node = arr.shift();
             if (node.left) {
               arr.push(node.left);
             }
             if (node.right) {
               arr.push(node.right);
             }
-            depth++;
+            length--;
           }
-          depth--;
+          depth++;
         }
         return depth;
       };
+      const treeObj = {
+        val: 4,
+        left: {
+          val: 2,
+          left: {
+            val: 1,
+            left: null,
+            right: null,
+          },
+          right: {
+            val: 3,
+            left: null,
+            right: null,
+          },
+        },
+        right: {
+          val: 7,
+          left: {
+            val: 6,
+            left: null,
+            right: null,
+          },
+          right: {
+            val: 9,
+            left: null,
+            right: null,
+          },
+        },
+      };
+      console.log(maxDepth(treeObj));
     </script>
   </body>
 </html>
