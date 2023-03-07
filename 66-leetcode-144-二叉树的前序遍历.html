@@ -22,25 +22,25 @@
         // return stack
 
         // 方法一：遍历---时间O（n）（）---空间：O（n）（）
-        // let stack = [root]
-        // let res = []
-        // if (!root) return res
-        // while (stack.length) {
-        //   // 这里存在一个问题，为什么我用shift()，然后先左后右还是不行
-        //   // let a = stack.shift()
-        //   // res.push(a.val)
-        //   // a.left && stack.push(a.left)
-        //   // a.right && stack.push(a.right)
-        //   // 错(假设左子节点开始遍历)：取[右(代表的是后面左右节点的父节点的右节点)，左，右]进
-        //   // 对(假设左子节点开始遍历)：[右(代表的是后面左右节点的父节点的右节点)，右，左]进/取---这样才能读取了左边之后继续读左边
-        //   let a = stack.pop()
-        //   res.push(a.val)
-        //   // 结合栈后进先出的特点，所以左节点要后入栈，右节点要先入栈
-        //   a.right && stack.push(a.right)
-        //   a.left && stack.push(a.left)
-        // }
-        // // 不能去掉
-        // return res
+        let stack = [root]
+        let res = []
+        if (!root) return res
+        while (stack.length) {
+          // 这里存在一个问题，为什么我用shift()，然后先左后右还是不行
+          // let a = stack.shift()
+          // res.push(a.val)
+          // a.left && stack.push(a.left)
+          // a.right && stack.push(a.right)
+          // 错(假设左子节点开始遍历)：取[右(代表的是后面左右节点的父节点的右节点)，左，右]进
+          // 对(假设左子节点开始遍历)：[右(代表的是后面左右节点的父节点的右节点)，右，左]进/取---这样才能读取了左边之后继续读左边
+          let a = stack.pop()
+          res.push(a.val)
+          // 结合栈后进先出的特点，所以左节点要后入栈，右节点要先入栈
+          a.right && stack.push(a.right)
+          a.left && stack.push(a.left)
+        }
+        // 不能去掉
+        return res
       };
 
       const obj = {
