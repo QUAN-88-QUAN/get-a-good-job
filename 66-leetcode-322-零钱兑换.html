@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      var coinChange = function (coins, amount) {
+        // 方法一：动态规划（）
+        // ---时间O（Sn）（其中S是金额，n是面额数。我们一共需要计算O(S)个状态，S为题目所给的总金额。对于每个状态，每次需要枚举n个面额来转移状态）
+        // ---空间：O（S）（不会算，map的长度+递归栈的深度）
+        // 加入缓存，不加缓存时间超限
+        // const map = {};
+        // return dp(coins, amount);
+
+        // function dp(coins, amount) {
+        //   if (amount === 0) {
+        //     return 0;
+        //   }
+        //   if (amount < -1) {
+        //     return -1;
+        //   }
+        //   if (map[amount]) {
+        //     return map[amount];
+        //   }
+        //   let res = Infinity;
+        //   for (let i = 0; i < coins.length; i++) {
+        //     // 计算子问题的结果
+        //     const result = dp(coins, amount - coins[i]);
+        //     // 子问题无解则跳过
+        //     if (result === -1) {
+        //       continue;
+        //     }
+        //     // 在子问题中选择最优解，然后加一
+        //     res = Math.min(res, result + 1);
+        //   }
+        //   map[amount] = res = res === Infinity ? -1 : res;
+        //   return map[amount];
+        // }
+
+        // 方法一：循环（）---时间O（Sn）（）---空间：O（S）（数组dp需要开长度为总金额S的空间）
+        const dp = Array(amount + 1).fill(amount + 1);
+        for (let i = 0; i < dp.length; i++) {
+          debugger;
+          for (let j = 0; j < coins.length; j++) {
+            if (i - coins[j] < 0) {
+              continue;
+            }
+            dp[i] = Math.min(dp[i], 1 + dp[i - coins[j]]);
+          }
+        }
+        return amount + 1 === dp[amount] ? -1 : dp[amount];
+      };
+
+      console.log(coinChange([1, 2, 5], 11));
+    </script>
+  </body>
+</html>
