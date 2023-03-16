@@ -17,35 +17,36 @@
       // # 撤销选择
       // 路径.remove(选择)
       // 将该选择再加入选择列表
-      let res = [];
       var permute = function (nums) {
+        // 方法一：回溯（）---时间O（n*n!）（）---空间：O（n）（调用栈空间）
         let used = new Array(nums.length).fill(false);
         let track = [];
+        let res = [];
         backtrack(nums, track, used);
         return res;
-      };
 
-      function backtrack(nums, track, used) {
-        // debugger;
-        if (track.length === nums.length) {
-          res.push([...track]);
-          return;
-        }
-        for (let i = 0; i < nums.length; i++) {
-          if (used[i]) {
-            continue;
+        function backtrack(nums, track, used) {
+          // debugger;
+          if (track.length === nums.length) {
+            res.push([...track]);
+            return;
           }
-          track.push(nums[i]);
-          // 做选择
-          // 将该选择从选择列表移除
-          used[i] = true;
-          backtrack(nums, track, used);
-          // 撤销选择
-          // 将该选择再加入选择列表
-          track.pop();
-          used[i] = false;
+          for (let i = 0; i < nums.length; i++) {
+            if (used[i]) {
+              continue;
+            }
+            track.push(nums[i]);
+            // 做选择
+            // 将该选择从选择列表移除
+            used[i] = true;
+            backtrack(nums, track, used);
+            // 撤销选择
+            // 将该选择再加入选择列表
+            track.pop();
+            used[i] = false;
+          }
         }
-      }
+      };
 
       console.log(permute([1, 2, 3]));
     </script>

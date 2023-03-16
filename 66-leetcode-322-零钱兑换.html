@@ -44,13 +44,14 @@
 
         // 方法一：循环（）---时间O（Sn）（）---空间：O（S）（数组dp需要开长度为总金额S的空间）
         const dp = Array(amount + 1).fill(amount + 1);
+        dp[0] = 0;
         for (let i = 0; i < dp.length; i++) {
-          debugger;
           for (let j = 0; j < coins.length; j++) {
-            if (i - coins[j] < 0) {
+            const temp = i - coins[j];
+            if (temp < 0) {
               continue;
             }
-            dp[i] = Math.min(dp[i], 1 + dp[i - coins[j]]);
+            dp[i] = Math.min(dp[i], 1 + dp[temp]);
           }
         }
         return amount + 1 === dp[amount] ? -1 : dp[amount];
