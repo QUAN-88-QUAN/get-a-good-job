@@ -19,7 +19,9 @@
       // 将该选择再加入选择列表
       var solveNQueens = function (n) {
         // 方法一：回溯（）---时间O（）（不会算，至少是n!，要回溯递归）---空间：O（）（不会算，至少是n，递归栈的深度）
-        const res = [];
+        // const res = [];
+        // N皇后2
+        let res = 0
         const arr = Array(n)
           .fill([])
           .map(() => Array(n).fill("."));
@@ -28,7 +30,9 @@
 
         function backtrack(arr, row) {
           if (row === arr.length) {
-            res.push(arr.map((item) => item.join('')));
+            // res.push(arr.map((item) => item.join('')));
+            // N皇后2
+            res++
             return;
           }
           for (let col = 0; col < n; col++) {
