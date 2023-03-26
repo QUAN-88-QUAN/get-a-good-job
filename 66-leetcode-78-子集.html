@@ -19,7 +19,7 @@
       // 将该选择再加入选择列表
 
       var subsets = function (nums) {
-        // 方法一：回溯（）---时间O（）（不会算，至少是n!，要回溯递归）---空间：O（）（不会算，至少是n，递归栈的深度）
+        // 方法一：回溯（）---时间：O（）（不会算，至少是n!，要回溯递归）---空间：O（）（不会算，至少是n，递归栈的深度）
         // let track = [];
         // let res = [];
         // backtrack(nums, 0);
@@ -38,18 +38,33 @@
         //   }
         // }
 
-        // 方法一：迭代（每增加一个元素，让之前幂集中的每个集合，追加这个元素，就是新增的子集）---时间O（）（）---空间：O（）（）
-        const res =[]
-        res.push([])
-        for(let i=0;i<nums.length;i++){
-          const length = res.length
-          for(let j=0;j<length;j++){
-            const arr = [...res[j]]
-            arr.push(nums[i])
-            res.push([...arr])
+        // 方法二：迭代（每增加一个元素，让之前幂集中的每个集合，追加这个元素，就是新增的子集）---时间：O（）（）---空间：O（）（）
+        // const res =[]
+        // res.push([])
+        // for(let i=0;i<nums.length;i++){
+        //   const length = res.length
+        //   for(let j=0;j<length;j++){
+        //     const arr = [...res[j]]
+        //     arr.push(nums[i])
+        //     res.push([...arr])
+        //   }
+        // }
+        // return res
+
+        // 方法三：位运算（https://leetcode.cn/problems/subsets/solutions/420294/zi-ji-by-leetcode-solution/）---时间：O（）（）---空间：O（）（）
+        // 不太理解
+        const ans = [];
+        const n = nums.length;
+        for (let i = 0; i < (1 << n); i++) {
+          const t = [];
+          for (let j = 0; j < n; j++) {
+            if (i & (1 << j)) {
+              t.push(nums[j]);
+            }
           }
+          ans.push(t);
         }
-        return res
+        return ans;
       };
 
       console.log(subsets([1, 2, 3]));
