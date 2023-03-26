@@ -19,23 +19,37 @@
       // 将该选择再加入选择列表
 
       var subsets = function (nums) {
-        let track = [];
-        let res = [];
-        backtrack(nums, 0);
-        return res;
+        // 方法一：回溯（）---时间O（）（不会算，至少是n!，要回溯递归）---空间：O（）（不会算，至少是n，递归栈的深度）
+        // let track = [];
+        // let res = [];
+        // backtrack(nums, 0);
+        // return res;
 
-        function backtrack(nums, start) {
-          // debugger;
-          // 直接push不行,得这样
-          // 前序位置，每个节点的值都是一个子集
-          res.push([...track]);
-          for (let i = start; i < nums.length; i++) {
-            track.push(nums[i]);
-            // 通过 start 参数控制树枝的遍历，避免产生重复的子集
-            backtrack(nums, i + 1);
-            track.pop();
+        // function backtrack(nums, start) {
+        //   // debugger;
+        //   // 直接push不行,得这样
+        //   // 前序位置，每个节点的值都是一个子集
+        //   res.push([...track]);
+        //   for (let i = start; i < nums.length; i++) {
+        //     track.push(nums[i]);
+        //     // 通过 start 参数控制树枝的遍历，避免产生重复的子集
+        //     backtrack(nums, i + 1);
+        //     track.pop();
+        //   }
+        // }
+
+        // 方法一：迭代（每增加一个元素，让之前幂集中的每个集合，追加这个元素，就是新增的子集）---时间O（）（）---空间：O（）（）
+        const res =[]
+        res.push([])
+        for(let i=0;i<nums.length;i++){
+          const length = res.length
+          for(let j=0;j<length;j++){
+            const arr = [...res[j]]
+            arr.push(nums[i])
+            res.push([...arr])
           }
         }
+        return res
       };
 
       console.log(subsets([1, 2, 3]));

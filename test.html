@@ -8,7 +8,23 @@
   </head>
   <body>
     <script>
-      
+      var subsets = function (nums) {
+        const res = [];
+        const track = [];
+        backTrack(nums, 0);
+        return res
+
+        function backTrack(nums, n) {
+          debugger
+          res.push([...track]);
+          for (let i = n; i < nums.length; i++) {
+            track.push(nums[i]);
+            backTrack(nums, i + 1);
+            track.pop();
+          }
+        }
+      };
+      console.log(subsets([1, 2, 3]));
     </script>
   </body>
 </html>
