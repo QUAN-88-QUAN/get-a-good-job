@@ -19,6 +19,7 @@
       // 将该选择再加入选择列表
 
       var combine = function (n, k) {
+        // 方法一：回溯（）---时间：O（）（不会算，至少是n!，要回溯递归）---空间：O（）（不会算，至少是n，递归栈的深度）
         let res = [];
         let track = [];
         backtrack(n, k, 1);
