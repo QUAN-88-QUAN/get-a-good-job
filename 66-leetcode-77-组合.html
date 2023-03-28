@@ -27,10 +27,12 @@
 
         function backtrack(n, k, start) {
           // 遍历到了第 k 层，收集当前节点的值
+          // https://leetcode.cn/problems/combinations/solutions/13436/hui-su-suan-fa-jian-zhi-python-dai-ma-java-dai-ma-/
           if (track.length === k) {
             res.push([...track]);
             return;
           }
+          // 支剪逻辑i <= n - (k - track.length) + 1
           for (let i = start; i <= n; i++) {
             track.push(i);
             // 通过 start 参数控制树枝的遍历，避免产生重复的子集
