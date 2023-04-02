@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 快速取整
+      console.log(~~3.14);
+      console.log(3.14 << 0);
+      console.log(3.14 >> 0);
+      console.log(3.14 | 0);
+      // 判断符号是否相同
+      console.log((3 ^ -5) >= 0); //false
+      console.log((-3 ^ -5) >= 0); //true
+      console.log((3 ^ 5) >= 0); //true
+      // 快速判断n是2的整数幂,位运算速度快
+      const isPowerOf2 = (n) => (n & (n - 1)) === 0;
+      console.log(isPowerOf2(4));
+      console.log(isPowerOf2(64));
+      console.log(isPowerOf2(65));
+      console.log(isPowerOf2(1024));
+    </script>
+  </body>
+</html>

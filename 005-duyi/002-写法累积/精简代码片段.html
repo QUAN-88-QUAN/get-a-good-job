@@ -10,21 +10,27 @@
     <div id="quan">quan</div>
     <script>
       // 1、赋值文本
+      // dayOfYear('Hello World')
       const copyToClipboard = (text) => {
         navigator.clipboard.writeText(text);
       };
 
       // 2、获取第几天
+      // dayOfYear(new Date(2023, 4, 2))
       const dayOfYear = (date) => {
         return Math.floor(
           (date - new Date(date.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24
         );
       };
 
-      const quan = document.querySelector("#quan");
-      quan.addEventListener("click", () => {
-        console.log(dayOfYear(new Date(2023, 4, 2)));
-      });
+      // 3、快速评分组件
+      // console.log(rate(0));
+      // console.log(rate(1));
+      // console.log(rate(2));
+      // console.log(rate(5));
+      const rate = (r) => "★★★★★☆☆☆☆☆".slice(5 - r, 10 - r);
+
+      
     </script>
   </body>
 </html>
