@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实现一个简单的深拷贝</title>
+</head>
+<body>
+    <!-- 引入jquery -->
+    <script src="./js/jquery.min.js"></script>
+    <script>
+        let obj={
+            name:'quan',
+            sex:'1',
+            msg:{
+                age:21
+            },
+            colors:['red','green','blue']
+        }
+        // 1、方法一
+        // 使用JSON方法
+        // let obj1=JSON.stringify(obj)
+        // let newObj=JSON.parse(obj1)
+        // obj.msg.age=100
+        // console.log(obj)
+        // console.log(newObj)
+
+        // 2、方法二
+        // 使用jqurty的exends方法 加true为深拷贝，不加或者加fasle为浅拷贝
+        // let newObj={}
+        // $.extend(true,newObj,obj)
+        // obj.msg.age=100
+        // console.log(obj)
+        // console.log(newObj)
+
+        // 3、方法三
+        // 手写
+        function deepClone(newObj,oldObj){
+            if(typeof oldObj !== 'object' || oldObj == null) return //加一下好一些
+            for(let k in oldObj){
+                // console.log(k)     //这里输出的是name，或者sex等
+                let item=oldObj[k]
+                if(item instanceof Array){   //instanceof判断当前实例是否属于某类，返回值boolean类型
+                    newObj[k]=[]
+                    deepClone(newObj[k],item)
+                }else if(item instanceof Object){
+                    newObj[k]={}
+                    deepClone(newObj[k],item)
+                }else{
+                    newObj[k]=item
+                }
+            }
+        }
+        let newObj={}
+        deepClone(newObj,obj)
+        // console.log([] instanceof Object)//这里检测数组也是Object为true 所以得先检测数组
+        obj.msg.age=100
+        console.log(obj)
+        console.log(newObj)
+    </script>
+</body>
+</html>

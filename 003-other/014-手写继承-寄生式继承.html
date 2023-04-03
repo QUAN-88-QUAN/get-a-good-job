@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写继承-寄生式继承</title>
+</head>
+<body>
+    <script>
+        // 5、寄生式继承（可以理解为在原型式继承的基础上新增一些函数或属性）
+        // 问题
+        // 1、不能做到函数复用（和借用构造函数继承一样）
+        // 2、来自原型对象的所有属性被所有实例共享（和原型链继承一样）
+        let Father={
+            name:"quan",
+            do:["打游戏","刷抖音","等消息"]
+        }
+        // 实现拷贝的函数
+        function object(o){
+            function F() {}
+            F.prototype=o
+            return new F()//返回新实例
+        }
+        // 增强对象的函数
+        function other(original){
+            let clone=object(original)
+            clone.sayHi=function(){
+                console.log('Im '+clone.name)
+            }
+            return clone
+        }
+        let Son1=other(Father)
+        let Son2=other(Father)
+        console.log(Son1)          //F {sayHi: ƒ}
+        Son1.name="dd"             //这里是在实例上添加属性，以后访问的时候，直接就是访问对象的，直接屏蔽原型的同名属性
+        console.log(Son1)          //F {name: "dd", sayHi: ƒ}
+        Son1.sayHi()               //Im dd(直接用了实例属性)
+        Son2.sayHi()               //Im quan
+        console.log(Son1.sayHi===Son2.sayHi)  //false  证明问题一
+        Son2.do.push('看直播')
+        console.log(Father.do)     //["打游戏", "刷抖音", "等消息", "看直播"]
+        Son1.__proto__.name="DD"   //通过Son1修改name的值
+        console.log(Son2.name)     //通过Son2输出DD
+    </script>
+</body>
+</html>

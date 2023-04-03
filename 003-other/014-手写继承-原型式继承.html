@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写继承-原型式继承</title>
+</head>
+<body>
+    <script>
+        // 4、原型式继承（拷贝继承）
+        // 问题
+        // 来自原型对象的所有属性被所有实例共享（和原型链继承一样）
+        let Father={
+            name:"quan",
+            do:["打游戏","刷抖音","等消息"]
+        }
+        // 实现拷贝的函数
+        function object(o){
+            function F() {}
+            F.prototype=o
+            return new F()//返回新实例
+        }
+        let Son1=object(Father)
+        let Son2=object(Father)
+        // 这里可以不用上面的拷贝函数 用ES5的Object.create也差不多
+        // Son1=Object.create(Father)     //这里就是Son1以Father作为原型，也可以传null，就是没有原型
+        // Son2=Object.create(Father)
+        console.log(Son1)          //F {}
+        Son1.name="dd"             //这里是在实例上添加属性，以后访问的时候，直接就是访问对象的，直接屏蔽原型的同名属性
+        console.log(Son1)          //F {name: "dd"}
+        Son2.do.push('看直播')
+        console.log(Father.do)     //["打游戏", "刷抖音", "等消息", "看直播"]
+        Son1.__proto__.name="DD"   //通过Son1修改name的值
+        console.log(Son2.name)     //通过Son2输出DD
+    </script>
+</body>
+</html>

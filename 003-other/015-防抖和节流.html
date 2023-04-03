@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防抖和节流</title>
+    <style>
+        #quan{
+            margin: 100px auto;
+            width: 300px;
+            height: 300px;
+            background-color: skyblue;
+            text-align: center;
+            line-height: 300px;
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 防抖是控制次数，节流是控制频率 -->
+    <div id="quan"></div>
+    <script>
+        // 鼠标在盒子里移动就会让i++
+        let quan=document.getElementById('quan')
+        let i=0
+        // quan.addEventListener('mousemove',debounce_2(move,1000))//这个函数也是异步函数
+        quan.addEventListener('mousemove',throttle_2(move,1000))
+        // ++方法
+        function move(){
+            i++
+            quan.innerHTML=i
+        }
+        
+        // 防抖函数
+        // 非立即执行版
+        function debounce_1(func,wait){
+            let timer=null   //初始化，后面不会经过这里
+            return function(){
+                let context=this//这里的this，谁触发事件就是谁（#quan）
+                let args=arguments
+                if(timer) clearTimeout(timer)//如果一直触发就清除他前一次的定时器，因为定时器函数是异步的，这个时候还没执行
+                timer=setTimeout(()=>{//这里是异步执行的函数，一秒后才会执行
+                    func.apply(context,args)
+                },wait)
+            }
+        }
+        // 立即执行版
+        function debounce_2(func,wait){
+            let timer=null    //初始化，后面不会经过这里
+            let quan=null     //初始化，后面不会经过这里
+            return function(){
+                let context=this
+                let args=arguments
+                if(timer) clearTimeout(timer)
+                quan=!timer//一直在移动，就一为false，只有在停下的时候，进入异步函数，变为timer=null，下一次在移动的时候quan就会为true
+                timer=setTimeout(()=>{
+                    timer=null
+                },wait)
+                quan && func.apply(context,args)//一开始就直接执行一次
+            }
+        }
+
+        // 节流函数
+        // 时间戳版
+        function throttle_1(func,wait){
+            let pre_time=0     //初始化，后面不会经过这里
+            return function(){
+                let context=this
+                let args=arguments
+                let time=new Date()
+                if(time-pre_time>wait){//只有相差大于1000秒的时候才会让他进入加一
+                    func.apply(context,args)
+                    pre_time=time//下次的时间又以这次进入的时间戳为准
+                }
+            }
+        }
+        // 定时器版
+        function throttle_2(func,wait){
+            let timer=null    //初始化，后面不会经过这里
+            return function(){
+                let context=this
+                let args=arguments
+                if(!timer){
+                    timer=setTimeout(()=>{
+                        timer=null//只有在上一次加一执行完了，才会开启新的定时器
+                        func.apply(context,args)
+                    },wait)
+                }
+            }
+        }
+    </script>
+</body>
+</html>

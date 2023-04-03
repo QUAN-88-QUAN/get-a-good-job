@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>冒泡排序</title>
+</head>
+<body>
+    <script>
+        let a=[5,8,3,9,1]
+        // 两种方法都是实现自小到大的排序，大多数使用的是方法二，因为方法二才算真正意义上的冒泡（最大的数冒泡上去，也就是放到数组的最后）
+        // 方法一的话，先找出最小的放到数组的前面（更像变异的选择排序，这里和冒泡排序很像就做个对比，有什么问题，不吝赐教）
+        // 方法一   第一轮找出最小的1，放在最前面    [1,8,5,9,3]
+        // for(let i=0;i<a.length-1;i++){
+        //     for(let j=i+1;j<a.length;j++){
+        //         if(a[i]>a[j]){
+        //             let temp=a[i]
+        //             a[i]=a[j]
+        //             a[j]=temp
+        //         }
+        //     }
+        //     console.log(a)
+        // }
+        // 方法二   第一轮找出最大的9，放在最后面    [5,3,8,1,9]
+        for(let i=0;i<a.length-1;i++){
+            for(let j=0;j<a.length-1-i;j++){
+                if(a[j]>a[j+1]){
+                    let temp=a[j+1]
+                    a[j+1]=a[j]
+                    a[j]=temp
+                }
+            }
+            console.log(a)
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实现一个倒计时效果</title>
+    <style>
+        div{
+            width: 600px;
+            text-align: center;
+            margin: 0 auto;
+        }
+        span{
+            display: inline-block;
+            height: 40px;
+            text-align: center;
+            background-color: #333;
+            font-size: 20px;
+            color: #ffffff;
+            line-height: 40px;
+            padding: 0 20px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <span class="day">1</span>
+        <span class="hour">2</span>
+        <span class="minute">3</span>
+        <span class="second">4</span>
+    </div>
+    <script>
+        // 获取元素
+        let day=document.querySelector('.day')
+        let hour=document.querySelector('.hour')
+        let minute=document.querySelector('.minute')
+        let second=document.querySelector('.second')
+        // 输入的时间   
+        // 加号代表转换为毫秒  后面加getTime(),valueOf()也可以   或者前面加Date.parse()   Date.UTC格式不一样是Date.UTC(2099,5,19)
+        let inputTime=+new Date('2099-5-20 00:00:00')
+        // 一开始就得计算一次
+        getTime()
+        // 每秒计算一次
+        setInterval(getTime,1000)
+        // 计时函数
+        function getTime(){
+            // console.log(inputTime)
+            let newTime=+new Date()
+            let time=(inputTime-newTime)/1000
+            // 天
+            let d=parseInt(time/60/60/24)
+            day.innerHTML=d+'天'
+            // 小时
+            let h=parseInt(time/60/60%24)
+            // 不够10就加0
+            h=h>10?h:'0'+h
+            hour.innerHTML=h+'时'
+            // 分钟
+            let m=parseInt(time/60%60)
+            m=m>10?m:'0'+m
+            minute.innerHTML=m+'分'
+            // 秒
+            let s=parseInt(time%60)
+            s=s>10?s:'0'+s
+            second.innerHTML=s+"秒"
+        }
+    </script>
+</body>
+</html>

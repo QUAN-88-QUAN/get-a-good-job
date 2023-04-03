@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快速排序</title>
+</head>
+<body>
+    <script>
+        // let arr=[4,2,7,44,1,0,3,99]
+        // let arr=[4,2,7,44,33,0,3,99]
+        let arr=[4,2,7,44,0,3,99]
+        // 方法一 这相当于改进后的快速排序,更好理解,但是效率没有传统的快排效率高(因为这里调用了splice,还新建了两个数组)
+        // function quickSort(arr){
+        //     if(arr.length<=1) return arr
+        //     let midIndex=Math.floor(arr.length/2)
+        //     // 取到中间数
+        //     let midNub=arr.splice(midIndex,1)[0]
+        //     let left=[]
+        //     let right=[]
+        //     for(let i=0;i<arr.length;i++){
+        //         // 大于中间数放左边，小于放右边
+        //         if(arr[i]<=midNub){
+        //             left.push(arr[i])
+        //         }else{
+        //             right.push(arr[i])
+        //         }
+        //     }
+        //     // 递归   连接数组，记得把中间数加回去，concat可以连接一个，或者多个数组
+        //     return quickSort(left).concat([midNub],quickSort(right))
+        // }
+        // console.log(quickSort(arr))
+
+        // 方法二 传统的快排
+        function quickSort(arr,start,end){
+            if(start>=end){//只有一个数的数组，直接返回
+                return arr
+            }
+            let i=start,j=end,base=arr[start]
+            while(i<j){
+                while(i<j && arr[j]>=base){//这里如果没有找到比base小的数，就继续找
+                    j--
+                }
+                while(i<j && arr[i]<=base){//这里如果没有找到比base大的数，就继续找
+                    i++
+                }
+                if(i<j){//只有在i<j的时候才交换，不然不交换
+                    let temp=arr[i]
+                    arr[i]=arr[j]
+                    arr[j]=temp
+                }
+                console.log(arr)
+            }
+            // j从后面--过来，在与i相等的时候，后面的都是比base大的了
+            // 所以把这里这个位置给base,这样base左边的数都比base小,右边的数都比base大
+            //原来这个位置的数,反正比base小,直接与base交换
+            arr[start]=arr[i]
+            arr[i]=base
+            // 递归继续排这两个
+            quickSort(arr,start,i-1)
+            quickSort(arr,1+i,end)
+            return arr
+        }
+        console.log(quickSort(arr,0,6))
+
+        // 方法三   和方法二很像，但是是另外一种思路
+        // function quickSort(arr,start,end){
+        //     if(start>=end){
+        //         return arr
+        //     }
+        //     let i=start,j=end,base=arr[start]
+        //     while(i<j){
+        //         while(i<j && arr[j]>=base){
+        //             j--
+        //         }
+        //         // 找到了比base小的数就直接交换，交换方式和方法二也不一样，这里是base也要加入交换
+        //         // 方法二中，中间值base只在最后的时候加上去，而这里，base一直在换，直到i=j的时候arr[i]=base
+        //         if(i<j){
+        //             arr[i++]=arr[j]//这里交换的是base和比base小的数，之后i++从start后一位找比base大的数
+        //         }
+        //         while(i<j && arr[i]<=base){//找比base大的数
+        //             i++
+        //         }
+        //         // 找到了就和交换base的位置，之后j--重复上面的操作
+        //         if(i<j){
+        //             arr[j--]=arr[i]
+        //         }
+        //     }
+        //     arr[i]=base//这样换也可以使比base小的数在左边，比base大的数在右边，和方法二思路很像，方法不一样
+        //     //递归继续排这两个
+        //     quickSort(arr,start,i-1)
+        //     quickSort(arr,1+i,end)
+        //     return arr
+        // }
+        // console.log(quickSort(arr,0,6))
+
+        // 总结
+        // 方法二和方法三
+        // 方法二找的时候总是成对成对的找，找到一对才交换，不然就利用(j从后面--过来，在与i相等的时候，后面的都是比base大的了)与base交换来控制位置的变化,达到base左边的数都比base小,右边的数都比base大
+        // 方法三找的时候是一个一个的找，找一个就换一个，最后用arr[i]=base来(一个一个的交换在i=j之前,符合条件的都已经交换好了)达到base左边的数都比base小,右边的数都比base大
+        // 个人总结，有什么问题，欢迎指出
+    </script>
+</body>
+</html>

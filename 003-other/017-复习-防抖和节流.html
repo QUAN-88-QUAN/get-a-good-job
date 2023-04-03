@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>复习-防抖和节流</title>
+    <style>
+        .quan{
+            margin: 100px auto;
+            width: 300px;
+            height: 300px;
+            background-color: skyblue;
+            line-height: 300px;
+            text-align: center;
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 总之，记住。防抖控制次数，节流控制频率 -->
+    <div class="quan"></div>
+    <script>
+        let quan=document.querySelector('.quan')
+        let i=0
+        // quan.addEventListener('mousemove',debounce(move,1000))
+        quan.addEventListener('mousemove',throttle(move,1000))
+        function move(){
+            i++
+            quan.innerHTML=i
+        }
+        // function debounce(func,wait){
+        //     let timer=null
+        //     return function(){
+        //         let context=this
+        //         let args=arguments
+        //         if(timer) clearTimeout(timer)
+        //         timer=setTimeout(()=>{
+        //             func.apply(context,args)
+        //         },wait)
+        //     }
+        // }
+        // function debounce(func,wait){
+        //     let timer=null
+        //     let qqq=null
+        //     return function(){
+        //         let context=this
+        //         let args=arguments
+        //         if(timer) clearTimeout(timer)
+        //         qqq=!timer
+        //         timer=setTimeout(()=>{
+        //             timer=null
+        //         },wait)
+        //         qqq && func.apply(context,args)
+        //     }
+        // }
+        // 节流
+        // function throttle(func,wait){
+        //     let pre_time=0
+        //     return function(){
+        //         let context=this
+        //         let args=arguments
+        //         let time=new Date()
+        //         if(time-pre_time>1000){
+        //             func.apply(context,args)
+        //             pre_time=time
+        //         }
+        //     }
+        // }
+        function throttle(func,wait){
+            let timer=null
+            return function(){
+                let context=this
+                let args=arguments
+                if(!timer){
+                    timer=setTimeout(()=>{
+                    func.apply(context,args)
+                        timer=null
+                    },wait)
+                }
+            }
+        }
+    </script>
+</body>
+</html>

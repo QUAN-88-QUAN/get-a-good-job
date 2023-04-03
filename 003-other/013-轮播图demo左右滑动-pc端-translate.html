@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轮播图demo左右滑动-pc端-translate</title>
+    <style>
+        /* 轮播图 */
+        /* 去掉默认样式 */
+        li,i,ul{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .swiper{
+            margin: 100px auto;
+            overflow: hidden;
+            width: 1226px;
+            height: 460px;
+            position: relative;
+        }
+        .swiper ul{
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 460px;
+            width: 500%;
+        }
+        .swiper ul li{
+            width: 1226px;
+            height: 460px;
+            float: left;
+        }
+        .swiper img{
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        /* 左右按钮 */
+        .swiper span{
+            font-size: 25px;
+            display: block;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            color: #ccc;
+            margin-top: -25px;
+            position: absolute;
+            top: 50%;
+            /* 先隐藏，在鼠标进入轮播图区域的时候显示 */
+            display: none;
+            cursor: pointer;
+        }
+        .swiper .button-right{
+            right: 0;
+        }
+        .swiper .button-left{
+            left: 0;
+        }
+        .swiper span:hover{
+            background-color: #e0e0e0;
+            color: black;
+        }
+        /* 小圆圈 */
+        .bullets{
+            position: absolute;
+            bottom: 30px;
+            right: 60px;
+            width: 300px;
+            height: 20px;
+            text-align: right;
+        }
+        .bullets i{
+            display: inline-block;
+            height: 10px;
+            width: 10px;
+            border: 3px solid #cccccc;
+            background-color: #e0e0e0;
+            border-radius: 50%;
+            margin: 0 3px;
+        }
+        .bullets .active{
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="swiper">
+        <!-- 轮播的图片 -->
+        <ul></ul>
+        <!-- 左右按钮 -->
+        <span class="button-left">&lt;</span>
+        <span class="button-right">&gt;</span>
+        <!-- 小圆圈 -->
+        <div class="bullets"></div>
+    </div>
+    <script>
+        // 定义一些中间值
+        let num=0//记录图片滚动,滚动一次就+1,或者点击小圈变到相应的index
+        let circle=0//记录小圈变化,滚动一次就+1,或者点击变到相应的index
+        let flag=true//节流阀
+
+        // 获取元素
+        let swiper=document.querySelector('.swiper')
+        let ul=document.querySelector('.swiper ul')
+        let bullets=document.querySelector('.bullets')
+        let button_left=document.querySelector('.button-left')
+        let button_right=document.querySelector('.button-right')
+
+        // 动态添加图片和小圈
+        let arr=['./img/main-back-1.jpg','./img/main-back-2.jpg','./img/main-back-3.jpg','./img/main-back-4.jpg']
+        let html=''
+        for(let i=0;i<arr.length;i++){
+            html+='<li><a><img src='+arr[i]+'></img></a></li>'
+            // 这里生成小圈
+            let ii=document.createElement('i')
+            ii.setAttribute('index',i)
+            bullets.appendChild(ii)
+        }
+        ul.innerHTML=html
+
+        // 克隆第一张图片放到最后这是为了实现无缝滚动效果
+        let last_li=ul.children[0].cloneNode(true)
+        ul.appendChild(last_li)
+        // 默认第一个小圈是active
+        bullets.children[0].className='active'
+
+
+        // 控制左右按钮的显示与隐藏
+        swiper.addEventListener('mouseenter',function(){
+            button_left.style.display="block"
+            button_right.style.display="block"
+            // 鼠标进入的时候，不轮播
+            clearInterval(timer)
+            timer=null
+        })
+        swiper.addEventListener('mouseleave',function(){
+            button_left.style.display="none"
+            button_right.style.display="none"
+            // 出去的时候继续轮播
+            timer=setInterval(function(){
+                button_right.click()
+            },3000)
+        })
+
+        // 节流操作，在每一次过渡完成之后，才能进行下一次操作
+        ul.addEventListener('transitionend',function(){
+            flag=true
+        })
+
+        // 点击右边按钮
+        button_right.addEventListener('click',function(){
+            if(flag){
+                //节流
+                flag=false
+                // 如果到了最后一张图片，就立马回到一开始的第一张，这两张图片一样
+                if(num==ul.children.length-1){
+                    num=0
+                    ul.style.transition='all 0s'
+                    ul.style.transform='translateX('+swiper.offsetWidth*-num+'px)'
+                    // 改变了之后必须得重绘，不然没效果(过渡就会被后面的盖过)
+                    ul.offsetWidth
+                }
+                num++
+                // 小圈改变
+                circle++
+                ul.style.transition='all 1s ease'
+                ul.style.transform='translateX('+swiper.offsetWidth*-num+'px)'
+                if(circle==bullets.children.length) circle=0
+                circleChange()
+            }
+        })
+
+        // 点击右边的按钮
+        button_left.addEventListener('click',function(){
+            if(flag){
+                //节流
+                flag=false
+                // 和右移差不多
+                if(num==0){
+                    num=ul.children.length-1
+                    ul.style.transition='all 0s'
+                    // 按理说这里会出发一次回流啊，那就必定触发重绘？？？？
+                    ul.style.transform='translateX('+swiper.offsetWidth*-num+'px)'
+                    // 改变了之后必须得重绘，不然没效果(过渡就会被后面的盖过)
+                    ul.offsetWidth
+                }
+                num--
+                ul.style.transition='all 1s ease'
+                ul.style.transform='translateX('+swiper.offsetWidth*-num+'px)'
+                // 小圈改变
+                circle--
+                if(circle<0) circle=bullets.children.length-1
+                circleChange()
+            }
+        })
+
+        // 点击小圈的时候也可以控制播放（这里可以在生成小圈的时候直接加监听，也可以在这里）
+        for(let i=0;i<bullets.children.length;i++){
+            bullets.children[i].addEventListener('click',function(){
+                if(flag){
+                    // 节流
+                    flag=false
+                    // 得到小圈的index
+                    circle=this.getAttribute('index')
+                    // 调用下面定义好的函数
+                    circleChange()
+                    num=circle
+                    ul.style.transform='translateX('+swiper.offsetWidth*-num+'px)'
+                }
+            })
+        }
+
+        // 小圈的改变
+        function circleChange(){
+            for(let i=0;i<bullets.children.length;i++){
+                bullets.children[i].className=''
+            }
+            bullets.children[circle].className='active'
+        }
+
+        // 自动轮播
+        let timer=setInterval(function(){
+            button_right.click()
+        },3000)
+    </script>
+</body>
+</html>

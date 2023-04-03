@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用js仿写一个原生下拉列表框</title>
+    <style>
+        li,ul{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .btn{
+            position: relative;
+            display: block;
+            height: 40px;
+        }
+        .btn,.box{
+            margin: 0 auto;
+            width: 100px;
+            text-align: center;
+            background-color: skyblue;
+            line-height: 40px;
+            user-select: none;
+        }
+        .box{
+           display: none;
+        }
+        .box li{
+            border-top: 1px solid #eee;
+            /* 高度变得很小的时候，字会超出来，影响视觉效果 */
+            overflow: hidden;
+            /* height: 40px; */
+        }
+        .box li:hover{
+            background-color: #ffffff;
+            color: black;
+        }
+        /* 右侧小图标 */
+        .btn img{ 
+            position: absolute;
+            right: 5px;
+            top: 12px;
+            width: 16px;
+            height: 16px;
+            /* 旋转的过渡效果 */
+            transition: all 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <span class="btn">请选择<img class="icon" src="./img/top.png"></img></span>
+    <div class="box">
+        <ul>
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>JAVASCRIPT</li>
+            <li>C</li>
+            <li>C++</li>
+            <li>C#</li>
+        </ul>
+    </div>
+    <script>
+        // 获取元素
+        let btn=document.querySelector('.btn')
+        let box=document.querySelector('.box')
+        let lis=document.querySelectorAll('li')
+        let icon=document.querySelector('.icon')
+        // 一开始进来就设置   这里不设置一下，第一次进判断的时候box.style.display为空   不知道为什么，欢迎指正
+        box.style.display='none'
+        // 下拉
+        function slideDown(){
+            let startHeight=0,endHeight=40
+            let timer=setInterval(function(){
+                startHeight++
+                lis.forEach(item => {
+                    item.style.height=startHeight+'px'
+                });
+                // 相等了就去掉定时器
+                if(startHeight>=endHeight){
+                    clearInterval(timer)
+                }
+            },10)
+            // 延迟才有动画效果
+            setTimeout(function(){
+                box.style.display='block'
+            },100)
+        }
+        // 上拉
+        function slideUp(){
+            let startHeight=40,endHeight=0
+            let timer=setInterval(function(){
+                startHeight--
+                lis.forEach(item => {
+                    item.style.height=startHeight+'px'
+                });
+                if(startHeight<=endHeight){
+                    clearInterval(timer)
+                }
+            },10)
+            // 延迟才有动画效果
+            setTimeout(function(){
+                box.style.display='none'
+            },350)
+        }
+        // console.log(box.style.display)//不加上面56行代码的时候，这里一开始输出空
+        btn.addEventListener('click',function(){
+            if(box.style.display=='none'){
+                icon.style.transform='rotate(180deg)'
+                slideDown()
+            }else{
+                icon.style.transform='rotate(0deg)'
+                slideUp()
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双向数据绑定原理</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="text">{{text}}
+    </div>
+    <script>
+        function compile(node,vm){
+            // console.log(node)//每个节点
+            var reg=/\{\{(.*)\}\}/
+            // console.log(node.nodeType)
+            // 如果是元素节点
+            if(node.nodeType===1){
+                var attr=node.attributes
+                // console.log(attr)//元素的所有属性
+                for(let i=0;i<attr.length;i++){
+                    if(attr[i].nodeName=='v-model'){
+                        var name=attr[i].nodeValue
+                        // console.log(name)//text
+                        node.addEventListener('input',function(e){
+                            // console.log(e.target.value)//input里面的值
+                            vm.data[name]=e.target.value
+                            // console.log(vm)
+                        })
+                        node.value=vm.data[name] //将data中的值赋予给该node
+                        // node.removeAttribute('v-model')  //去不去除都没关系，因为都已经绑定好了
+                    }
+                }
+            }
+            // 如果是文本节点
+            if(node.nodeType===3){
+                if(reg.test(node.nodeValue)){
+                    var name=RegExp.$1  //获取到匹配的字符串
+                    // console.log(name)//text
+                    name=name.trim()
+                    // node.nodeValue=vm.data[name]//将data中的值赋予给该node   没有效果    因为没有监听text的改变
+                    new Watcher(vm,node,name) //绑定一个订阅者
+                }
+            }
+        }
+        // 在向碎片化文档中添加节点时，每个节点都处理一下
+        function nodeToFragment(node,vm){
+            var fragment=document.createDocumentFragment()
+            var child
+            // console.log(node)//app这个节点
+            while (child=node.firstChild) {//这里是赋值
+                compile(child,vm)
+                // 还有一个很重要的特性是，如果使用appendChid方法将原dom树中的节点添加到DocumentFragment中时，会删除原来的节点
+                // 我的碎片化文档是将子节点都劫持了过来，而我的id为app的div内已经没有内容了。
+                // 同时要主要我while的判断条件。判断是否有子节点，因为我每次appendChild都把node中的第一个子节点劫持走了，node中就会少一个，直到没有的时候，child也就变成了undefined，也就终止了循环。
+                fragment.appendChild(child)
+            }
+            return fragment
+        }
+        // Watcher监听者
+        function Watcher(vm,node,name){
+            Dep.target=this
+            // console.log(this)    //就是调用它的text文本节点
+
+            this.vm=vm
+            this.node=node
+            this.name=name
+            // console.log(name)    //text
+
+            this.update()//没改变之前也要更新文本的值
+
+            Dep.target=null
+        }
+        Watcher.prototype={
+            update(){
+                this.get()
+                this.node.nodeValue=this.value  
+            },
+            get(){
+                this.value=this.vm.data[this.name]
+                // console.log(this.value)
+            }
+        }
+        // Dep的构造函数
+        function Dep(){
+            this.subs=[]
+            // console.log(this)
+        }
+        Dep.prototype={
+            addSub(sub){
+                this.subs.push(sub)
+                // console.log(this)//就是Dep这个对象
+            },
+            notify(){
+                this.subs.forEach(function(sub){
+                    sub.update()
+                    // console.log(sub)
+                })
+            }
+        }
+        // 实现一个响应式的监听属性的函数，一旦又赋新值就发生变化
+        function defineReactive(obj,key,val){   //key就是text
+            var dep=new Dep()
+            // console.log(dep)
+            Object.defineProperty(obj,key,{
+                get:function(){
+                    // 这里一开始会触发两次，输入框还有文本节点都需要得到key的值所以一开始为null，在给文本节点赋值的时候Dep.target就会变成监听者    
+                    // Dep.target变为监听者，恰恰在他等于监听者的时候执行update函数，又要执行get函数，get函数就会从vm里面拿值，会经过Object.defineProperty里面的get然后subs里面就有值了
+                    // 等input输入的时候，输入框走set，set里面的notify()，触发sub.update(),update()触发get(),get会从vm里面拿值，触发Object.defineProperty里面的get
+                    // 但是不会经过Watcher构造函数Dep.target一直为null，只有在一开始的时候，绑定监听者的时候Dep.target会变为Watcher
+                    console.log(Dep.target)    
+                    if(Dep.target){
+                        // console.log(Dep.target)//就是上面watcher的实例
+                        dep.addSub(Dep.target)
+                    }
+                    // console.log(val)
+                    return val
+                },
+                set:function(newVal){
+                    if(newVal===val){
+                        return
+                    }
+                    val=newVal
+                    // console.log('新值-'+val)
+                    dep.notify()
+                }
+            })
+        }
+        //观察者  对于一个实例  每一个属性值都进行观察
+        function observe(obj,vm){
+            // console.log(obj)//{text:'QUAN'}
+            // console.log(vm)//Vue这个对象
+            for(let key of Object.keys(obj)){
+                // console.log(key)//text
+                // console.log(obj[key])//"QUAN"
+                defineReactive(obj,key,obj[key])
+            }
+        }
+        //构造函数  观察data中的所有属性值  注意增添了observe
+        function Vue(option){
+            this.data=option.data
+            // console.log(this.data)//{text:'QUAN'}
+            observe(this.data,this)
+            var id=option.el
+            var dom=nodeToFragment(document.getElementById(id),this)
+            // console.log(id)//app
+            // console.log(this)//Vue这个对象
+            // 处理完所有节点后，重新把内容加回去
+            document.getElementById(id).appendChild(dom)
+        }
+        var vm=new Vue({
+            el:'app',
+            data:{
+                text:'QUAN',
+            }
+        })
+    </script>
+</body>
+</html>

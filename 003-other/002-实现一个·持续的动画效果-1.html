@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS实现可持续动画</title>
+    <style>
+        .quan{
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background-color: skyblue;
+            /* 名字 花费的时间 速度曲线 播放次数 */
+            animation: wei 10s ease infinite;
+        }
+        @keyframes wei{
+            0% {top: 0px;left: 0px;} 
+            25% {background-color: red;top: 50px;left: 50px;}
+            50% {background-color: green;top: 100px;left: 100px;}
+            75% {background-color: blue;top: 200px;left: 200px;}
+            100% {background-color: black;top: 300px;left: 300px;}
+        }
+        .box1{
+            position: absolute;
+            top: 300px;
+            left: 100px;
+            width: 200px;
+            height: 200px;
+            background-color: skyblue;
+            /* alternate是否应该轮流反向播放动画 */
+            animation: box1 4s ease infinite alternate;
+        }
+        @keyframes box1{
+            from{
+
+            }
+            to{
+                width: 400px;
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="quan"></div>
+    <div class="box1"></div>
+</body>
+</html>

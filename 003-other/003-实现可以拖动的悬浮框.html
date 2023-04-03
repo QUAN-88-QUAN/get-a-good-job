@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实现可以拖动的悬浮框</title>
+    <style>
+        body{
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+        .btn{
+            width: 200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .main{
+            /* 因为下面要用到所以绝对定位 */
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%,0);
+            width: 300px;
+            height: 300px;
+            background-color: skyblue;
+            text-align: center;
+            line-height: 300px;
+            display: none;
+            z-index: 100;
+        }
+        .close-btn{
+            position: absolute;
+            right: -20px;
+            top: -20px;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            border-radius: 50%;
+            background-color: #ccc;
+            color: #ffffff;
+        }
+        .mask{
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, .3);
+            display: none;
+            z-index: 99;
+        }
+    </style>
+</head>
+<body>
+    <div class="btn">点击出现悬浮框</div>
+    <div class="main">
+        <span>这就是出现的悬浮框</span>
+        <span class="close-btn">关闭</span>
+    </div>
+    <div class="mask"></div>
+    <script>
+        // 获取元素
+        let btn=document.querySelector('.btn')
+        let main=document.querySelector('.main')
+        let closeBtn=document.querySelector('.close-btn')
+        let mask=document.querySelector('.mask')
+        // 点击显示悬浮框和mask蒙层
+        btn.addEventListener('click',function(){
+            main.style.display='block'
+            mask.style.display='block'
+        })
+        // 点击隐藏悬浮框和mask蒙层
+        closeBtn.addEventListener('click',function(){
+            main.style.display='none'
+            mask.style.display='none'
+        })
+        // 鼠标按下
+        main.addEventListener('mousedown',function(event){
+            // 获得鼠标在盒子里的坐标
+            // console.log(event.pageX)
+            // console.log(main.offsetLeft)
+            let x=event.pageX-main.offsetLeft
+            let y=event.pageY-main.offsetTop
+            document.addEventListener('mousemove',move)
+            // 也可以吧document换成main都行
+            function move(event){
+                // 盒子距离body的距离=鼠标距离body的距离-鼠标距离盒子的距离
+                main.style.left=event.pageX-x+'px'
+                main.style.top=event.pageY-y+'px'
+            }
+            // 鼠标抬起
+            document.addEventListener('mouseup',function(){
+                document.removeEventListener('mousemove',move)
+            })
+        })
+    </script>
+</body>
+</html>

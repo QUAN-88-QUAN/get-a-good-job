@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS实现可持续的动画</title>
+    <style>
+        .quan{
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            background-color: skyblue;
+        }
+    </style>
+</head>
+<body>
+    <div id="box1">点击开始动画(方式1)</div>
+    <div id="box2">点击开始动画(方式2)</div>
+    <div class="quan"></div>
+    <script>
+        // 用requestAnimationFrame的好处
+        // 1、浏览器可以优化并行的动画动作，更合理的重新排列动作序列，并把能够合并的动作放在一个渲染周期内完成，从而呈现出更流畅的动画效果
+        // 2、一旦页面不处于浏览器的当前标签，就会自动停止刷新。这就节省了CPU、GPU和电力
+        
+        // cancelAnimationFrame方法用于取消重绘
+        // -------------------------------------------------------------
+        // 检测是否支持这个API，不支持就自己部署
+        window.requestAnimFrame = (function(){
+            return  window.requestAnimationFrame       || 
+                    window.webkitRequestAnimationFrame || 
+                    window.mozRequestAnimationFrame    || 
+                    window.oRequestAnimationFrame      || 
+                    window.msRequestAnimationFrame     || 
+                    function( callback ){
+                        /*按照1秒钟60次（大约每16.7毫秒一次），来模拟requestAnimationFrame。*/
+                        window.setTimeout(callback, 1000 / 60);
+                    };
+        })();
+        // 获取元素
+        let quan = document.querySelector('.quan')
+        let box1 = document.getElementById('box1')
+        let box2 = document.getElementById('box2')
+        let flag = true
+        let left=0
+        // 使用定时器
+        box1.addEventListener('click',function(){
+            setInterval(animation,100)
+        })
+        // 使用requestAnimationFrame
+        box2.addEventListener('click',function animloop(){
+            animation()
+            requestAnimationFrame(animloop)
+        })
+        // 执行动画的函数
+        function animation(){
+            // console.log(left)
+            left==0 ? flag=true : left==100 ? flag=false : ''
+            flag ? quan.style.left = `${left++}px` : quan.style.left = `${left--}px`
+        }
+    </script>
+</body>
+</html>

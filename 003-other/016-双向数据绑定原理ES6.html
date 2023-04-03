@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双向数据绑定原理ES6</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="message">{{message}}
+    </div>
+    <script>
+        class Vue{
+            constructor(options){
+                // 1.保存数据
+                this.$options=options
+                this.$data=options.data
+                this.$el=options.el
+                // console.log(this.$data)
+                // 2.将data添加到响应式系统中
+                new Observer(this.$data)
+                // 3.代理this.$data的数据
+                // 作用----我们的代码可以与代理交互，而不是直接访问目标对象
+                // 不想加可以直接去掉，把this.vm后加一个.$data
+                Object.keys(this.$data).forEach(key=>{
+                    // console.log(key)
+                    // this._proxy(key)
+                })
+                // 4.处理el
+                new Compiler(this.$el,this)
+            }
+            _proxy(key){
+                // console.log(this.$data[key])  //quan/{name:'铨',age:'21'}
+                // console.log(key)//message/info
+                // console.log(this)  //Vue
+                Object.defineProperty(this,key,{//message/info数据的改变都是通过这里
+                    configurable:true,
+                    enumerable:true,
+                    set(newValue){
+                        this.$data[key]=newValue
+                    },
+                    get(){
+                        return this.$data[key]
+                    }
+                })
+            }
+        }
+        class Observer{
+            constructor(data){
+                this.data=data
+                // console.log(this.vm)
+                // console.log(this.data)
+                Object.keys(data).forEach(key=>{//Object.key得到的是一个数组
+                    // console.log(key)
+                    this.defineReactive(this.data,key,data[key])
+                })
+            }
+            defineReactive(data,key,val){
+                // console.log(data)//Vue里面的data数据
+                // console.log(key)
+                // console.log(val)
+                const dep=new Dep()
+                Object.defineProperty(data,key,{
+                    enumerable:true,
+                    configurable:true,
+                    get(){
+                        if(Dep.target){
+                            dep.addSub(Dep.target)
+                        }
+                        return val
+                    },
+                    set(newValue){
+                        if(newValue===val){
+                            return
+                        }
+                        val=newValue
+                        dep.notify()
+                    }
+                })
+            }
+        }
+        class Dep{
+            constructor(){
+                this.subs=[]
+            }
+            addSub(sub){
+                this.subs.push(sub)
+            }
+            notify(){
+                this.subs.forEach(sub=>{
+                    sub.update()
+                })
+            }
+        }
+        class Watcher{
+            constructor(node,name,vm){
+                this.node=node
+                this.name=name
+                this.vm=vm
+                Dep.target=this
+                this.update()
+                Dep.target=null
+            }
+            update(){
+                this.node.nodeValue=this.vm.$data[this.name]
+                // this.node.nodeValue=this.vm[this.name]
+            }
+        }
+        const reg=/\{\{(.*)\}\}/
+        class Compiler{
+            constructor(el,vm){
+                this.el=document.querySelector(el)
+                this.vm=vm
+
+                this.frag=this._createFragment()
+                // 加回节点
+                this.el.appendChild(this.frag)
+            }
+            _createFragment(){
+                const frag=document.createDocumentFragment()
+                let child
+                while (child=this.el.firstChild) {
+                    this._compile(child)
+                    frag.appendChild(child)
+                }
+                return frag
+            }
+            _compile(node){
+                if(node.nodeType===1){
+                    const attrs=node.attributes
+                    // console.log(attrs)
+                    if(attrs.hasOwnProperty('v-model')){
+                        var name=attrs['v-model'].nodeValue
+                        // console.log(name)
+                    }
+                    node.addEventListener('input',e=>{
+                        this.vm.$data[name]=e.target.value
+                        // this.vm[name]=e.target.value
+                    })
+                    node.value=this.vm.$data[name]
+                    // node.value=this.vm[name]
+                }
+                if(node.nodeType===3){
+                    if(reg.test(node.nodeValue)){
+                        const name=RegExp.$1.trim()
+                        new Watcher(node,name,this.vm)
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        const app=new Vue({
+            el:'#app',
+            data:{
+                message:'quan',
+                info:{
+                    name:'铨',
+                    age:'21'
+                }
+            }
+        })
+    </script>
+</body>
+</html>

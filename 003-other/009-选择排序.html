@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快速排序</title>
+</head>
+<body>
+    <script>
+        let arr=[6,3,7,5,4,1]
+        let minIndex=0
+        for(let i=0;i<arr.length-1;i++){
+            minIndex=i//随便赋一个最小值的序号
+            for(let j=i+1;j<arr.length;j++){//在这里如果有一个值比定义的最小值还小，最小值序号就等于这个值的序号，如此循环，直到找到最小的
+                if(arr[j]<arr[minIndex]){
+                    minIndex=j
+                }
+            }
+            let temp=arr[i]
+            arr[i]=arr[minIndex]//把找到的最小值放到最外层循环每次开始的位置
+            arr[minIndex]=temp
+            console.log(arr)
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写继承-ES6继承</title>
+</head>
+<body>
+    <script>
+        // 7、ES6继承
+        // 实际也是只是一个语法糖
+        class Father{
+            constructor(sex){
+                this.name="quan"
+                this.do=["打游戏","刷抖音","等消息"]
+                this.sex=sex
+            }
+            sayHi(){
+                console.log('Im '+this.name)
+            }
+            saySex(){
+                console.log('Im '+this.sex)
+            }
+        }
+        class Son extends Father{
+            constructor(age,sex){
+                // 利用super 调用父类的构造函数
+                // super 必须在子类this之前调用
+                super(sex)  
+                this.age=age
+            }
+            sayAge(){
+                console.log('Im '+this.age)
+            }
+        }
+        let instance1=new Son(21,'男')   //可以传递参数到超类型构造函数
+        console.log(instance1.age)       // 21
+        console.log(instance1.name)      // quan
+        console.log(instance1.sex)       // 男
+        instance1.sayHi()                // Im quan
+        instance1.sayAge()               // Im 21
+        let instance2=new Son(18,'女')
+        instance2.sayAge()               // Im 18
+        console.log(instance2.sex)       // 女
+        instance2.do.push("看直播")
+        console.log(instance1.do)        // ["打游戏","刷抖音","等消息"]
+        console.log(instance2.do)        // ["打游戏","刷抖音","等消息","看直播"]\
+    </script>
+</body>
+</html>

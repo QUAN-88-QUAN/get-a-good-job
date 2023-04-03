@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写继承-组合继承</title>
+</head>
+<body>
+    <script>
+        // 3、组合继承
+        // 结合了原型链继承和借用构造函数继承的优点
+        // 1、组合继承的问题    
+        // 第一次调用Father会在Son.prototype得到三个属性name，do，sex(里面应该为undefined)
+        // 第二次调用Father在新对象创建了实例属性name，do，sex(都有值)通过实例属性屏蔽了原型中的同名属性
+        function Father(sex){
+            this.name="quan"
+            this.do=["打游戏","刷抖音","等消息"]
+            this.sex=sex
+        }
+        Father.prototype.sayHi=function(){
+            console.log('Im '+this.name)
+        }
+        function Son(age,sex){
+            // 在子类型构造函数的内部，调用超类型构造函数（核心思想）这里还可以传递参数了
+            Father.call(this,sex)     // 第二次调用Father
+            this.age=age              // 写下面好一些，不然如果父类有同样的，会被覆盖
+        }
+        console.log(Son.prototype.constructor)       //还没替换原型之前指向Son
+        // 子类的prototype为父类的实例（核心思想）
+        Son.prototype=new Father()    // 第一次调用Father
+        console.log(Son.prototype.constructor)       //替换原型之后指向Father
+        Son.prototype.constructor=Son                //替换回来
+        Son.prototype.sayAge=function(){
+            console.log('Im '+this.age)
+        }
+        let instance1=new Son(21,'男')   //可以传递参数到超类型构造函数
+        console.log(instance1.age)       // 21
+        console.log(instance1.name)      // quan
+        console.log(instance1.sex)       // 男
+        instance1.sayHi()                // Im quan
+        instance1.sayAge()               // Im 21
+        let instance2=new Son(18,'女')
+        instance2.sayAge()               // Im 18
+        console.log(instance2.sex)       // 女
+        instance2.do.push("看直播")
+        console.log(instance1.do)        // ["打游戏","刷抖音","等消息"]
+        console.log(instance2.do)        // ["打游戏","刷抖音","等消息","看直播"]
+    </script>
+</body>
+</html>

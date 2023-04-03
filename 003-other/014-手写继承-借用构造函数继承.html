@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写继承-借用构造函数继承</title>
+</head>
+<body>
+    <script>
+        // 2、借用构造函数继承
+        function Father(sex){
+            this.name="quan"
+            this.do=["打游戏","刷抖音","等消息"]
+            this.sex=sex
+            // 1、借用构造函数继承的问题------------方法只能在构造函数中定义，函数复用无从谈起
+            this.sayHi=function(){
+                console.log('Im '+this.name)
+            }
+            this.saySex=function(){
+                console.log('Im '+this.sex)
+            }
+        }
+        // 这里可以去掉，根本没有用到原型链，访问不到
+        // Father.prototype.sayHi=function(){
+        //     console.log('Im '+this.name)
+        // }
+        function Son(sex){
+            Father.call(this,sex)//在子类型构造函数的内部，调用超类型构造函数（核心思想）这里还可以传递参数了
+            this.age=21          //写下后面好一些，不然如果父类有同样的，会被覆盖
+            this.sayAge=function(){
+                console.log('Im '+this.age)
+            }
+        }
+        // Son.prototype.sayAge=function(){
+        //     console.log('Im '+this.age)
+        // }
+        let instance1=new Son('男')//可以传递参数到超类型构造函数
+        console.log(instance1.age)       // 21
+        console.log(instance1.name)      // quan
+        instance1.sayHi()                // Im quan
+        instance1.sayAge()               // Im 21
+        instance1.saySex()               // Im 男
+        let instance2=new Son()
+        instance2.do.push("看直播")
+        console.log(instance1.do)        // ["打游戏","刷抖音","等消息"]
+        console.log(instance2.do)        // ["打游戏","刷抖音","等消息","看直播"]
+    </script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轮播图demo左右滑动-移动端</title>
+    <style>
+        /* 轮播图 */
+        /* 去掉默认样式 */
+        li,i,ul{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        body,html{
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+        }
+        .swiper{
+            margin: 100px auto;
+            /* overflow: hidden; */
+            height: 200px;
+            width: 100vw;
+            position: relative;
+        }
+        .swiper ul{
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 200px;
+            width: 600%;
+            /* 一开始从第二张图片开始 */
+            margin-left: -100%;
+        }
+        .swiper ul li{
+            width: 100vw;
+            height: 200px;
+            float: left;
+        }
+        .swiper img{
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        /* 小圆圈 */
+        .bullets{
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            width: 200px;
+            height: 20px;
+            text-align: right;
+        }
+        .bullets i{
+            display: inline-block;
+            height: 5px;
+            width: 5px;
+            border: 3px solid #cccccc;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin: 0 3px;
+        }
+        .bullets .active{
+            background-color: #ffffff;
+            width: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="swiper">
+        <!-- 轮播的图片 -->
+        <ul></ul>
+        <!-- 小圆圈 -->
+        <div class="bullets"></div>
+    </div>
+    <script>
+        // 定义一些中间值
+        let num=0//记录图片滚动,滚动一次就+1，这里不会点击小圈变到相应的index,手机屏幕就这么小，就简单地左右滑动就好了
+        let startX=0//手指一开始点击的位置
+        let moveX=0//手指移动的距离
+        let flag=false//判断是否移动过，相当于节流的作用
+
+        // 获取元素
+        let swiper=document.querySelector('.swiper')
+        let ul=document.querySelector('.swiper ul')
+        let bullets=document.querySelector('.bullets')
+
+        // 动态添加图片和小圈
+        let arr=['./img/main-back-1.jpg','./img/main-back-2.jpg','./img/main-back-3.jpg','./img/main-back-4.jpg']
+        let html=''
+        for(let i=0;i<arr.length;i++){
+            html+='<li><a><img src='+arr[i]+'></img></a></li>'
+            // 这里生成小圈
+            let ii=document.createElement('i')
+            ii.setAttribute('index',i)
+            bullets.appendChild(ii)
+        }
+        ul.innerHTML=html
+
+        // 准备工作
+        // 在ul的前面克隆ul的最后一张和在ul的后面克隆ul的第一张
+        // 1、选获取ul的左右子节点
+        let child_node=ul.children
+        let length=child_node.length//后面会用到
+        // 2、先克隆节点   这里先全部获取，因为.children是实时更新的
+        // 使用.children获取的是元素对象是一个实时更新的列表 可以看做一个数组对象 而使用querySelectorAll获取的是NodeList 与其他方式获取的NodeList不同 它不是节点集合 而是元素集合 并且是静态的 不会实时更新 相当于克隆了一个新数组
+        let last_node=child_node[child_node.length-1].cloneNode(true)
+        let first_node=child_node[0].cloneNode(true)
+        // 3、最后一张图片加在第一张图片的前面
+        ul.insertBefore(last_node,child_node[0])
+        // 4、第一张图片加在最后一张图片的后面
+        ul.appendChild(first_node)
+        // 5、默认第一个小圈是active
+        bullets.children[0].className='active'
+
+        // 自动轮博
+        let timer=setInterval(function(){
+            num++
+            ul.style.transition='all .3s'
+            let translateX=-num*swiper.offsetWidth
+            ul.style.transform='translateX('+translateX+'px)'
+        },3000)
+
+        // 过渡结束后的事件
+        ul.addEventListener('transitionend',function(){
+            // 每次过渡结束之后都要判断一下是否到了边界值，到了就重新赋值，并且迅速出现在在该出现的位置
+            if(num>=length){//等于第五张(实际的第六张)的时候，马上变为第一张(实际的第二张)(因为这里实际是从第二张开始的)
+                num=0
+                ul.style.transition='none'
+                let translateX=-num*swiper.offsetWidth
+                ul.style.transform='translateX('+translateX+'px)'
+            }else if(num<0){
+                num=length-1//等于第一张的前一张(实际的第一张)的时候,马上变为第五张的前一张(实际的第五张)
+                ul.style.transition='none'
+                let translateX=-num*swiper.offsetWidth
+                ul.style.transform='translateX('+translateX+'px)'
+            }
+            // 小圆点跟随变化
+            bullets.children[num].style.transition='all .3s'
+            // 补充:classList 属性返回元素的类名，作为 DOMTokenList 对象。
+            bullets.querySelector('.active').classList.remove('active')
+            bullets.children[num].classList.add('active')
+            // 也可以这样写   上面这个方法好一些，因为，如果下面的元素还存在其它的class就会被覆盖
+            // for(let i=0;i<bullets.children.length;i++){
+            //     bullets.children[i].className=''
+            // }
+            // bullets.children[num].className='active'
+        })
+
+        // 手指滑动开始
+        ul.addEventListener('touchstart',function(e){
+            // console.log(e.targetTouches)
+            startX=e.targetTouches[0].pageX
+            // 滑动的时候就不轮播
+            clearInterval(timer)
+        })
+
+        // 手指移动的时候
+        ul.addEventListener('touchmove',function(e){
+            // 手指移动的距离  这里就是让它滑动到足够大的距离的时候就可以翻到下一张图片
+            moveX=e.targetTouches[0].pageX-startX
+            ul.style.transition='none'
+            let translateX=-num*swiper.offsetWidth+moveX
+            ul.style.transform='translateX('+translateX+'px)'
+            // 这个时候就是滑动了
+            flag=true
+            // 去掉默认的滚动
+            e.preventDefault()
+        })
+
+        // 手指离开的时候
+        ul.addEventListener('touchend',function(e){
+            if(flag){
+                // 大于50就播放下一张
+                if(Math.abs(moveX)>50){
+                    if(moveX>0){
+                        num--
+                    }else{
+                        num++
+                    }
+                    // 过渡到下一张
+                    ul.style.transition='all .3s'
+                    let translateX=-num*swiper.offsetWidth
+                    ul.style.transform='translateX('+translateX+'px)'
+                }else{
+                    // 返回原来这一张
+                    ul.style.transition='all .1s'
+                    let translateX=-num*swiper.offsetWidth
+                    ul.style.transform='translateX('+translateX+'px)'
+                }
+            }
+            // 开始时器
+            timer=setInterval(function(){
+                num++
+                ul.style.transition='all .3s'
+                let translateX=-num*swiper.offsetWidth
+                ul.style.transform='translateX('+translateX+'px)'
+            },3000)
+        })
+    </script>
+</body>
+</html>

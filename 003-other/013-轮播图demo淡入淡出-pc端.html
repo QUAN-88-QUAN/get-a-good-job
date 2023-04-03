@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轮播图demo淡入淡出-pc端</title>
+    <style>
+        /* 轮播图 */
+        /* 去掉默认样式 */
+        li,i,ul{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .swiper{
+            margin: 100px auto;
+            overflow: hidden;
+            width: 1226px;
+            height: 460px;
+            position: relative;
+        }
+        .swiper ul li{
+            position: absolute;
+            top: 0;
+            left: 0;
+            /* 默认所有的图片都看不见 */
+            opacity: 0;
+            transition: all 3s ease;
+            width: 1226px;
+            height: 460px;
+        }
+        .swiper img{
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        /* 左右按钮 */
+        .swiper span{
+            font-size: 25px;
+            display: block;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            color: #ccc;
+            margin-top: -25px;
+            position: absolute;
+            top: 50%;
+            /* 先隐藏，在鼠标进入轮播图区域的时候显示 */
+            display: none;
+            cursor: pointer;
+        }
+        .swiper .button-right{
+            right: 0;
+        }
+        .swiper .button-left{
+            left: 0;
+        }
+        .swiper span:hover{
+            background-color: #e0e0e0;
+            color: black;
+        }
+        /* 小圆圈 */
+        .bullets{
+            position: absolute;
+            bottom: 30px;
+            right: 60px;
+            width: 300px;
+            height: 20px;
+            text-align: right;
+        }
+        .bullets i{
+            display: inline-block;
+            height: 10px;
+            width: 10px;
+            border: 3px solid #cccccc;
+            background-color: #e0e0e0;
+            border-radius: 50%;
+            margin: 0 3px;
+        }
+        .bullets .active{
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <!-- 这里就是通过绝对定位把图片放到用一位置，然后用opacity控制透明度 -->
+    <div class="swiper">
+        <!-- 轮播的图片 -->
+        <ul></ul>
+        <!-- 左右按钮 -->
+        <span class="button-left">&lt;</span>
+        <span class="button-right">&gt;</span>
+        <!-- 小圆圈 -->
+        <div class="bullets"></div>
+    </div>
+    <script>
+        // 定义一些中间值
+        let num=0//绑定图片和相应的index，这里没有克隆图片，所以小圈的图片的index一样
+        
+        // 获取元素
+        let swiper=document.querySelector('.swiper')
+        let ul=document.querySelector('.swiper ul')
+        let bullets=document.querySelector('.bullets')
+        let button_left=document.querySelector('.button-left')
+        let button_right=document.querySelector('.button-right')
+
+        // 动态添加图片和小圈
+        let arr=['./img/main-back-1.jpg','./img/main-back-2.jpg','./img/main-back-3.jpg','./img/main-back-4.jpg']
+        let html=''
+        for(let i=0;i<arr.length;i++){
+            html+='<li><a><img src='+arr[i]+'></img></a></li>'
+            // 这里生成小圈
+            let ii=document.createElement('i')
+            ii.setAttribute('index',i)
+            bullets.appendChild(ii)
+        }
+        ul.innerHTML=html
+
+        // 默认第一个小圈是active
+        bullets.children[0].className='active'
+        // 默认第一个图片是看得见的
+        ul.children[0].style.opacity='1'
+
+        // 控制左右按钮的显示与隐藏
+        swiper.addEventListener('mouseenter',function(){
+            button_left.style.display="block"
+            button_right.style.display="block"
+            // 鼠标进入的时候，不轮播
+            clearInterval(timer)
+            timer=null
+        })
+        swiper.addEventListener('mouseleave',function(){
+            button_left.style.display="none"
+            button_right.style.display="none"
+            // 出去的时候继续轮播
+            timer=setInterval(function(){
+                button_right.click()
+            },4000)
+        })
+
+        // 点击右边按钮
+        button_right.addEventListener('click',function(){
+            num = num >= ul.children.length-1 ? 0 : ++num
+            // 调用下面定义好的函数
+            circleChange()
+            opacityChange()
+        })
+
+        // 点击左边按钮
+        button_left.addEventListener('click',function(){
+            num = num < 0 ? ul.children.length-1 : --num
+            // 调用下面定义好的函数
+            circleChange()
+            opacityChange()
+        })
+
+        // 点击小圈的时候也可以控制播放（这里可以在生成小圈的时候直接加监听，也可以在这里）
+        for(let i=0;i<bullets.children.length;i++){
+            bullets.children[i].addEventListener('click',function(){
+                // 得到小圈的index
+                num=this.getAttribute('index')
+                // 调用下面定义好的函数
+                circleChange()
+                opacityChange()
+            })
+        }
+
+        // 图片透明度的改变
+        function opacityChange(){
+            for(let i=0;i<ul.children.length;i++){
+                ul.children[i].style.opacity='0'
+            }
+            ul.children[num].style.opacity='1'
+        }
+
+        // 小圈的改变
+        function circleChange(){
+            for(let i=0;i<bullets.children.length;i++){
+                bullets.children[i].className=''
+            }
+            bullets.children[num].className='active'
+        }
+
+        // 自动轮播
+        let timer=setInterval(function(){
+            button_right.click()
+        },4000)
+    </script>
+</body>
+</html>

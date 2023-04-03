@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>复习-轮播图</title>
+    <style>
+        /* 轮播图 */
+        /* 去掉默认样式 */
+        li,i,ul{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .swiper{
+            margin: 100px auto;
+            overflow: hidden;
+            width: 1226px;
+            height: 460px;
+            position: relative;
+        }
+        .swiper ul{
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 460px;
+            width: 500%;
+        }
+        .swiper ul li{
+            width: 1226px;
+            height: 460px;
+            float: left;
+        }
+        .swiper img{
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        /* 左右按钮 */
+        .swiper span{
+            font-size: 25px;
+            display: block;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            color: #ccc;
+            margin-top: -25px;
+            position: absolute;
+            top: 50%;
+            /* 先隐藏，在鼠标进入轮播图区域的时候显示 */
+            display: none;
+            cursor: pointer;
+        }
+        .swiper .button-right{
+            right: 0;
+        }
+        .swiper .button-left{
+            left: 0;
+        }
+        .swiper span:hover{
+            background-color: #e0e0e0;
+            color: black;
+        }
+        /* 小圆圈 */
+        .bullets{
+            position: absolute;
+            bottom: 30px;
+            right: 60px;
+            width: 300px;
+            height: 20px;
+            text-align: right;
+        }
+        .bullets i{
+            display: inline-block;
+            height: 10px;
+            width: 10px;
+            border: 3px solid #cccccc;
+            background-color: #e0e0e0;
+            border-radius: 50%;
+            margin: 0 3px;
+        }
+        .bullets .active{
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="swiper">
+        <!-- 轮播的图片 -->
+        <ul></ul>
+        <!-- 左右按钮 -->
+        <span class="button-left">&lt;</span>
+        <span class="button-right">&gt;</span>
+        <!-- 小圆圈 -->
+        <div class="bullets"></div>
+    </div>
+    <script>
+        let swiper=document.querySelector('.swiper')
+        let ul=document.querySelector('ul')
+        let button_left=document.querySelector('.button-left')
+        let button_right=document.querySelector('.button-right')
+        let bullets=document.querySelector('.bullets')
+
+        let num=0,sricle=0
+        let flag=true
+        let timer=null
+
+        let arr=['./img/main-back-1.jpg','./img/main-back-2.jpg','./img/main-back-3.jpg','./img/main-back-4.jpg']
+        let html=""
+        for(let i=0;i<arr.length;i++){
+            html+='<li><a><img src='+arr[i]+'></img></a></li>'
+            let ii=document.createElement('i')
+            ii.setAttribute('index',i)
+            bullets.appendChild(ii)
+        }
+        ul.innerHTML=html
+
+        quan=ul.children[0].cloneNode(true)
+        ul.appendChild(quan)
+        bullets.children[0].className='active'
+
+        swiper.addEventListener('mouseenter',function(){
+            button_left.style.display="block"
+            button_right.style.display="block"
+            clearInterval(timer)
+            timer=null
+        })
+        swiper.addEventListener('mouseleave',function(){
+            button_left.style.display="none"
+            button_right.style.display="none"
+            timer=setInterval(()=>{
+                button_right.click()
+            },3000)
+        })
+
+        ul.addEventListener('transitionend',function(){
+            flag=true
+        })
+
+        button_right.addEventListener('click',function(){
+            if(flag){
+                flag=false
+                if(num==ul.children.length-1){
+                    num=0
+                    ul.style.transition='none'
+                    ul.style.transform='translateX('+num*-swiper.offsetWidth+'px)'
+                    ul.offsetWidth
+                }
+                num++
+                ul.style.transition='all 1s ease'
+                ul.style.transform='translateX('+num*-swiper.offsetWidth+'px)'
+                sricle++
+                if(sricle==bullets.children.length){
+                    sricle=0
+                }
+                sricleChange()
+            }
+        })
+
+        button_left.addEventListener('click',function(){
+            if(flag){
+                flag=false
+                if(num<=0){
+                    num=ul.children.length-1
+                    ul.style.transition='none'
+                    ul.style.transform='translateX('+num*-swiper.offsetWidth+'px)'
+                    ul.offsetWidth
+                }
+                num--
+                ul.style.transition='all 1s ease'
+                ul.style.transform='translateX('+num*-swiper.offsetWidth+'px)'
+                sricle--
+                if(sricle<0){
+                    sricle=bullets.children.length-1
+                }
+                sricleChange()
+            }
+        })
+
+
+        for(let i=0;i<bullets.children.length;i++){
+            bullets.children[i].addEventListener('click',function(){
+                if(flag){
+                    flag=false
+                    sricle=this.getAttribute('index')
+                    num=sricle
+                    ul.style.transition='all 1s ease'
+                    ul.style.transform='translateX('+num*-swiper.offsetWidth+'px)'
+                    sricleChange()
+                }
+            })
+        }
+
+        function sricleChange(){
+            for(let i=0;i<bullets.children.length;i++){
+                bullets.children[i].className=''
+            }
+            bullets.children[sricle].className='active'
+        }
+
+        timer=setInterval(()=>{
+            button_right.click()
+        },3000)
+    </script>
+</body>
+</html>

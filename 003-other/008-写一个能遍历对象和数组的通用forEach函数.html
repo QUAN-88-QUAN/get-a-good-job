@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>写一个能遍历对象和数组的通用forEach函数</title>
+</head>
+<body>
+    <script>
+        function forEach(obj){
+            if(obj instanceof Array){//数组直接用forEach
+                obj.forEach(function(item){
+                    console.log(item)
+                })
+            }else{
+                for(item in obj){//对象直接用for in
+                    console.log(item+':'+obj[item])
+                }
+            }
+        }
+        let arr=['red','pink','blue']
+        forEach(arr)
+        let object={
+            name:'quan',
+            age:21,
+            sex:'1'
+        }
+        forEach(object)
+        // 补充一下
+        // for in 遍历数组输出的是下标
+        // for of 遍历数组输出的是key值
+        // for in 遍历对象输出的是key值
+        // for of 遍历对象因为没有 Symbol.iterator这个属性,所以使用 for of会报object is not iterable错误
+        // 关于for in 和for of 的具体区别可以看
+        // https://blog.csdn.net/adognamedgeorge/article/details/93622800
+    </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>获取URL的key和value</title>
+</head>
+<body>
+    <script>
+        function getParams(url){
+            let str=url.split('?')[1]//?号后面的就是我们需要的name=quan&age=21&sex=1
+            arr=str.split('&')//["name=quan", "age=21", "sex=1"]
+            let obj={}
+            for(let i=0;i<arr.length;i++){
+                let key=arr[i].split('=')//["name", "quan"] ["age", "21"] ["sex", "1"]
+                obj[key[0]]=key[1]
+            }
+            console.log(obj)
+            // 必须得转为JSON字符串才能存到sessionStorage
+            window.sessionStorage.setItem('obj',JSON.stringify(obj))
+            // 取出来的时候转为JSON
+            console.log(JSON.parse(window.sessionStorage.getItem('obj')))
+        }
+        let url='http://www.baidu.com/index.html?name=quan&age=21&sex=1'
+        getParams(url)
+    </script>
+</body>
+</html>

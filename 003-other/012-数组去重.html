@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组去重</title>
+</head>
+<body>
+    <script>
+        let arr=[11,22,11,55,22,66,11]
+        let arrry=[]
+        // 方法一
+        // 用indexOf
+        // for(let i=0;i<arr.length;i++){
+        //     if(arrry.indexOf(arr[i])==-1){  //利用indexOf,如果没有，也就是等于-1，就加进去
+        //         arrry.push(arr[i])
+        //     }
+        // }
+        // console.log(arrry)
+
+        // 方法二
+        // for(let i=0;i<arr.length;i++){
+        //     let tag=false
+        //     for(let j=0;j<arrry.length;j++){
+        //         if(arr[i]==arrry[j]){
+        //             tag=true
+        //         }
+        //     }
+        //     if(!tag){//没有找到的时候，才加进去
+        //         arrry.push(arr[i])
+        //     }
+        // }
+        // console.log(arrry)
+
+        // 方法三
+        // 利用splice方法
+        // for(let i=0;i<arr.length;i++){
+        //     for(let j=i+1;j<arr.length;j++){
+        //         if(arr[i]==arr[j]){
+        //             arr.splice(j,1)
+        //         }
+        //     }
+        // }
+        // console.log(arr)
+
+        // 方法四
+        // 利用ES6的Set
+        // console.log([...new Set(arr)])
+
+        // 方法五
+        // 用includes
+        // for(let i=0;i<arr.length;i++){
+        //     if(!arrry.includes(arr[i])){
+        //         arrry.push(arr[i])
+        //     }
+        // }
+        // console.log(arrry)
+
+        // 方法六
+        // 用filter
+        arrry=arr.filter(function(item,index,arr){
+            // indexOf的第二个参数，表示从哪个位置开始找 这里不加也没事
+            // 当前元素在原始数组的第一索引等于当前索引值，返回当前元素
+            return arr.indexOf(item,0)===index
+        })
+        console.log(arrry)
+
+        // 这里只总结了这几种比较常用的
+        // 更多的方法可以参考https://segmentfault.com/a/1190000016418021?utm_source=tag-newest
+    </script>
+</body>
+</html>
