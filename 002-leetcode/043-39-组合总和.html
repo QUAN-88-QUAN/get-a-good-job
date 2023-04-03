@@ -19,6 +19,7 @@
       // 将该选择再加入选择列表
 
       var combinationSum = function (candidates, target) {
+        // 方法一：回溯（）---时间：O（）（不会算，至少是n!，要回溯递归）---空间：O（）（不会算，至少是n，递归栈的深度）
         let res = [];
         let track = [];
         let sum = 0;
@@ -27,11 +28,17 @@
         return res;
 
         function backtrack(candidates, target, start) {
+          // 枝剪逻辑
+          // 加了上面这个就不用加下面那个
+          if (sum > target) {
+            return;
+          }
           if (sum === target) {
             res.push([...track]);
             return;
           }
           for (let i = start; i < candidates.length; i++) {
+            // 枝剪逻辑
             if (sum + candidates[i] > target) {
               continue;
             }
@@ -45,7 +52,7 @@
         }
       };
 
-      console.log(combinationSum([2,3,6,7], 7));
+      console.log(combinationSum([2, 3, 6, 7], 7));
       // console.log(combinationSum([2,3,5], 8));
     </script>
   </body>
