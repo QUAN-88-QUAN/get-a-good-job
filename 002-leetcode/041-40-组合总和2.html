@@ -19,6 +19,7 @@
       // 将该选择再加入选择列表
 
       var combinationSum2 = function (candidates, target) {
+        // 方法一：回溯（）---时间：O（）（不会算，至少是n!，要回溯递归）---空间：O（）（不会算，至少是n，递归栈的深度）
         let res = [];
         let track = [];
         let sum = 0;
@@ -31,10 +32,14 @@
             res.push([...track]);
             return;
           }
+          // 放这里效率更高
+          if (sum > target) {
+            return;
+          }
           for (let i = start; i < candidates.length; i++) {
-            if (sum + candidates[i] > target) {
-              continue;
-            }
+            // if (sum + candidates[i] > target) {
+            //   continue;
+            // }
             // 剪枝逻辑，值相同的树枝，只遍历第一条
             if (i > start && candidates[i] === candidates[i - 1]) {
               continue;
