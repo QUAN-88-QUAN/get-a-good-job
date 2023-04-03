@@ -19,9 +19,14 @@
       // 将该选择再加入选择列表
       let res = [];
       var permuteUnique = function (nums) {
+        // 方法一：回溯（）---时间：O（）（不会算，至少是n!，要回溯递归）---空间：O（）（不会算，至少是n，递归栈的深度）
         nums.sort();
         let used = new Array(nums.length).fill(false);
         let track = [];
+
+        // 通过记录上一个节点去重
+        let preNum = 666
+
         backtrack(nums, track, used);
         return res;
       };
@@ -48,7 +53,9 @@
             continue;
           }
           // 新添加的剪枝逻辑，固定相同的元素在排列中的相对位置
-          if (nums[i] == nums[i - 1] && !used[i - 1]) {
+          // 都行，但是上面这个效率高些
+          // if (nums[i] == nums[i - 1] && !used[i - 1]) {
+          if (nums[i] == nums[i - 1] && used[i - 1]) {
             // 如果前面的相邻相等元素没有用过，则跳过
             // 也就是说只有前面的相等元素用过了才可以组合后面的，也就固定了元素在排列中的相对位置
             continue;
@@ -66,7 +73,8 @@
       }
 
       // console.log(permuteUnique([1, 1, 0, 0, 1, -1, -1, 1]));
-      console.log(permuteUnique([3,3,0,3]));
+      // console.log(permuteUnique([3,3,0,3]));
+      console.log(permuteUnique([1,1,2]));
     </script>
   </body>
 </html>

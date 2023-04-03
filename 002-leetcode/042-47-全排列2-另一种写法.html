@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 回溯法的核心框架
+      // for 选择 in 选择列表:
+      // # 做选择
+      // 将该选择从选择列表移除
+      // 路径.add(选择)
+      // backtrack(路径, 选择列表)
+      // # 撤销选择
+      // 路径.remove(选择)
+      // 将该选择再加入选择列表
+      var permuteUnique = function (nums) {
+        // 方法一：回溯（）---时间：O（）（不会算，至少是n!，要回溯递归）---空间：O（）（不会算，至少是n，递归栈的深度）
+        nums.sort();
+        const used = new Array(nums.length).fill(false);
+        const track = [];
+        const res = [];
+        const length = nums.length;
+        backtrack();
+        return res;
+
+        function backtrack() {
+          // 通过记录上一个节点去重
+          let preNum = 666;
+          if (track.length === length) {
+            res.push([...track]);
+            return;
+          }
+          for (let i = 0; i < length; i++) {
+            if (used[i]) {
+              continue;
+            }
+            if (nums[i] === preNum) {
+              continue;
+            }
+            track.push(nums[i]);
+            used[i] = true;
+            preNum = nums[i];
+            backtrack();
+            track.pop();
+            used[i] = false;
+          }
+        }
+      };
+
+      console.log(permuteUnique([1, 1, 2]));
+    </script>
+  </body>
+</html>
