@@ -19,6 +19,7 @@
       // 将该选择再加入选择列表
 
       var subsets = function (nums) {
+        // 方法一：回溯（）---时间：O（）（不会算，至少是n!，要回溯递归）---空间：O（）（不会算，至少是n，递归栈的深度）
         let track = [];
         let res = [];
         // 排序
@@ -27,7 +28,6 @@
         return res;
 
         function backtrack(nums, start) {
-          debugger;
           // 直接push不行,得这样
           // 前序位置，每个节点的值都是一个子集
           res.push([...track]);
