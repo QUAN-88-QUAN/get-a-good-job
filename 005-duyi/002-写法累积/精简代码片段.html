@@ -30,7 +30,52 @@
       // console.log(rate(5));
       const rate = (r) => "★★★★★☆☆☆☆☆".slice(5 - r, 10 - r);
 
-      
+      // 4、灰度算法
+      // console.log(gray(50, 100, 150));
+      const gray = (r, g, b) => 0.2126 * r + 0.7152 * g + 0.0722 * b;
+
+      // 5、解析url中的参数
+      // console.log(parseQuery('https://baidu.com/?a=1&b=2'))
+      // console.log(parseQuery('https://baidu.com/?a=c&b=d'))
+      const parseQuery = (url) => {
+        const q = {};
+        url.replace(/([^?&=]+)=([^&]+)/g, (_, k, v) => (q[k] = v));
+        return q;
+      };
+
+      // 6、对象筛选属性
+      // console.log(pick({ a: 1, b: 2, c: 3 }, "a", "b"));
+      const pick = (obj, ...props) => {
+        return Object.fromEntries(
+          Object.entries(obj).filter(([k]) => props.includes(k))
+        );
+      };
+
+      // 7、随机HEX颜色
+      // console.log(randomColor());
+      const randomColor = () => {
+        return (
+          "#" +
+          Math.floor(Math.random() * 0xffffff)
+            .toString(16)
+            .padEnd(6, "0")
+        );
+      };
+
+      // 8、随机字符串
+      // console.log(randomString());
+      const randomString = () => {
+        return Math.random().toString(36).slice(2);
+      };
+
+      // 9、去除字符串的元素标记
+      // console.log(removeTag('<div>Hello World<div> QUAN</div></div>'))
+      const removeTag = (fragment) => {
+        return (
+          new DOMParser().parseFromString(fragment, "text/html").body
+            .textContent || ""
+        );
+      };
     </script>
   </body>
 </html>
