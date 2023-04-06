@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- <link
+      rel="stylesheet"
+      href="https://unpkg.com/element-plus/dist/index.css"
+    />
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://unpkg.com/element-plus"></script> -->
+
+    <!-- gcore,fastly -->
+    <!-- <link
+      rel="stylesheet"
+      href="https://gcore.jsdelivr.net/npm/element-plus/dist/index.css"
+    />
+    <script src="https://gcore.jsdelivr.net/npm/vue@3"></script>
+    <script src="https://gcore.jsdelivr.net/npm/element-plus"></script> -->
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
+    />
+    <script src="https://unpkg.com/vue@2"></script>
+    <script src="https://unpkg.com/element-ui"></script>
+  </head>
+  <body>
+    <div id="app">
+      <search-bar :model-value.sync="modelValue" />
+      <!-- 这样写不行，因为vue的语法就是这样，双向绑定得用sync，到了vue3就全部都是v-model -->
+      <!-- <search-bar v-model="modelValue" /> -->
+    </div>
+
+    <script>
+      const App = {
+        el: "#app",
+        data() {
+          return {
+            modelValue: {
+              keyword: "",
+              placeholder: "请输入你要查询的关键字",
+              options: [
+                { label: "视频", value: "video" },
+                { label: "文章", value: "article" },
+                { label: "用户", value: "user" },
+              ],
+              selectedValue: "video",
+            },
+          };
+        },
+      };
+
+      Vue.component("SearchBar", {
+        // 父组件v-model的时候这样写
+        // model: {
+        //   prop: "modelValue",
+        // },
+        props: {
+          modelValue: {
+            type: Object,
+            default: () => {},
+          },
+        },
+        created() {
+          console.log(this.modelValue);
+        },
+        computed: {
+          // vue3还可以把他封装成hooks
+          // https://www.douyin.com/user/MS4wLjABAAAAi2oukRVcHpgD-HbVdzsxE7tYykr91YuIKukR_X_Yy08EFWRQhRrECDF6FvbvT8Xa?is_search=0&list_name=follow&modal_id=7217733947546012989&nt=0
+          model: {
+            get: function () {
+              const that = this;
+              return new Proxy(this.modelValue, {
+                set(obj, name, val) {
+                  console.log({
+                    ...obj,
+                    [name]: val,
+                  });
+                  that.$emit("update:modelValue", {
+                    ...obj,
+                    [name]: val,
+                  });
+                  console.log("通知父组件值改变了");
+                  return true;
+                },
+              });
+            },
+            set: function (value) {
+              console.log(value);
+              this.$emit("update:modelValue", value);
+              console.log("通知父组件值改变了");
+            },
+          },
+        },
+        // 这样会死循环一直触发
+        // watch: {
+        //   model: {
+        //     handler(val) {
+        //       console.log(val)
+        //       this.$emit("update:modelValue", {
+        //         ...val,
+        //       });
+        //       console.log("通知父组件值改变了");
+        //     },
+        //     deep: true,
+        //   },
+        // },
+        template: `
+        <el-input v-model="model.keyword" :placeholder="model.placeholder">
+          <template #prepend>
+            <el-select  v-model="model.selectedValue"
+              placeholder="Select"
+              style="width: 85px"
+            >
+              <el-option
+                v-for="item in model.options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </template>
+          <template #append>
+            <el-button icon="el-icon-search"/>
+          </template>
+        </el-input>`,
+      });
+
+      new Vue(App);
+    </script>
+  </body>
+</html>
