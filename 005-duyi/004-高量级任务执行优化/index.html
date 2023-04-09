@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .quan {
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        background-color: skyblue;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="./task.js"></script>
+    <div id="quan">执行任务</div>
+    <div class="quan"></div>
+    <script>
+      // 动画来源003-other-002-实现一个持续的动画效果-2
+      // 但是没有动画源码,不管怎么写都会卡顿
+      let quan = document.querySelector(".quan");
+      let flag = true;
+      let left = 0;
+      function animation() {
+        left == 0 ? (flag = true) : left == 500 ? (flag = false) : "";
+        flag
+          ? (quan.style.left = `${left++}px`)
+          : (quan.style.left = `${left--}px`);
+      }
+      setInterval(animation, 1000 / 60);
+
+      function task(){
+        for(let i=0;i<10000;i++){
+          console.log(11)
+        }
+      }
+
+      const start = document.querySelector('#quan')
+      start.addEventListener('click',()=>{
+        runTask(task)
+      })
+    </script>
+  </body>
+</html>
