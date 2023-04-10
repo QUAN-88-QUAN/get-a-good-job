@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .text-select {
+        position: relative;
+      }
+      .text {
+        width: 300px;
+        height: 30px;
+      }
+      .select {
+        position: absolute;
+        top: 35px;
+        left: 1px;
+        text-align: center;
+        border: 1px solid #ccc;
+        overflow: hidden;
+        transition: all 1s;
+        /* 1 js实现 */
+        height: 0;
+        /* 2 max-height */
+        /* max-height: 0; */
+        /* 3 transform */
+        /* transform-origin: top;
+        transform: scaleY(0); */
+      }
+      .select span {
+        width: 300px;
+        height: 30px;
+        display: block;
+      }
+      .text-select .text:focus ~ .select {
+        /* max-height: 200px; */
+        /* transform: scaleY(1); */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="text-select">
+      <input type="text" class="text" />
+      <div class="select">
+        <span>挨打打不死的</span>
+        <span>挨打打不死的</span>
+        <span>挨打打不死的</span>
+        <span>挨打打不死的</span>
+        <span>挨打打不死的</span>
+      </div>
+    </div>
+    <script>
+      const input = document.querySelector('.text')
+      const select = document.querySelector('.select')
+
+      input.onfocus = function(){
+        select.style.transition = 'none'
+        select.style.height = 'auto'
+        const height = select.offsetHeight
+        select.style.height = '0'
+        // 强制回流
+        select.offsetHeight
+        select.style.transition = '1s'
+        select.style.height = height+'px'
+      }
+
+      input.onblur = function(){
+        select.style.transition = '1s'
+        select.style.height = '0'
+      }
+    </script>
+  </body>
+</html>
