@@ -17,7 +17,7 @@
         const res = [];
         const visited = new Set();
         let step = 0;
-        res.add("0000");
+        res.push("0000");
         visited.add("0000");
         while (res.length) {
           const length = res.length;
@@ -33,12 +33,12 @@
             for (let j = 0; j < 4; j++) {
               const plus = plusOne(current, j);
               if (!visited.has(plus)) {
-                res.add(plus);
+                res.push(plus);
                 visited.add(plus);
               }
               const minus = minusOne(current, j);
               if (!visited.has(minus)) {
-                res.add(minus);
+                res.push(minus);
                 visited.add(minus);
               }
             }
