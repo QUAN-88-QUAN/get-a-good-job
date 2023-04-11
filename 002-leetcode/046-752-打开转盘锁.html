@@ -11,43 +11,42 @@
     <script>
       var openLock = function (deadends, target) {
         // 方法一：遍历（）---时间O（b^d*d^2+md）（不会算）---空间：O（b^d*d+m）（不会算）
-        // 数组时间超限，得用set
-        // const visited = [];
-        // res不需要，不然res.length为undefined
-        const res = [];
-        const visited = new Set();
-        let step = 0;
-        res.push("0000");
-        visited.add("0000");
-        while (res.length) {
-          const length = res.length;
-          // 将当前队列中的所有节点向周围扩散
-          for (let i = 0; i < length; i++) {
-            const current = res.shift();
-            if (deadends.includes(current)) {
-              continue;
-            }
-            if (current === target) {
-              return step;
-            }
-            for (let j = 0; j < 4; j++) {
-              const plus = plusOne(current, j);
-              if (!visited.has(plus)) {
-                res.push(plus);
-                visited.add(plus);
-              }
-              const minus = minusOne(current, j);
-              if (!visited.has(minus)) {
-                res.push(minus);
-                visited.add(minus);
-              }
-            }
-          }
-          // 在这里增加步数
-          step++;
-        }
-        // 如果穷举完都没找到目标密码，那就是找不到了
-        return -1;
+        // const res = [];
+        // // 数组时间超限，得用set
+        // // const visited = [];
+        // const visited = new Set();
+        // let step = 0;
+        // res.push("0000");
+        // visited.add("0000");
+        // while (res.length) {
+        //   const length = res.length;
+        //   // 将当前队列中的所有节点向周围扩散
+        //   for (let i = 0; i < length; i++) {
+        //     const current = res.shift();
+        //     if (deadends.includes(current)) {
+        //       continue;
+        //     }
+        //     if (current === target) {
+        //       return step;
+        //     }
+        //     for (let j = 0; j < 4; j++) {
+        //       const plus = plusOne(current, j);
+        //       if (!visited.has(plus)) {
+        //         res.push(plus);
+        //         visited.add(plus);
+        //       }
+        //       const minus = minusOne(current, j);
+        //       if (!visited.has(minus)) {
+        //         res.push(minus);
+        //         visited.add(minus);
+        //       }
+        //     }
+        //   }
+        //   // 在这里增加步数
+        //   step++;
+        // }
+        // // 如果穷举完都没找到目标密码，那就是找不到了
+        // return -1;
 
         function plusOne(s, j) {
           const arr = s.split("");
@@ -59,6 +58,43 @@
           arr[j] = arr[j] === "0" ? "9" : (parseInt(arr[j]) - 1).toString();
           return arr.join("");
         }
+
+        // 双向BFS优化
+        const visited = new Set();
+        let p1 = new Set();
+        let p2 = new Set();
+        let step = 0;
+        p1.add("0000");
+        p2.add(target);
+        while (p1.size && p2.size) {
+          let temp = new Set()
+
+          for (const item of p1) {
+            if (deadends.includes(item)) {
+              continue;
+            }
+            // 相交就返回
+            if (p2.has(item)) {
+              return step;
+            }
+            visited.add(item);
+            for (let j = 0; j < 4; j++) {
+              const plus = plusOne(item, j);
+              if (!visited.has(plus)) {
+                temp.add(plus);
+              }
+              const minus = minusOne(item, j);
+              if (!visited.has(minus)) {
+                temp.add(minus);
+              }
+            }
+          }
+          step++;
+          // 交换
+          p1 = p2
+          p2 = temp 
+        }
+        return -1;
       };
 
       console.log(openLock(["0201", "0101", "0102", "1212", "2002"], "0202"));
