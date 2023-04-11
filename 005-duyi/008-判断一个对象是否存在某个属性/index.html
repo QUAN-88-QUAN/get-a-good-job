@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function hasProperty(obj, key) {
+        // 1、in
+        // return key in obj
+        // 2、如果有属性为undefined就不行
+        // return obj[key] !== undefined;
+        // 3、Object.keys,如果有不可枚举的属性enumerable:false不行
+        // return Object.keys(obj).includes(key)
+      }
+      console.log(hasProperty({}, "valueOf"));
+      console.log(hasProperty({ a: "a" }, "a"));
+      console.log(hasProperty({ a: "a" }, "b"));
+      console.log(hasProperty({ a: undefined }, "a"));
+    </script>
+  </body>
+</html>
