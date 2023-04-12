@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .list{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .list-item{
+      height: 30px;
+      width: 300px;
+      background-color: #2f4a54;
+      border-radius: 5px;
+      line-height: 30px;
+      padding-left: 20px;
+      margin-top: 10px;
+      cursor: pointer;
+      color: #fff;
+      box-sizing: border-box;
+      /* 不能选中文本 */
+      user-select:none;
+    }
+    .list-item.moving{
+      background-color: transparent;
+      color: transparent;
+      border: 1px dashed #ccc;
+    }
+  </style>
+</head>
+<body>
+   <div class="list">
+    <div draggable="true" class="list-item">1</div>
+    <div draggable="true" class="list-item">2</div>
+    <div draggable="true" class="list-item">3</div>
+    <div draggable="true" class="list-item">4</div>
+    <div draggable="true" class="list-item">5</div>
+   </div>
+
+   <script>
+    const list = document.querySelector('.list')
+    let sourceNode = undefined
+    list.addEventListener('dragstart',(e)=>{
+      setTimeout(()=>{
+        e.target.classList.add('moving')
+      },0)
+      sourceNode = e.target
+    })
+    list.addEventListener('dragenter',(e)=>{
+      if(e.target===list || e.target===sourceNode){
+        return
+      }
+      const children = Array.from(list.children)
+      sourceIndex = children.indexOf(sourceNode)
+      targetIndex = children.indexOf(e.target)
+      // 向下
+      if(sourceIndex<targetIndex){
+        list.insertBefore(sourceNode,e.target.nextElementSibing)
+      }else{
+        // 向上
+        list.insertBefore(sourceNode,e.target)
+      }
+    })
+    list.addEventListener('dragend',(e)=>{
+      e.target.classList.remove('moving')
+    })
+   </script>
+</body>
+</html>

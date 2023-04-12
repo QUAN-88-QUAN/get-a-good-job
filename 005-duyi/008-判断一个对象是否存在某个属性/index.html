@@ -10,16 +10,24 @@
     <script>
       function hasProperty(obj, key) {
         // 1、in
-        // return key in obj
+        return key in obj
         // 2、如果有属性为undefined就不行
         // return obj[key] !== undefined;
-        // 3、Object.keys,如果有不可枚举的属性enumerable:false不行
+        // 3、Object.keys,如果有不可枚举的属性enumerable:false不行,原型链不行
         // return Object.keys(obj).includes(key)
+        // 4 hasOwnProperty,如果有不可枚举的属性enumerable:false不行,原型链不行
+        // return obj.hasOwnProperty(key);
       }
       console.log(hasProperty({}, "valueOf"));
       console.log(hasProperty({ a: "a" }, "a"));
       console.log(hasProperty({ a: "a" }, "b"));
       console.log(hasProperty({ a: undefined }, "a"));
+      const obj = {};
+      Object.defineProperty(obj, "a", {
+        enumerable: false,
+        value: "a",
+      });
+      console.log(hasProperty(obj, "c"));
     </script>
   </body>
 </html>
