@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var search = function (nums, target) {
+        // 方法一：二分法（）---时间O（logn）（）---空间：O（1）（）
+        let left = 0;
+        let right = nums.length - 1;
+        while (left <= right) {
+          // 这样写是为了防止两个数相加导致溢出的情况
+          // const mid = parseInt(left + (right - left) / 2);
+          // 其他计算方式
+          // const mid = parseInt((right + left) / 2);
+          const mid = (right + left) >> 1
+          // const mid = Math.floor((right + left) / 2)
+          if (nums[mid] === target) {
+            return mid;
+          } else if (target > nums[mid]) {
+            left = mid + 1;
+          } else {
+            right = mid - 1;
+          }
+        }
+        return -1
+      };
+      console.log(search([-1, 0, 3, 5, 9, 12], 9))
+    </script>
+  </body>
+</html>

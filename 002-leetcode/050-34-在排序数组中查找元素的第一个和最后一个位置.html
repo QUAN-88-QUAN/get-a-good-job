@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      var searchRange = function (nums, target) {
+        // 方法一：暴力法（）---时间O（2n）（）---空间：O（2n）（）
+        // return [nums.indexOf(target),nums.lastIndexOf(target)]
+
+        // 方法二：双指针（）---时间O（n）（）---空间：O（1）（）
+        // let left = 0;
+        // let right = nums.length - 1;
+        // while (left <= right) {
+        //   if (nums[left] !== target) {
+        //     left++;
+        //   }
+        //   if (nums[right] !== target) {
+        //     right--;
+        //   }
+        //   if (nums[left] === target && nums[right] === target) {
+        //     return [left, right];
+        //   }
+        // }
+        // return [-1, -1];
+
+        // 方法三：二分法（）---时间O（2logn）（）---空间：O（1）（）
+        // 搜索左区间
+        function searchLeft(nums, target) {
+          // 全部闭区间
+          let left = 0;
+          let right = nums.length - 1;
+          while (left <= right) {
+            const mid = parseInt(left + (right - left) / 2);
+            if (nums[mid] === target) {
+              right = mid - 1;
+            } else if (nums[mid] > target) {
+              right = mid - 1;
+            } else if (nums[mid] < target) {
+              left = mid + 1;
+            }
+          }
+
+          // 不加下面的也没事
+          // if (left == nums.length) return -1;
+
+          return nums[left] === target ? left : -1;
+
+          // 左闭右开
+          // let left = 0;
+          // let right = nums.length;
+          // while (left < right) {
+          //   const mid = parseInt(left + (right - left) / 2);
+          //   if (nums[mid] == target) {
+          //     right = mid;
+          //   } else if (nums[mid] < target) {
+          //     left = mid + 1;
+          //   } else if (nums[mid] > target) {
+          //     right = mid;
+          //   }
+          // }
+
+          // return nums[left] === target ? left : -1;
+        }
+
+        // 搜索右区间
+        function searchRight(nums, target) {
+          // 全部闭区间
+          let left = 0;
+          let right = nums.length - 1;
+          while (left <= right) {
+            const mid = parseInt(left + (right - left) / 2);
+            if (nums[mid] === target) {
+              left = mid + 1;
+            } else if (nums[mid] > target) {
+              right = mid - 1;
+            } else if (nums[mid] < target) {
+              left = mid + 1;
+            }
+          }
+
+          // 不加下面的也没事
+          // if (left - 1 < 0) return -1;
+
+          // return nums[left - 1] === target ? left - 1 : -1;
+          return nums[right] === target ? right : -1;
+
+          // 左闭右开
+          // let left = 0;
+          // let right = nums.length;
+          // while (left < right) {
+          //   const mid = parseInt(left + (right - left) / 2);
+          //   if (nums[mid] == target) {
+          //     left = mid + 1;
+          //   } else if (nums[mid] < target) {
+          //     left = mid + 1;
+          //   } else if (nums[mid] > target) {
+          //     right = mid;
+          //   }
+          // }
+
+          // return nums[left - 1] === target ? left - 1 : -1;
+          // 不行
+          // return nums[right] === target ? right : -1;
+        }
+
+        return [searchLeft(nums, target), searchRight(nums, target)];
+      };
+
+      console.log(searchRange([5, 7, 7, 8, 8, 10], 8));
+    </script>
+  </body>
+</html>
