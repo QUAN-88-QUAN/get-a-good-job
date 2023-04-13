@@ -1,74 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <style>
-    .list{
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-    }
-    .list-item{
-      height: 30px;
-      width: 300px;
-      background-color: #2f4a54;
-      border-radius: 5px;
-      line-height: 30px;
-      padding-left: 20px;
-      margin-top: 10px;
-      cursor: pointer;
-      color: #fff;
-      box-sizing: border-box;
-      /* 不能选中文本 */
-      user-select:none;
-    }
-    .list-item.moving{
-      background-color: transparent;
-      color: transparent;
-      border: 1px dashed #ccc;
-    }
-  </style>
-</head>
-<body>
-   <div class="list">
-    <div draggable="true" class="list-item">1</div>
-    <div draggable="true" class="list-item">2</div>
-    <div draggable="true" class="list-item">3</div>
-    <div draggable="true" class="list-item">4</div>
-    <div draggable="true" class="list-item">5</div>
-   </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .list {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .list-item {
+        height: 30px;
+        width: 300px;
+        background-color: #2f4a54;
+        border-radius: 5px;
+        line-height: 30px;
+        padding-left: 20px;
+        margin-top: 10px;
+        cursor: move;
+        color: #fff;
+        box-sizing: border-box;
+        /* 不能选中文本 */
+        user-select: none;
+      }
+      .list-item.moving {
+        background-color: transparent;
+        color: transparent;
+        border: 1px dashed #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="list">
+      <div draggable="true" class="list-item">1</div>
+      <div draggable="true" class="list-item">2</div>
+      <div draggable="true" class="list-item">3</div>
+      <div draggable="true" class="list-item">4</div>
+      <div draggable="true" class="list-item">5</div>
+    </div>
 
-   <script>
-    const list = document.querySelector('.list')
-    let sourceNode = undefined
-    list.addEventListener('dragstart',(e)=>{
-      setTimeout(()=>{
-        e.target.classList.add('moving')
-      },0)
-      sourceNode = e.target
-    })
-    list.addEventListener('dragenter',(e)=>{
-      if(e.target===list || e.target===sourceNode){
-        return
-      }
-      const children = Array.from(list.children)
-      sourceIndex = children.indexOf(sourceNode)
-      targetIndex = children.indexOf(e.target)
-      // 向下
-      if(sourceIndex<targetIndex){
-        list.insertBefore(sourceNode,e.target.nextElementSibing)
-      }else{
-        // 向上
-        list.insertBefore(sourceNode,e.target)
-      }
-    })
-    list.addEventListener('dragend',(e)=>{
-      e.target.classList.remove('moving')
-    })
-   </script>
-</body>
+    <script src="../011-Flip动画/index.js"></script>
+
+    <script>
+      const list = document.querySelector(".list");
+      let sourceNode = undefined;
+      const flip = new Flip(list, 0.3);
+
+      list.addEventListener("dragstart", (e) => {
+        setTimeout(() => {
+          e.target.classList.add("moving");
+        }, 0);
+        sourceNode = e.target;
+        // 这个加了好像没用
+        // e.dataTransfer.effectAllowed = 'move'
+      });
+      list.addEventListener("dragOver", (e) => {
+        // 这个好像对自己写的没啥影响，不过拖快了，列表会抖动
+        e.preventDefault()
+      });
+      list.addEventListener("dragenter", (e) => {
+        // 这个好像对自己写的没啥影响，不过拖快了，列表会抖动
+        // e.preventDefault()
+        if (e.target === list || e.target === sourceNode) {
+          return;
+        }
+        const children = Array.from(list.children);
+        sourceIndex = children.indexOf(sourceNode);
+        targetIndex = children.indexOf(e.target);
+        // 向下
+        if (sourceIndex < targetIndex) {
+          list.insertBefore(sourceNode, e.target.nextElementSibing);
+        } else {
+          // 向上
+          list.insertBefore(sourceNode, e.target);
+        }
+        // 开始动画
+        flip.play();
+      });
+      list.addEventListener("dragend", (e) => {
+        e.target.classList.remove("moving");
+      });
+    </script>
+  </body>
 </html>
