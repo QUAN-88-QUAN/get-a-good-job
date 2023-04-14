@@ -1,4 +1,4 @@
-// 没得源码,自己写的
+// 没得源码,自己写的,拖快了会抖动
 class Flip {
   constructor(nodeList, time) {
     this.nodeList = nodeList;
