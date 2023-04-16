@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #container {
+        margin-top: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      span {
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">123223424324654765757868789</div>
+
+    <script src="./curve.js"></script>
+
+    <script>
+      const container = document.querySelector("#container");
+      container.innerHTML = container.textContent
+        .split("")
+        .map((item) => `<span>${item}</span>`)
+        .join("");
+
+      function createCurve(func, range) {
+        const points = getCurvePoints(
+          func,
+          range,
+          container.children.length,
+          container.clientWidth
+        );
+        // console.log(points)
+        for (let i = 0; i < points.length; i++) {
+          container.children[i].style.transform = `translateY(${points[i]}px)`;
+        }
+      }
+
+      createCurve((x) => Math.sin(x), [0, 2 * Math.PI]);
+      let offset = 0;
+      // 动起来
+      setInterval(() => {
+        offset += 0.1;
+        createCurve((x) => Math.sin(x), [offset, offset + 2 * Math.PI]);
+      },10);
+    </script>
+  </body>
+</html>
