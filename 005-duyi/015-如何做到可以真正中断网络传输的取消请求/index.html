@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" id="input" />
+    <script>
+      const input = document.querySelector("#input");
+      let controller;
+      let xhr;
+      input.oninput = async () => {
+        // fetch
+        // console.log(controller);
+        // controller && controller.abort();
+        // controller = new AbortController();
+        // // 教书先生api
+        // const list = await fetch(
+        //   "https://api.oioweb.cn/api/search/getOlyMedals",
+        //   {
+        //     signal: controller.signal,
+        //   }
+        // ).then((res) => {
+        //   return res.json();
+        // });
+
+        // xhr
+        // 这个请求的取消请求是假的,只是客户端不要而已,不能中断网络传输
+        console.log(xhr);
+        xhr && xhr.abort();
+        xhr = new XMLHttpRequest();
+        xhr.open("get", "https://api.oioweb.cn/api/search/getOlyMedals");
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+              console.log(xhr.response);
+            }
+          }
+        };
+        xhr.send();
+      };
+    </script>
+  </body>
+</html>
