@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>canvas吃内存-2</title>
+</head>
+<body>
+  <div class="vvv"></div>
+  <script>
+    const vvv = document.querySelector(".vvv");
+    const arr = []
+    const create1MCanvas = (imgNode) => {
+      const size = 512;
+      const canvas = document.createElement("canvas");
+      // canvas.width = imgNode.width || size;
+      canvas.width = size;
+      // canvas.height = imgNode.height || size;
+      canvas.height = size;
+      const context = canvas.getContext("2d");
+      context.drawImage(imgNode, 0, 0, canvas.width, canvas.height);
+      var dataURL = canvas.toDataURL('image/png');
+      // 需要写这一步，不写可能就会被回收
+      arr.push(canvas)
+      return dataURL;
+    };
+    const createNMCanvas = (n) => {
+      for (let i = 0; i < n; i++) {
+        const imgNode = new Image();
+        imgNode.setAttribute('crossOrigin', 'anonymous');
+        imgNode.src = 'https://profile-avatar.csdnimg.cn/c230a09959ac486aac8ddf8acf850162_abcquan123.jpg'
+        if(imgNode){
+          imgNode.onload = () => {
+            const img = create1MCanvas(imgNode)
+            const node = document.createElement('img')
+            node.setAttribute('src', img)
+            vvv.appendChild(node)
+          }
+        }
+      }
+    };
+    createNMCanvas(1000);
+  </script>
+</body>
+</html>
