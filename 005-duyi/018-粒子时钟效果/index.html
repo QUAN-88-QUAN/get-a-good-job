@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        display: block;
+        background: radial-gradient(#fff, #8c738c);
+      }
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+    <script>
+      const canvas = document.querySelector("canvas");
+      const ctx = canvas.getContext("2d", {
+        // 表示是否计划有大量的回读操作，频繁调用getImageData()方法时能节省内存，仅Gecko内核浏览器支持。
+        willReadFrequently: true,
+      });
+      // 颗粒数量
+      const PARTICLE_NUM = 1500;
+      // 绘制的文本
+      let text = "";
+      // 绘制文本字体大小
+      const FONT_SIZE = 140;
+      // 颗粒对象形成的数组
+      const partocles = new Array(PARTICLE_NUM);
+      // 颗粒的颜色
+      const COLOR = "#5445544d";
+      // 随机尺寸范围
+      const SIZES = [2, 7];
+      // 开始移动时间
+      let startMoveTime = 0;
+
+      // 获取[min,max]范围内的随机整数
+      function getRandom(min, max) {
+        return Math.floor(Math.random() * (max + 1 - min) + min);
+      }
+
+      // 初始化
+      function init() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        // 初始化对象颗粒数组
+        // 圆的中心坐标
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        for (let i = 0; i < partocles.length; i++) {
+          const red = Math.random() * 2 * Math.PI;
+          const size = getRandom(SIZES[0], SIZES[1]);
+          const r = canvas.height / 2;
+          partocles[i] = {
+            // 起始坐标
+            // sina = 对边/半径,对边也就是y坐标
+            sx: cx + Math.cos(red) * r,
+            sy: cy + Math.sin(red) * r,
+            // 目前的坐标
+            x: cx + Math.cos(red) * r,
+            y: cy + Math.sin(red) * r,
+            size,
+          };
+          drawParticle(partocles[i]);
+        }
+      }
+
+      function getText() {
+        return new Date().toLocaleTimeString().substring(0, 8);
+      }
+
+      // 清空canvas
+      function clearCanvas() {
+        const { width, height } = canvas;
+        ctx.clearRect(0, 0, width, height);
+      }
+
+      function fps() {
+        requestAnimationFrame(() => {
+          // 要绘制的文本
+          const curText = getText();
+          if (curText !== text) {
+            // 更新文本
+            text = curText;
+            for (const p of partocles) {
+              p.sx = p.x;
+              p.sy = p.y;
+            }
+            // 更新开始移动的时间点
+            startMoveTime = Date.now();
+          }
+          // 获取像素点
+          const imgData = getBMP();
+          // 更新绘制
+          update(imgData);
+          fps();
+        });
+      }
+
+
+      function drawParticle(p) {
+        ctx.fillStyle = COLOR;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      // 绘制文本得到像素点信息
+      function getBMP() {
+        const { width, height } = canvas;
+        clearCanvas();
+        // 后两位代表的是透明度
+        ctx.fillStyle = "#ffffff51";
+        ctx.textBaseline = "middle";
+        ctx.font = `${FONT_SIZE}px '手札体-简',sans-serif`;
+        const textWidth = ctx.measureText(text).width;
+        ctx.fillText(text, (width - textWidth) / 2, height / 2);
+        const imgData = ctx.getImageData(0, 0, width, height);
+        return imgData;
+      }
+
+      function update(imgData) {
+        const { width, height, data } = imgData;
+        // 取点
+        // 间隔距离
+        const dis = 4;
+        // 颗粒目标坐标
+        const pxls = [];
+        for (let w = 0; w < width; w += dis) {
+          for (let h = 0; h < height; h += dis) {
+            const i = (w + h * width) * 4;
+            if (data[i] > 10) {
+              pxls.push([w, h]);
+            }
+          }
+        }
+        const count = Math.min(partocles.length, pxls.length);
+        // 多少时间到达目标位置（毫秒）
+        const duration = 400;
+        // 现在已经过了多少时间
+        const timeSpan = Date.now() - startMoveTime;
+        for (let i = 0; i < count; i++) {
+          // 起始位置
+          const p = partocles[i];
+          const { sx, sy } = p;
+          // 目标位置
+          const [tx, ty] = pxls[i];
+          // x,y的移动距离
+          const disX = tx - sx;
+          const disY = ty - sy;
+          // 得到这一次的偏移量
+          let moveX = (disX / duration) * timeSpan;
+          let moveY = (disY / duration) * timeSpan;
+          if (Math.abs(moveX) > Math.abs(disX)) {
+            moveX = disX;
+          }
+          if (Math.abs(moveY) > Math.abs(disY)) {
+            moveY = disY;
+          }
+          p.x = sx + moveX;
+          p.y = sy + moveY;
+          drawParticle(p);
+        }
+      }
+
+      init();
+
+      fps();
+    </script>
+  </body>
+</html>
