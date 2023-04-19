@@ -116,7 +116,7 @@
         const { width, height } = canvas;
         clearCanvas();
         // 后两位代表的是透明度
-        ctx.fillStyle = "#ffffff51";
+        ctx.fillStyle = "#ffffff01";
         ctx.textBaseline = "middle";
         ctx.font = `${FONT_SIZE}px '手札体-简',sans-serif`;
         const textWidth = ctx.measureText(text).width;
@@ -132,6 +132,7 @@
         const dis = 4;
         // 颗粒目标坐标
         const pxls = [];
+        // 不是很懂
         for (let w = 0; w < width; w += dis) {
           for (let h = 0; h < height; h += dis) {
             const i = (w + h * width) * 4;
@@ -155,6 +156,7 @@
           const disX = tx - sx;
           const disY = ty - sy;
           // 得到这一次的偏移量
+          // 不是很懂
           let moveX = (disX / duration) * timeSpan;
           let moveY = (disY / duration) * timeSpan;
           if (Math.abs(moveX) > Math.abs(disX)) {
