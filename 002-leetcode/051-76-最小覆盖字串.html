@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var minWindow = function (s, t) {
+        // 方法一：暴力法（时间超限）---时间O（m^4）（t的长度）---空间：O（1）（常数变量）
+        // let minLength = t.length;
+        // while (minLength <= s.length) {
+        //   for (let i = 0; minLength + i <= s.length; i++) {
+        //     const str = s.slice(i, minLength + i);
+        //     let flag = true;
+        //     let tempStr = str;
+        //     let tempT = t;
+        //     let j = 0;
+        //     while (j < tempT.length) {
+        //       const index = tempStr.indexOf(tempT[j]);
+        //       if (index === -1) {
+        //         flag = false;
+        //         break;
+        //       } else {
+        //         // 如果存在相同的就把相同的字符消掉
+        //         // const a1 = tempStr.split("");
+        //         // a1.splice(index, 1);
+        //         // tempStr = a1.join("");
+        //         // const a2 = tempT.split("");
+        //         // a2.splice(j, 1);
+        //         // tempT = a2.join("");
+
+        //         // 优化方法(还是时间超限)
+        //         tempStr = tempStr.slice(0, index) + tempStr.slice(index + 1);
+        //         tempT = tempT.slice(0, j) + tempT.slice(j + 1);
+        //       }
+        //     }
+        //     if (flag) {
+        //       return str;
+        //     }
+        //   }
+        //   minLength++;
+        // }
+        // return "";
+
+        // 方法二：（滑动窗口）---时间O（n）（只会遍历一次）---空间：O（2n）（s的的长度）
+        const needs = new Map();
+        const window = new Map();
+        let vaild = 0;
+        let left = 0;
+        let right = 0;
+        let start = 0;
+        let len = Number.MAX_SAFE_INTEGER;
+        for (let i = 0; i < t.length; i++) {
+          if (needs.has(t[i])) {
+            needs.set(t[i], needs.get(t[i]) + 1);
+          } else {
+            needs.set(t[i], 1);
+          }
+        }
+        while (right < s.length) {
+          // temp1 是将移入窗口的字符
+          const temp1 = s[right];
+          // 扩大窗口
+          right++;
+          // 进行窗口内数据的一系列更新
+          if (needs.has(temp1)) {
+            if (window.has(temp1)) {
+              window.set(temp1, window.get(temp1) + 1);
+            } else {
+              window.set(temp1, 1);
+            }
+            if (needs.get(temp1) === window.get(temp1)) {
+              vaild++;
+            }
+          }
+          // 判断左侧窗口是否要收缩
+          while (vaild === needs.size) {
+            // 在这里更新最小覆盖子串
+            if (right - left < len) {
+              start = left;
+              len = right - left;
+            }
+            // temp2 是将移出窗口的字符
+            const temp2 = s[left];
+            left++;
+            // 进行窗口内数据的一系列更新
+            if (needs.has(temp2)) {
+              if (window.get(temp2) === needs.get(temp2)) {
+                vaild--;
+              }
+              window.set(temp2, window.get(temp2) - 1);
+            }
+          }
+        }
+        return len === Number.MAX_SAFE_INTEGER ? "" : s.substr(start, len);
+      };
+      console.log(minWindow("ADOBECODEBANC", "ABC"));
+    </script>
+  </body>
+</html>
