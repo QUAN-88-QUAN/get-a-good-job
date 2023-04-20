@@ -95,7 +95,7 @@
             }
           }
         }
-        return len === Number.MAX_SAFE_INTEGER ? "" : s.substr(start, len);
+        return len === Number.MAX_SAFE_INTEGER ? "" : s.substring(start, start+len);
       };
       console.log(minWindow("ADOBECODEBANC", "ABC"));
     </script>
