@@ -87,6 +87,7 @@
             const temp2 = s[left];
             left++;
             // 进行窗口内数据的一系列更新
+            // 这里不能去掉，两个没有的就是undefined===undefined
             if (needs.has(temp2)) {
               if (window.get(temp2) === needs.get(temp2)) {
                 vaild--;

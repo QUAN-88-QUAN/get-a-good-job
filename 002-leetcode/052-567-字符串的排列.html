@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var checkInclusion = function (s1, s2) {
+        // 方法一：暴力法（时间超限）---时间O（n*(6n)）（s2的长度）---空间：O（1）（常数变量）
+        // let minLength = s1.length;
+        // for (let i = 0; minLength + i <= s2.length; i++) {
+        //   const str = s2.slice(i, minLength + i).split('').sort().join('');
+        //   const temp = s1.split('').sort().join('');
+        //   if (str === temp) {
+        //     return true;
+        //   }
+        // }
+        // return false;
+
+        // 方法二：暴力法（采用map空间换时间）---时间O（n^2）（s2的长度）---空间：O（n）（s2的长度的map）
+        const map1 = new Map();
+        const map2 = new Map();
+        let vaild = 0;
+        const length = s1.length;
+        for (let i = 0; i < length; i++) {
+          if (map1.has(s1[i])) {
+            map1.set(s1[i], map1.get(s1[i]) + 1);
+          } else {
+            map1.set(s1[i], 1);
+          }
+        }
+        for (let i = 0; length + i <= s2.length; i++) {
+          const str = s2.slice(i, length + i);
+          for (let j = 0; j < str.length; j++) {
+            if(vaild===map1.size){
+              return true
+            }
+            if (map1.has(str[j])) {
+              vaild++
+            }
+          }
+        }
+        return false
+
+        // 方法三：滑动窗口（）---时间O（n）（s2的长度）---空间：O（n）（s2的长度的map）
+      };
+
+      console.log(checkInclusion("ab", "eidaoboo"));
+      console.log(checkInclusion("ab", "eidbaooo"));
+    </script>
+  </body>
+</html>
