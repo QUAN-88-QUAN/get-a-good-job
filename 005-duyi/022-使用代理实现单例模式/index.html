@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 用live server打开 -->
+    <script type="module">
+      import { Video } from "./video.js";
+
+      // 1
+      // const v1 = new Video();
+      // const v2 = new Video();
+
+      // 2
+      // const v1 = Video
+      // const v2 = Video
+
+      // 3
+      // const v1 = Video.getIntance()
+      // const v2 = Video.getIntance()
+      // 不是单例
+      // const v1 = Video.getIntance();
+      // const v2 = new Video();
+
+      // 4
+      // const v1 = new Video();
+      // const v2 = new Video();
+      // // 报错
+      // Video.prototype.play = function(){
+      //   console.log('play')
+      // }
+      // v1.play()
+
+      // 5
+      const v1 = new Video();
+      const v2 = new Video();
+      Video.prototype.play = function(){
+        console.log('play')
+      }
+      v1.play()
+
+      console.log(v1 === v2);
+    </script>
+  </body>
+</html>
