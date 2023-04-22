@@ -92,6 +92,7 @@
               if (window.get(temp2) === needs.get(temp2)) {
                 vaild--;
               }
+              // 这里不能放进去是因为，如果一个字符出现的次数大于1，得全部去掉完之后，vaild才能减1
               window.set(temp2, window.get(temp2) - 1);
             }
           }

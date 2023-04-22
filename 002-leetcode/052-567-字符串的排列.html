@@ -20,36 +20,86 @@
         // }
         // return false;
 
-        // 方法二：暴力法（采用map空间换时间）---时间O（n^2）（s2的长度）---空间：O（n）（s2的长度的map）
+        // 方法二：暴力法（采用map空间换时间）---时间O（n^2）（s2的长度）---空间：O（2n）（s1的长度的map）
+        // const map1 = new Map();
+        // const map2 = new Map();
+        // let vaild = 0;
+        // const length = s1.length;
+        // for (let i = 0; i < length; i++) {
+        //   if (map1.has(s1[i])) {
+        //     map1.set(s1[i], map1.get(s1[i]) + 1);
+        //   } else {
+        //     map1.set(s1[i], 1);
+        //   }
+        // }
+        // for (let i = 0; length + i <= s2.length; i++) {
+        //   const str = s2.slice(i, length + i);
+        //   vaild = 0;
+        //   map2.clear()
+        //   for (let j = 0; j < str.length; j++) {
+        //     if (map1.has(str[j])) {
+        //       if (map2.has(str[j])) {
+        //         map2.set(str[j], map2.get(str[j]) + 1);
+        //       } else {
+        //         map2.set(str[j], 1);
+        //       }
+        //       if (map1.get(str[j]) === map2.get(str[j])) {
+        //         vaild++;
+        //       }
+        //     }
+        //     if (vaild === map1.size) {
+        //       return true;
+        //     }
+        //   }
+        // }
+        // return false;
+
+        // 方法三：滑动窗口（）---时间O（n）（s2的长度）---空间：O（n）（s2的长度的map）
         const map1 = new Map();
         const map2 = new Map();
+        let left = 0;
+        let right = 0;
         let vaild = 0;
-        const length = s1.length;
-        for (let i = 0; i < length; i++) {
+        for (let i = 0; i < s1.length; i++) {
           if (map1.has(s1[i])) {
             map1.set(s1[i], map1.get(s1[i]) + 1);
           } else {
             map1.set(s1[i], 1);
           }
         }
-        for (let i = 0; length + i <= s2.length; i++) {
-          const str = s2.slice(i, length + i);
-          for (let j = 0; j < str.length; j++) {
-            if(vaild===map1.size){
-              return true
+        while (right < s2.length) {
+          const temp1 = s2[right];
+          right++;
+          if (map1.has(temp1)) {
+            if (map2.has(temp1)) {
+              map2.set(temp1, map2.get(temp1) + 1);
+            } else {
+              map2.set(temp1, 1);
             }
-            if (map1.has(str[j])) {
-              vaild++
+            if (map1.get(temp1) === map2.get(temp1)) {
+              vaild++;
+            }
+          }
+          while (right - left >= s1.length) {
+            if (map1.size === vaild) {
+              return true;
+            }
+            const temp2 = s2[left];
+            left++;
+            if (map1.has(temp2)) {
+              if (map1.get(temp2) === map2.get(temp2)) {
+                vaild--;
+              }
+              map2.set(temp2, map2.get(temp2) - 1);
             }
           }
         }
-        return false
-
-        // 方法三：滑动窗口（）---时间O（n）（s2的长度）---空间：O（n）（s2的长度的map）
+        return false;
       };
 
       console.log(checkInclusion("ab", "eidaoboo"));
       console.log(checkInclusion("ab", "eidbaooo"));
+      console.log(checkInclusion("hello", "ooolleoooleh"));
     </script>
   </body>
 </html>
