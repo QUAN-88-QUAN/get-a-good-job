@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var findAnagrams = function (s, p) {
+        // 方法一：暴力法（采用map空间换时间,还是时间超限）---时间O（n^2）（n表示p的长度）---空间：O（2n）（p的长度的map）
+        // const map1 = new Map();
+        // const map2 = new Map();
+        // let vaild = 0;
+        // const result = [];
+        // const length = p.length;
+        // for (let i = 0; i < length; i++) {
+        //   map1.set(p[i], (map1.get(p[i]) || 0) + 1);
+        // }
+        // for (let i = 0; length + i <= s.length; i++) {
+        //   const str = s.slice(i, length + i);
+        //   vaild = 0;
+        //   map2.clear();
+        //   for (let j = 0; j < str.length; j++) {
+        //     if (map1.has(str[j])) {
+        //       map2.set(str[j], (map2.get(str[j]) || 0) + 1);
+        //       if (map1.get(str[j]) === map2.get(str[j])) {
+        //         vaild++;
+        //       }
+        //     }
+        //     if (vaild === map1.size) {
+        //       result.push(i);
+        //     }
+        //   }
+        // }
+        // return result;
+
+        // 方法二：滑动窗口（）---时间O（n）（s的长度）---空间：O（m）（p的长度的map）
+        const map1 = new Map();
+        const map2 = new Map();
+        const result = [];
+        let vaild = 0;
+        let left = 0;
+        let right = 0;
+        for (let i = 0; i < p.length; i++) {
+          map1.set(p[i], (map1.get(p[i]) || 0) + 1);
+        }
+        while (right < s.length) {
+          const temp1 = s[right];
+          right++;
+          if (map1.has(temp1)) {
+            map2.set(temp1, (map2.get(temp1) || 0) + 1);
+            if (map1.get(temp1) === map2.get(temp1)) {
+              vaild++;
+            }
+          }
+          while (right - left >= p.length) {
+            if (vaild === map1.size) {
+              result.push(left);
+            }
+            const temp2 = s[left];
+            left++;
+            if (map1.has(temp2)) {
+              if (map1.get(temp2) === map2.get(temp2)) {
+                vaild--;
+              }
+              map2.set(temp2, map2.get(temp2) - 1);
+            }
+          }
+        }
+        return result;
+      };
+      console.log(findAnagrams("cbaebabacd", "abc"));
+    </script>
+  </body>
+</html>
