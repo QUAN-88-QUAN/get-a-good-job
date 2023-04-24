@@ -12,27 +12,53 @@
       let arr = ["a", "b", "c", "d", "e"];
       Array.prototype.myMap = function (fn) {
         let arr = this;
-        // let result = [];
-        // arr.reduce((pre, cur, index, arr) => {
-        //   result.push(fn(cur, index));
-        // });
-        // 或者写成
-        return arr.reduce((pre, cur, index, arr) => {
-          return [...pre,fn(cur,index)]
-        },[]);
+        let result = [];
         // 这是普通的通过for循环
         // for (let i = 0; i < arr.length; i++) {
         //     result.push(fn(arr[i], i))
         // }
+        // return result;
+
+        // 上面的方法在new Array(10).myMap(...)不会返回长度为10的空数组，
+        // 按理说应该需要返回长度为10空数组，使用reduce又只能返回长度为1的空数组（数组项为空不会调用reduce）
+        // https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/map
+        // 那些从来没被赋过值或者使用 delete 删除的索引则不会被调用
+
+        // 使用reduce
+        // arr.reduce((pre, cur, index, arr) => {
+        //   result.push(fn(cur, index));
+        // },0);
+        // return result;
+
+        // 或者写成
+        // return arr.reduce((pre, cur, index, arr) => {
+        //   return [...pre,fn(cur,index)]
+        // },[]);
+
+        // 准确写法
+        result = new Array(arr.length);
+        for (var i = 0; i < arr.length; i++) {
+          if (i in arr) {
+            result[i] = fn(arr[i], i);
+          }
+        }
         return result;
       };
-      let newArr = arr.myMap((item, index) => {
+      let newArr1 = arr.myMap((item, index) => {
         // let newArr = arr.map((item, index) => {
         console.log(item);
         console.log(index);
         return item + "1";
       });
-      console.log(newArr);
+      let newArr2 = Array(10).myMap((item) => {
+        return { name: "quan" };
+      });
+      let newArr3 = Array(10).map((item) => {
+        return { name: "quan" };
+      });
+      console.log(newArr1);
+      console.log(newArr2);
+      console.log(newArr3);
     </script>
   </body>
 </html>
