@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // https://juejin.cn/post/6844904022223110151
+      function createIterator(items) {
+        let i = 0;
+        return {
+          next: function () {
+            const done = i >= items.length;
+            const value = !done ? items[i++] : undefined;
+            return {
+              value,
+              done,
+            };
+          },
+          [Symbol.iterator]:function(){
+            return this
+          }
+        };
+      }
+
+      const genIns1 = createIterator([1, 2, 3]);
+      // console.log(...genIns1)
+      // for(const item of genIns1){
+      //   console.log(item)
+      // }
+      console.log(genIns1.next()); //{value: 1, done: false}
+      console.log(genIns1.next()); //{value: 2, done: false}
+      console.log(genIns1.next()); //{value: 3, done: false}
+      console.log(genIns1.next()); //{value: undefined, done: true}
+    </script>
+  </body>
+</html>

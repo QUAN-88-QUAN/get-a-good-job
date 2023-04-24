@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // https://juejin.cn/post/6859281096152973326
+      function gen$(context) {
+        while (1) {
+          switch ((context.prev = context.next)) {
+            case 0:
+              context.next = 2;
+              return "result1";
+            case 2:
+              context.next = 4;
+              return "result2";
+            case 4:
+              context.next = 6;
+              return "result3";
+            case 6:
+              context.stop();
+              return undefined;
+          }
+        }
+      }
+      // 这样的话时共用的同一份数据
+      // const context = {
+      //   prev: 0,
+      //   next: 0,
+      //   done: false,
+      //   stop: function () {
+      //     this.done = true;
+      //   },
+      // };
+      class Context {
+        constructor() {
+          this.next = 0;
+          this.prev = 0;
+          this.done = false;
+        }
+        stop() {
+          this.done = true;
+        }
+      }
+      function gen() {
+        const contextIns = new Context();
+        return {
+          next: function () {
+            const value = gen$(contextIns);
+            const done = contextIns.done;
+            return { value, done };
+          },
+        };
+      }
+
+      const genIns1 = gen();
+
+      // 不能迭代出来，会报错
+      // for(const item of genIns1){
+      //   console.log(item)
+      // }
+
+      console.log(genIns1.next()); //{value: 'result1', done: false}
+      console.log(genIns1.next()); //{value: 'result2', done: false}
+      console.log(genIns1.next()); //{value: 'result3', done: false}
+      console.log(genIns1.next()); //{value: undefined, done: true}
+
+      const genIns2 = gen();
+      console.log(genIns2.next()); //修改前 {value: undefined, done: true} 修改后 {value: 'result1', done: false}
+      console.log(genIns2.next()); //修改前 {value: undefined, done: true} 修改后 {value: 'result2', done: false}
+      console.log(genIns2.next()); //修改前 {value: undefined, done: true} 修改后 {value: 'result3', done: false}
+      console.log(genIns2.next()); //修改前 {value: undefined, done: true} 修改后 {value: undefined, done: false}
+    </script>
+  </body>
+</html>
