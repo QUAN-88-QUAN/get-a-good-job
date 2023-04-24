@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // function addEvent(ele,eventName,handler){
+      //   if(ele.addEventListener){
+      //     ele.addEventListener(eventName.handler)
+      //   }else if(ele.attachEvent){
+      //     ele.attachEvent('on'+eventName,handler)
+      //   }else{
+      //     ele['on'+eventName] = handler
+      //   }
+      // }
+
+      // 更好的写法
+      // const addEvent = (function () {
+      //   if (ele.addEventListener) {
+      //     return function (ele, eventName, handler) {
+      //       ele.addEventListener(eventName.handler);
+      //     };
+      //   } else if (ele.attachEvent) {
+      //     return function (ele, eventName, handler) {
+      //       ele.attachEvent("on" + eventName, handler);
+      //     };
+      //   } else {
+      //     return function (ele, eventName, handler) {
+      //       ele["on" + eventName] = handler;
+      //     };
+      //   }
+      // })();
+
+      // const request = (()=>{
+      //   if(typeof window !== 'undefined'){
+      //     return (option)=>{
+      //       // 浏览器的ajax
+      //     }
+      //   }else{
+      //     return (option)=>{
+      //       // node的http
+      //     }
+      //   }
+      // })()
+
+      function removeSpace1(str) {
+        return str.repace(/\s/g, "");
+      }
+      // 优化
+      const removeSpace2 = () => {
+        const reg = /\s/g;
+        const replacement = "";
+        return (str) => str.replace(reg, replacement);
+      };
+      // 不使用的时候不占用内存，使用时候内存一直保持不变，置为null的时候不占用内存
+      let createSpace = removeSpace2()
+      console.log(createSpace('asdas sdfaf asdas s'))
+      console.log(createSpace('asdas sdfaf asdas s'))
+      console.log(createSpace('asdas sdfaf asdas s'))
+      createSpace = null
+    </script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 取余
+      // a%b = a-b*p
+      // p:a/b的整数部分
+      // 5%3 = 5-3*(5/3) = 2
+      // -5%3 = -5-3*(-5/3) = -2
+
+      // 取模
+      // a mod b = a-b*p
+      // p:a/b向下取整
+      // -5%3 = -5-3*(-5/3) = 1
+      // 5%3 = 5-3*(5/3) = 2
+
+      function idOdd(n) {
+        if (typeof n !== "number") {
+          throw new TypeError(`${n} is not a number`);
+        }
+        return n % 2 === 1 || n % 2 === -1;
+      }
+      console.log(idOdd(3));
+      console.log(idOdd(2));
+      console.log(idOdd(-3));
+      console.log(idOdd(true));
+    </script>
+  </body>
+</html>
