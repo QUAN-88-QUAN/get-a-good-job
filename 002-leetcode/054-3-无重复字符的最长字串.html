@@ -11,29 +11,51 @@
     <script>
       var lengthOfLongestSubstring = function (s) {
         // 方法一：暴力法（采用map空间换时间,还是时间超限）---时间O（n^3）（n表示s的长度）---空间：O（n）（s长度的map）
-        let length = 1;
-        let maxLength = Infinity;
+        // let length = 1;
+        // let maxLength = 0;
+        // const map = new Map();
+        // while (length <= s.length) {
+        //   for (let i = 0; i + length <= s.length; i++) {
+        //     const str = s.slice(i, i + length);
+        //     map.clear();
+        //     let tempLength = 0;
+        //     for (let j = 0; j < str.length; j++) {
+        //       if (!map.has(str[j])) {
+        //         map.set(str[j], 1);
+        //         tempLength++;
+        //       }else{
+        //         break
+        //       }
+        //       maxLength = maxLength < tempLength ? tempLength : maxLength;
+        //     }
+        //   }
+        //   length++;
+        // }
+        // return maxLength;
+
+        // 方法二：滑动窗口（）---时间O（n）（s的长度）---空间：O（m）（p的长度的map）
         const map = new Map();
-        while (length < s.length) {
-          for (let i = 0; i + length < s.length; i++) {
-            const str = s.slice(i, i + length);
-            map.clear()
-            for (let j = 0; j < str.length; j++) {
-              if (map.has(str[j])) {
-                maxLength = map.size < maxLength ? map.size : maxLength;
-              } else {
-                map.set(str[j], 1);
-              }
-            }
+        let left = 0;
+        let right = 0;
+        let res = 0;
+        while (right < s.length) {
+          const temp1 = s[right];
+          right++;
+          map.set(temp1, (map.get(temp1) || 0) + 1);
+          while (map.get(temp1) > 1) {
+            const temp2 = s[left];
+            left++;
+            map.set(temp2, map.get(temp2) - 1);
           }
-          length++;
+          res = Math.max(res, right - left);
         }
-        return maxLength
+        return res
       };
 
       // console.log(lengthOfLongestSubstring("abcabcbb"));
       console.log(lengthOfLongestSubstring("pwwkew"));
       // console.log(lengthOfLongestSubstring('bbbbbbbbbbb'));
+      // console.log(lengthOfLongestSubstring(' '));
     </script>
   </body>
 </html>
