@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // https://juejin.cn/post/7136424542238408718
+    // async function getResult1(){
+    //   await new Promise((resolve,reject)=>{
+    //     setTimeout(()=>{
+    //       resolve(1)
+    //       console.log(1)
+    //     },1000)
+    //   })
+    //   await new Promise((resolve,reject)=>{
+    //     setTimeout(()=>{
+    //       resolve(2)
+    //       console.log(2)
+    //     },500)
+    //   })
+    //   await new Promise((resolve,reject)=>{
+    //     setTimeout(()=>{
+    //       resolve(3)
+    //       console.log(3)
+    //     },100)
+    //   })
+    // }
+    // getResult1()
+
+    function* getResult2(){
+      yield new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+          resolve(1)
+          console.log(1)
+        },1000)
+      })
+      yield new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+          resolve(2)
+          console.log(2)
+        },500)
+      })
+      yield new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+          resolve(3)
+          console.log(3)
+        },100)
+      })
+    }
+
+    const gen = getResult2()
+
+    function oc(g){
+      const nextObj = g.next()
+      if(nextObj.done){
+        return
+      }
+      nextObj.value.then(()=>{
+        oc(g)
+      })
+    }
+
+    oc(gen)
+  </script>
+</body>
+</html>

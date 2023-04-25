@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // https://juejin.cn/post/6844904022223110151
+      // https://juejin.cn/post/7007031572238958629
+      function fn(nums) {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(nums * 2);
+          }, 1000);
+        });
+      }
+
+      function* gen() {
+        const num1 = yield fn(1);
+        console.log(num1); // 2
+        const num2 = yield fn(num1);
+        console.log(num2); // 4
+        const num3 = yield fn(num2);
+        console.log(num3); // 8
+        return num3;
+      }
+
+      function generatorToAsync(generatorFn) {
+        return new Promise((resolve, reject) => {
+          const gen = generatorFn();
+          function step(nextF) {
+            let next;
+            try {
+              next = nextF();
+            } catch (error) {
+              return reject(error);
+            }
+            // 迭代完了就resolve
+            if (next.done) {
+              return resolve(next.value);
+            }
+            Promise.resolve(next.value).then(
+              (v) => {
+                step(function () {
+                  return gen.next(v);
+                });
+              },
+              (e) => {
+                return gen.throw(e);
+              }
+            );
+          }
+          // 一开始迭代的值都为undefined
+          step(function () {
+            return gen.next(undefined);
+          });
+        });
+      }
+
+      const genToasync = generatorToAsync(gen);
+      console.log(genToasync)
+    </script>
+  </body>
+</html>
