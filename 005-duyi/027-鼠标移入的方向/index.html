@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #container {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        margin-left: 50%;
+        margin-top: 50%;
+        transform: translate(-50%, -50%);
+        overflow: hidden;
+      }
+      #container .item {
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        transition: all 0.5s ease;
+      }
+      .item:nth-child(1) {
+        position: relative;
+        background-image: url("./1.jpg");
+      }
+      .item:nth-child(2) {
+        z-index: 10;
+        background-image: url("./2.jpg");
+      }
+      .item:nth-child(3) {
+        z-index: 10;
+        background-image: url("./3.jpg");
+        transform: translate(0px, -300%);
+      }
+      .item:nth-child(4) {
+        z-index: 10;
+        background-image: url("./4.jpg");
+        transform: translate(100%, -300%);
+      }
+      .item:nth-child(5) {
+        z-index: 10;
+        background-image: url("./5.jpg");
+        transform: translate(-100%, -400%);
+      }
+      .item-triangle {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 0;
+        height: 0;
+        border: 100px solid transparent;
+        box-sizing: border-box;
+        z-index: 100;
+        /* 把这个加上实现不了鼠标进入事件 */
+        /* pointer-events: none; */
+      }
+      .item-top {
+        /* border-color: skyblue; */
+        transform: translate(0, -50%) rotate(45deg) scale(0.707);
+      }
+      .item-left {
+        /* border-color: lightgreen; */
+        transform: translate(-50%, 0) rotate(45deg) scale(0.707);
+      }
+      .item-bottom {
+        /* border-color: skyblue; */
+        transform: translate(0, 50%) rotate(45deg) scale(0.707);
+      }
+      .item-right {
+        /* border-color: lightgreen; */
+        transform: translate(50%, 0) rotate(45deg) scale(0.707);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div class="item triangle">
+        <div class="item-triangle item-top"></div>
+        <div class="item-triangle item-left"></div>
+        <div class="item-triangle item-bottom"></div>
+        <div class="item-triangle item-right"></div>
+      </div>
+      <div class="item img-bottom"></div>
+      <div class="item img-top">
+        <!-- 这个链接点不了，因为有遮罩层在 -->
+        <a href="https://www.baidu.com">111</a>
+      </div>
+      <div class="item img-right"></div>
+      <div class="item img-left"></div>
+    </div>
+    <script>
+      const triangle = document.querySelector(".triangle");
+      const imgBottom = document.querySelector(".img-bottom");
+      const imgTop = document.querySelector(".img-top");
+      const imgRight = document.querySelector(".img-right");
+      const imgLeft = document.querySelector(".img-left");
+      // mouseenter不会冒泡
+      triangle.addEventListener("mouseover", (e) => {
+        if (e.target.className.indexOf("item-top") > -1) {
+          imgTop.style.transform = "translate(0px,-200%)";
+          imgTop.style.transition = "all 0.5s ease";
+        }
+        if (e.target.className.indexOf("item-bottom") > -1) {
+          imgBottom.style.transform = "translate(0,-100%)";
+          imgBottom.style.transition = "all 0.5s ease";
+        }
+        if (e.target.className.indexOf("item-right") > -1) {
+          imgRight.style.transform = "translate(0,-300%)";
+          imgRight.style.transition = "all 0.5s ease";
+        }
+        if (e.target.className.indexOf("item-left") > -1) {
+          imgLeft.style.transform = "translate(0,-400%)";
+          imgLeft.style.transition = "all 0.5s ease";
+        }
+      });
+      triangle.addEventListener("mouseout", (e) => {
+        imgTop.style.transition = "none";
+        imgBottom.style.transition = "none";
+        imgRight.style.transition = "none";
+        imgLeft.style.transition = "none";
+        if (e.target.className.indexOf("item-top") > -1) {
+          imgTop.style.transform = "translate(0px,-300%)";
+          imgTop.style.transition = "all 0.5s ease";
+        } else if (e.target.className.indexOf("item-bottom") > -1) {
+          imgBottom.style.transform = "translate(0,0)";
+          imgBottom.style.transition = "all 0.5s ease";
+        } else if (e.target.className.indexOf("item-right") > -1) {
+          imgRight.style.transform = "translate(100%,-300%)";
+          imgRight.style.transition = "all 0.5s ease";
+        } else if (e.target.className.indexOf("item-left") > -1) {
+          imgLeft.style.transform = "translate(-100%,-400%)";
+          imgLeft.style.transition = "all 0.5s ease";
+        }
+      });
+    </script>
+  </body>
+</html>
