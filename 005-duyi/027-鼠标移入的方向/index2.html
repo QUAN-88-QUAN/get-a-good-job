@@ -6,12 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
+      body,html{
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+      }
       #container {
+        position: absolute;
+        left: 50%;
+        top: 50%;
         position: relative;
         width: 200px;
         height: 200px;
-        margin-left: 50%;
-        margin-top: 50%;
         transform: translate(-50%, -50%);
         overflow: hidden;
       }
@@ -96,44 +103,6 @@
       const imgTop = document.querySelector(".img-top");
       const imgRight = document.querySelector(".img-right");
       const imgLeft = document.querySelector(".img-left");
-      // mouseenter不会冒泡
-      triangle.addEventListener("mouseover", (e) => {
-        if (e.target.className.indexOf("item-top") > -1) {
-          imgTop.style.transform = "translate(0px,-200%)";
-          imgTop.style.transition = "all 0.5s ease";
-        }
-        if (e.target.className.indexOf("item-bottom") > -1) {
-          imgBottom.style.transform = "translate(0,-100%)";
-          imgBottom.style.transition = "all 0.5s ease";
-        }
-        if (e.target.className.indexOf("item-right") > -1) {
-          imgRight.style.transform = "translate(0,-300%)";
-          imgRight.style.transition = "all 0.5s ease";
-        }
-        if (e.target.className.indexOf("item-left") > -1) {
-          imgLeft.style.transform = "translate(0,-400%)";
-          imgLeft.style.transition = "all 0.5s ease";
-        }
-      });
-      triangle.addEventListener("mouseout", (e) => {
-        imgTop.style.transition = "none";
-        imgBottom.style.transition = "none";
-        imgRight.style.transition = "none";
-        imgLeft.style.transition = "none";
-        if (e.target.className.indexOf("item-top") > -1) {
-          imgTop.style.transform = "translate(0px,-300%)";
-          imgTop.style.transition = "all 0.5s ease";
-        } else if (e.target.className.indexOf("item-bottom") > -1) {
-          imgBottom.style.transform = "translate(0,0)";
-          imgBottom.style.transition = "all 0.5s ease";
-        } else if (e.target.className.indexOf("item-right") > -1) {
-          imgRight.style.transform = "translate(100%,-300%)";
-          imgRight.style.transition = "all 0.5s ease";
-        } else if (e.target.className.indexOf("item-left") > -1) {
-          imgLeft.style.transform = "translate(-100%,-400%)";
-          imgLeft.style.transition = "all 0.5s ease";
-        }
-      });
     </script>
   </body>
 </html>
