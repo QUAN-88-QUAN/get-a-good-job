@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- 这是受index2启发改进的index1 -->
+    <style>
+      body,
+      html {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+      }
+      #container {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        position: relative;
+        width: 200px;
+        height: 200px;
+        transform: translate(-50%, -50%);
+        overflow: hidden;
+      }
+      .bg {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        transition: all 0.5s ease;
+      }
+      .right {
+        transform: translate(-100%, 0);
+      }
+      .left {
+        transform: translate(100%, 0);
+      }
+      .up {
+        transform: translate(0, 100%);
+      }
+      .down {
+        transform: translate(0, -100%);
+      }
+      .item {
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        z-index: 10;
+      }
+      .item:nth-child(1) {
+        background-image: url("./1.jpg");
+      }
+      .item:nth-child(2) {
+        background-image: url("./2.jpg");
+      }
+      .item:nth-child(3) {
+        background-image: url("./3.jpg");
+        transform: translate(0px, -300%);
+      }
+      .item:nth-child(4) {
+        background-image: url("./4.jpg");
+        transform: translate(100%, -300%);
+      }
+      .item:nth-child(5) {
+        background-image: url("./5.jpg");
+        transform: translate(-100%, -400%);
+      }
+      /* 三角形 */
+      .item-triangle {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 0;
+        height: 0;
+        border: 100px solid transparent;
+        box-sizing: border-box;
+        z-index: 100;
+      }
+      .item-top {
+        transform: translate(0, -50%) rotate(45deg) scale(0.707);
+      }
+      .item-left {
+        transform: translate(-50%, 0) rotate(45deg) scale(0.707);
+      }
+      .item-bottom {
+        transform: translate(0, 50%) rotate(45deg) scale(0.707);
+      }
+      .item-right {
+        transform: translate(50%, 0) rotate(45deg) scale(0.707);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div class="triangle">
+        <div class="item-triangle item-top"></div>
+        <div class="item-triangle item-left"></div>
+        <div class="item-triangle item-bottom"></div>
+        <div class="item-triangle item-right"></div>
+      </div>
+
+      <div class="bg">
+        <div class="item img-center"></div>
+        <div class="item img-bottom"></div>
+        <div class="item img-top">
+          <!-- 这个链接点不了，因为有遮罩层在 -->
+          <a href="https://www.baidu.com">111</a>
+        </div>
+        <div class="item img-right"></div>
+        <div class="item img-left"></div>
+      </div>
+    </div>
+    <script>
+      const container = document.querySelector("#container");
+      const bg = document.querySelector(".bg");
+      const itemBottom = document.querySelector(".item-bottom");
+      const itemTop = document.querySelector(".item-top");
+      const itemRight = document.querySelector(".item-right");
+      const itemLeft = document.querySelector(".item-left");
+        let dire = undefined;
+      // mouseenter不会冒泡
+      container.addEventListener("mouseover", (e) => {
+        if(dire) return
+        if (e.target.className.indexOf("item-top") > -1) {
+          dire = "up"
+        }
+        if (e.target.className.indexOf("item-bottom") > -1) {
+          dire = "down"
+        }
+        if (e.target.className.indexOf("item-right") > -1) {
+          dire = "right"
+        }
+        if (e.target.className.indexOf("item-left") > -1) {
+          dire = "left"
+        }
+        console.log(dire)
+        bg.classList.add(dire);
+      });
+      // mouseleave不冒泡就可以
+      container.addEventListener("mouseleave", (e) => {
+        bg.className = "bg";
+        dire = undefined
+      });
+    </script>
+  </body>
+</html>
