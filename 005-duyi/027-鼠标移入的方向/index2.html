@@ -87,11 +87,15 @@
       const bg = document.querySelector(".bg");
 
       const rect = container.getBoundingClientRect();
+      // 再这里就是45度角对应的弧度
       const theta = Math.atan(rect.height / rect.width);
 
       container.addEventListener("mouseenter", (e) => {
+        // 以中间为坐标原点
         const x = e.offsetX - rect.width / 2;
         const y = rect.height / 2 - e.offsetY;
+        // console.log(e.offsetX,e.offsetY)
+        // console.log(x,y)
         const d = Math.atan2(y, x);
         let dire;
         if (d < theta && d >= -theta) {
