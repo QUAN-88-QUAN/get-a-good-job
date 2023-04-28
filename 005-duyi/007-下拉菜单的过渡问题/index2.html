@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      input {
+        outline: none;
+        padding: 0;
+        margin: 0;
+      }
+      .text {
+        width: 300px;
+        height: 30px;
+      }
+      .select {
+        position: relative;
+        display: grid;
+        grid-template-rows: 0fr;
+        justify-content: center;
+        align-items: center;
+        width: 300px;
+        border: 1px solid #ccc;
+        overflow: hidden;
+        transition: all 1s;
+        min-height: 0;
+      }
+      /* 必须加这个 */
+      .select>div{
+        line-height: 2;
+        min-height: 0;
+      }
+      .text:focus ~ .select {
+        background-color: skyblue;
+        grid-template-rows: 1fr;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <input type="text" class="text" />
+      <div class="select">
+        <div>
+          <div>挨打打不死的</div>
+          <div>挨打打不死的</div>
+          <div>挨打打不死的</div>
+          <div>挨打打不死的</div>
+          <div>挨打打不死的</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div>
+    111
+    <script src="./js.cookie.js"></script>
+    <script>
+      console.log(111)
+      Cookies.set('name', 'value')
+      // 采用phpstudy建一个假域名就能测试
+      // 虽然是这么设置的,但是浏览器显示的domain是.quan.com
+      Cookies.set('foo','quan', { domain: 'quan.com' })
+    </script>
+  </div>
+</body>
+</html>
