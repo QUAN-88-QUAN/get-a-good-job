@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 1
+      // const a = {
+      //   value:1,
+      //   valueOf:function(){
+      //     return this.value++
+      //   }
+      // }
+
+      // 2
+      // const a = {
+      //   i: 1,
+      //   [Symbol.toPrimitive]() {
+      //     return this.i++;
+      //   },
+      // };
+
+      // 3
+      // let _a = 1;
+      // Object.defineProperty(window, "a", {
+      //   get() {
+      //     return _a++;
+      //   },
+      // });
+
+      // 4
+      let a = new Proxy(
+        { i: 1 },
+        {
+          get(target) {
+            return () => target.i++;
+          },
+        }
+      );
+      console.log(a == 1 && a == 2 && a == 3);
+    </script>
+  </body>
+</html>
