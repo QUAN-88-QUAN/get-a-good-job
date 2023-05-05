@@ -9,9 +9,42 @@
 <body>
   <script>
     function vortex(n,m){
-      // const arr = Array(n).fill().map(()=>Array(m))
-      // const arr = Array.from(Array(n),()=>Array(m))
-      console.log(arr)
+      // const arr = Array(n).fill(0).map(()=>Array(m).fill(0))
+      const arr = Array.from(Array(n).fill(0),()=>Array(m).fill(0))
+      let i=0
+      let j=0
+      let stepi=1
+      let stepj=0
+      let count = 1
+      while(1){
+        arr[j][i] = count++
+        // 改动i和j
+        i+=stepi
+        j+=stepj
+        if(hasBlock()){
+          // 回头
+          i-=stepi
+          j-=stepj
+          // 转弯
+          if(stepj===0){
+            stepj = stepi
+            stepi = 0
+          }else{
+            stepi = -stepj
+            stepj = 0
+          }
+          i+=stepi
+          j+=stepj
+        }
+        if(hasBlock()){
+          break
+        }
+      }
+      return arr
+
+      function hasBlock(){
+        return !arr[j] || arr[j][i]!==0
+      }
     }
     console.log(vortex(5,6))
   </script>
