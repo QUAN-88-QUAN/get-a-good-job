@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function toChineseNumber(num) {
+        const chars = [
+          "零",
+          "一",
+          "二",
+          "三",
+          "四",
+          "五",
+          "六",
+          "七",
+          "八",
+          "九",
+        ];
+        const units = ["", "十", "百", "千"];
+        function _transform(numStr) {
+          let result = "";
+          for (let i = 0; i < numStr.length; i++) {
+            const digit = +numStr[i];
+            const c = chars[digit];
+            const u = units[numStr.length - 1 - i];
+            // 2 解决中间一个零
+            if (digit === 0) {
+              // 1 解决中间两个零，末尾已经是零了就不拼接零了
+              if (result[result.length - 1] !== chars[0]) {
+                result += c;
+              }
+            } else {
+              result += c + u;
+            }
+          }
+          // 3 解决末尾是零
+          if (result[result.length - 1] === chars[0]) {
+            result = result.slice(0, -1);
+          }
+          return result;
+        }
+
+        // 四位分割
+        const strs = num
+          .toString()
+          .replace(/(?=(\d{4})+$)/g, ",")
+          .split(",")
+          .filter(Boolean);
+        // console.log(strs)
+        const bigUnits = ["", "万", "亿"];
+        let result = "";
+        for (let i = 0; i < strs.length; i++) {
+          const part = strs[i];
+          const c = _transform(part);
+          // console.log(c)
+          // 4 解决中间4个零
+          const u = c ? bigUnits[strs.length - 1 - i] : "";
+          result += c + u;
+        }
+        return result;
+      }
+      console.log(toChineseNumber(123));
+      console.log(toChineseNumber(1004));
+      console.log(toChineseNumber(104));
+      console.log(toChineseNumber(4000));
+      console.log(toChineseNumber(12300003399));
+      console.log(toChineseNumber(1230003399));
+    </script>
+  </body>
+</html>
