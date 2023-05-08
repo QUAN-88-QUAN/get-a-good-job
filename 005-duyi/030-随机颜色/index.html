@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function randomColor() {
+        // const r = Math.floor(Math.random()*256)
+        // const g = Math.floor(Math.random()*256)
+        // const b = Math.floor(Math.random()*256)
+        // return `reg(${r},${g},${b})`
+
+        // 为什么加padEnd,因为可能取到0,random是[0,1)
+        return "#" + Math.random().toString(16).substring(2, 8).padEnd(6,'0');
+      }
+      console.log(randomColor());
+    </script>
+  </body>
+</html>
