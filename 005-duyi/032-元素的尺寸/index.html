@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #box {
+        width: 300px;
+        height: 900px;
+        background-color: skyblue;
+        border: 10px solid greenyellow;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box"></div>
+    <script>
+      const container = document.querySelector("#box");
+      // 边框以内的尺寸，不包含滚动条
+      console.log(container.offsetWidth)
+      console.log(container.offsetHeight)
+      // 边框以内的尺寸，不包含滚动条
+      console.log(container.clientWidth)
+      console.log(container.clientHeight)
+    </script>
+  </body>
+</html>

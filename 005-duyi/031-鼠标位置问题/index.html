@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #box{
+      width: 300px;
+      height: 900px;
+      background-color: skyblue;
+    }
+  </style>
+</head>
+<body>
+  <div id="box"></div>
+  <script>
+    const container = document.querySelector('#box')
+    container.addEventListener('click',(e)=>{
+      // 鼠标到视口左侧的距离（不管滚动条）
+      console.log(e.x)
+      console.log(e.clientX)
+      // 鼠标到页面左侧的距离（加滚动条）
+      console.log(e.pageX)
+      // 鼠标到屏幕左侧的距离
+      console.log(e.screenX)
+      // 鼠标到上一次位置的横向距离（move事件）
+      console.log(e.movementX)
+      // 鼠标到目标元素（e.target）左侧的距离
+      console.log(e.offsetX)
+    })
+  </script>
+</body>
+</html>
