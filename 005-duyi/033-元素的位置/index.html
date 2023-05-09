@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #father {
+        width: 300px;
+        height: 900px;
+        margin-left: 100px;
+        border: 10px solid lightgreen;
+        padding: 10px;
+        overflow: auto;
+        position: relative;
+      }
+      #child {
+        margin: 20px;
+        width: 400px;
+        height: 1100px;
+        background-color: skyblue;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="father">
+      <div id="child"></div>
+    </div>
+    <script>
+      // 都是四舍五入的整数，小数可以用getBoundingClientRect
+      const father = document.querySelector("#father");
+      const child = document.querySelector("#child");
+      // 边框的宽度（只读）
+      // 如果元素的文本方向是从右向左（RTL, right-to-left），
+      // 并且由于内容溢出导致左边出现了一个垂直滚动条，
+      // 则该属性包括滚动条的宽度
+      console.log(father.clientLeft); //10
+      console.log(father.clientTop); //10
+      // （只读）
+      // 边框（不包含边框）到目标元素（e.target）左侧（e.target的padding-top+元素本身的margin-top）的距离
+      console.log(child.offsetLeft); //10+20=30
+      console.log(child.offsetTop); //10+20=30
+      // 可以改动做滚动效果
+      child.addEventListener("click", (e) => {
+        // 元素的滚动值，没有滚动条就为0
+
+        // 这样写只有一个会滚动竖直方向会滚动，反正可以通过这种方式实现平滑滚动
+        // father.style.scrollBehavior = "smooth";
+        father.scrollLeft = 100;
+        father.scrollTop = 100;
+        console.log(father.scrollLeft); //100
+        console.log(father.scrollTop); //100
+      });
+    </script>
+  </body>
+</html>

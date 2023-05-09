@@ -6,24 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-      #box {
+      #father {
         width: 300px;
         height: 900px;
+        margin-left: 100px;
+        border: 10px solid lightgreen;
+        padding: 10px;
+        overflow: auto;
+      }
+      #child {
+        width: 400px;
+        height: 1100px;
         background-color: skyblue;
-        border: 10px solid greenyellow;
       }
     </style>
   </head>
   <body>
-    <div id="box"></div>
+    <div id="father">
+      <div id="child"></div>
+    </div>
     <script>
-      const container = document.querySelector("#box");
+      // 都是四舍五入的整数，小数可以用getBoundingClientRect
+      const father = document.querySelector("#father");
+      const child = document.querySelector("#child");
       // 边框以内的尺寸，不包含滚动条
-      console.log(container.offsetWidth)
-      console.log(container.offsetHeight)
-      // 边框以内的尺寸，不包含滚动条
-      console.log(container.clientWidth)
-      console.log(container.clientHeight)
+      console.log(father.clientWidth);//300+10+10-17=303
+      console.log(father.clientHeight);//900+10+10-17=903
+      // 边框以内的尺寸，包含边框，包含滚动条（一般这里的产生的滚动条就直接包含在内容里面了，不要计算）
+      console.log(father.offsetWidth);//300+10+10+10+10=340
+      console.log(father.offsetHeight);//300+10+10+10+10=940
+      // 边框以内的尺寸，实际的宽度，滚动条隐藏的也算，没有滚动条的时候和clientWidth一样
+      console.log(father.scrollWidth);//400+10+10=420
+      console.log(father.scrollHeight);//1100+10+10+10=1120
     </script>
   </body>
 </html>
