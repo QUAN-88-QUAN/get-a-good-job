@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #container {
+        width: 600px;
+        height: 600px;
+        background-color: lightblue;
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+      }
+      div {
+        white-space: nowrap;
+        background-color: lightgreen;
+        z-index: 10;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script>
+      const container = document.querySelector("#container");
+
+      function createBarrage() {
+        const barrage = document.createElement("div");
+        barrage.innerHTML = "dingweiquan-lihuanting";
+        barrage.style.position = "absolute";
+        barrage.style.left = "100%";
+        container.appendChild(barrage);
+        barrage.style.transition = `none`;
+        barrage.style.transform = `translateX(${
+          -container.clientWidth - barrage.clientWidth
+        }px)`;
+        // 回流
+        barrage.clientHeight;
+        barrage.style.transition = `all 3s linear`;
+        barrage.style.transform = ``;
+        barrage.addEventListener("transitionend", (e) => {
+          e.target.remove();
+        });
+      }
+      function init() {
+        createBarrage();
+        // 当浏览器不在当前标签页的时候，为了节省效率，不会这么频繁的去执行计时器，
+        // chrome就是这样，浏览器不同，差异不一样
+        return setInterval(() => {
+          createBarrage();
+        }, 1500);
+      }
+
+      let timer = init();
+
+      document.addEventListener('visibilitychange',()=>{
+        if(document.visibilityState==='hidden'){
+          clearInterval(timer)
+        }else{
+          timer = init()
+        }
+      })
+    </script>
+  </body>
+</html>
