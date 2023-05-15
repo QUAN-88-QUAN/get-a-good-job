@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 1 相当于 parseInt('1',0) 1
+      // 2 相当于 parseInt('2',1) NAN
+      // 3 相当于 parseInt('3',2) NAN
+      console.log(["1", "2", "3"].map(parseInt));
+      // https://www.douyin.com/user/self?modal_id=7113762445159648544&showTab=favorite_collection
+      // 0b11（10）只转换b前面的0
+      // 0x12（1）转不了
+      // 012（1）只转换2前面的01
+      console.log(["0b11", "0x12", "013"].map(parseInt));//[0, NaN, 1]
+    </script>
+  </body>
+</html>
