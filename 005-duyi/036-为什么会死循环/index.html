@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .list div{
+      background-color: lightblue;
+      width: 50px;
+      height: 50px;
+      line-height: 50px;
+      text-align: center;
+      display: inline-block;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="list">
+    <div class="list-item">1</div>
+    <div class="list-item">2</div>
+    <div class="list-item">3</div>
+    <div class="list-item">4</div>
+    <div class="list-item">5</div>
+  </div>
+  <button id="#button">复制一份</button>
+  <script>
+    const list =document.getElementsByClassName('list')[0]
+    // 这种获取的是动态集合HTMLCollection
+    // const listItems = document.getElementsByClassName('list-item')
+    // 静态集合NodeList
+    // 有的时候是动态集合Node.childNodes，有的时候是静态集合querySelectorAll
+    // https://developer.mozilla.org/zh-CN/docs/Web/API/NodeList
+    const listItems = document.querySelectorAll('.list-item')
+    console.log(list)
+    console.log(listItems)
+    const btn = document.getElementsByTagName('button')[0]
+    btn.addEventListener('click',()=>{
+      for(let i=0;i<listItems.length;i++){
+        const cloned = listItems[i].cloneNode(true)
+        list.appendChild(cloned)
+      }
+    })
+  </script>
+</body>
+</html>
