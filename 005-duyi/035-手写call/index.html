@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      Function.prototype.myCall = function (ctx, ...args) {
+        ctx = ctx === null || ctx === undefined ? globalThis : Object(ctx);
+        const key = Symbol("temp");
+        // ctx.fn = this
+        // const result = ctx.fn(...args)
+
+        // 在浏览器打印还是会出现加上去的属性
+        Object.defineProperty(ctx, key, {
+          enumerable: false,
+          value: this,
+        });
+        const result = ctx[key](...args);
+        delete ctx[key];
+        return result;
+      };
+      function method(a, b) {
+        console.log(this, a, b);
+        return a + b;
+      }
+      console.log(method.call({ quan: "quan" }, 2, 3));
+      console.log(method.myCall({ quan: "quan" }, 2, 3));
+      console.log(method.myCall(null, 2, 3));
+      console.log(method.myCall(1, 2, 3));
+    </script>
+  </body>
+</html>
