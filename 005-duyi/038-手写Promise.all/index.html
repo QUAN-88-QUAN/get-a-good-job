@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      Promise.myAll = function (promise) {
+        let res, rej;
+        const p = new Promise((resolve, reject) => {
+          res = resolve;
+          rej = reject;
+        });
+        const result = [];
+        let count = 0;
+        let fulFilledCount = 0;
+        for (const prom of promise) {
+          const i = count;
+          count++;
+          Promise.resolve(prom).then(
+            (data) => {
+              result[i] = data;
+              fulFilledCount++;
+              if (fulFilledCount === count) {
+                res(result);
+              }
+            },
+            // 效果一样
+            rej
+            // (err) => rej(err)
+          );
+        }
+        if (count === 0) {
+          res(result);
+        }
+        return p;
+      };
+
+      Promise.all([1, 2, 3]).then((datas) => {
+        console.log(datas);
+      });
+
+      Promise.myAll([1, 2, 3]).then((datas) => {
+        console.log(datas);
+      });
+      Promise.myAll([]).then((datas) => {
+        console.log(datas);
+      });
+      Promise.myAll(null).then((datas) => {
+        console.log(datas);
+      });
+    </script>
+  </body>
+</html>
