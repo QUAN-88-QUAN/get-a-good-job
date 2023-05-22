@@ -24,6 +24,7 @@
             (data) => {
               result[i] = data;
               fulFilledCount++;
+              // 到这里的时候count一直就是3了
               if (fulFilledCount === count) {
                 res(result);
               }

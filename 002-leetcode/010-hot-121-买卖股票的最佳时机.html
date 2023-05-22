@@ -20,16 +20,31 @@
         // return max;
 
         // 方法二：---时间：O（n）（n(n-1)/2）---空间：O（1）（）
-        let max = 0;
-        let minPrice = 10000;
-        for (let i = 0; i < prices.length; i++) {
-          if (prices[i] < minPrice) {
-            minPrice = prices[i];
-          } else if (prices[i] - minPrice > max) {
-            max = prices[i] - minPrice;
+        // let max = 0;
+        // let minPrice = 10000;
+        // for (let i = 0; i < prices.length; i++) {
+        //   if (prices[i] < minPrice) {
+        //     minPrice = prices[i];
+        //   } else if (prices[i] - minPrice > max) {
+        //     max = prices[i] - minPrice;
+        //   }
+        // }
+        // return max;
+
+        // 方法三：动态规划
+        var n = prices.length;
+        var dp = Array.from({ length: n }, () => new Array(2).fill(0));
+        for (var i = 0; i < n; i++) {
+          if (i - 1 == -1) {
+            dp[i][0] = 0;
+            // 根据状态转移方程可得：
+            dp[i][1] = -prices[i];
+            continue;
           }
+          dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);
+          dp[i][1] = Math.max(dp[i - 1][1], -prices[i]);
         }
-        return max;
+        return dp[n - 1][0];
       };
       console.log(maxProfit([2, 7, 1, 5, 3, 6, 4]));
     </script>
