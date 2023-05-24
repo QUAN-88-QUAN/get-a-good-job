@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function getRandomColor() {
+        return "#" + Math.random().toString(16).slice(2, 8).padStart(6, "0");
+      }
+
+      const a = document.createElement("a");
+      document.body.append(a);
+      const height = 100;
+      const config = {
+        text: "抖音",
+        url: "https://www.douyin.com",
+      };
+      // a.style.color = getRandomColor();
+      // a.style.backgroundColor = getRandomColor();
+      // a.style.height = height + "px";
+      // a.style.lineHeight = height + "px";
+      // a.style.fontSize = height / 4 + "px";
+      // a.href = config.url;
+      // a.target = "_blank";
+      // a.title = config.text;
+      // a.textContent = "跳转到:" + config.text;
+
+      (() => {
+        function generateString(){
+
+        }
+
+        HTMLElement.prototype.styles = function() {
+          console.log(arguments)
+          const styles = generateString(arguments)
+          let curStyle = this.getAttribute('style')
+          if(curStyle){
+            curStyle+=styles
+          }else{
+            curStyle=styles
+          }
+          this.style = curStyle
+          return this
+        }
+
+        HTMLElement.prototype.props= function() {
+          console.log(arguments)
+          const propString = generateString(arguments)
+          propString.split('\n').map(it=>{
+            const parts = it.trim().split(':')
+            const key = parts[0].trim()
+            let value = parts.slice(1).join(':').trim()
+            if(value.indexOf(';')===value.length-1){
+              value = value.substring(0,value.length-1)
+            }
+            return [key,value]
+          }).froEach(([k,v])=>{
+            if(!k){
+              return
+            }
+            this[k] = v
+          })
+          return this
+        }
+
+        HTMLElement.prototype.content= function() {
+          console.log(arguments)
+          const text = generateString(arguments)
+          this.textContent = text
+          return this
+        }
+      })();
+
+      a.styles`
+      color:${getRandomColor()};
+      background-Color:${getRandomColor()};
+      height:${height}px;
+      line-height:${height}px;
+      font-size:${height / 4}px;
+      `.props`
+      href:${config.url};
+      target:_blank;
+      title:${config.text};
+      `.content`跳转到:${config.text}`;
+    </script>
+  </body>
+</html>
