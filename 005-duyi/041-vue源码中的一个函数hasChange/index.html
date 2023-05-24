@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function hasChange(x, y) {
+        if (x === y) {
+          // 排除+0和-0
+          return x === 0 && 1 / x !== 1 / y;
+        } else {
+          // 排除NAN
+          return x === x || y === y;
+        }
+      }
+      console.log(hasChange(+0, -0));
+      console.log(hasChange(NaN, NaN));
+      console.log(hasChange(1, 1));
+      console.log(hasChange(1, 2));
+    </script>
+  </body>
+</html>
