@@ -30,49 +30,59 @@
       // a.textContent = "跳转到:" + config.text;
 
       (() => {
-        function generateString(){
-
-        }
-
-        HTMLElement.prototype.styles = function() {
-          console.log(arguments)
-          const styles = generateString(arguments)
-          let curStyle = this.getAttribute('style')
-          if(curStyle){
-            curStyle+=styles
-          }else{
-            curStyle=styles
+        function generateString(params) {
+          let arr = params;
+          let str = arr[0].join().trim();
+          for (let i = 1; i < arr.length; i++) {
+            str = str.replace(/,/, arr[i]);
           }
-          this.style = curStyle
-          return this
+          return str;
         }
 
-        HTMLElement.prototype.props= function() {
-          console.log(arguments)
-          const propString = generateString(arguments)
-          propString.split('\n').map(it=>{
-            const parts = it.trim().split(':')
-            const key = parts[0].trim()
-            let value = parts.slice(1).join(':').trim()
-            if(value.indexOf(';')===value.length-1){
-              value = value.substring(0,value.length-1)
-            }
-            return [key,value]
-          }).froEach(([k,v])=>{
-            if(!k){
-              return
-            }
-            this[k] = v
-          })
-          return this
-        }
+        HTMLElement.prototype.styles = function () {
+          console.log(arguments);
+          const styles = generateString(arguments);
+          let curStyle = this.getAttribute("style");
+          if (curStyle) {
+            curStyle += styles;
+          } else {
+            curStyle = styles;
+          }
+          this.style = curStyle;
+          return this;
+        };
 
-        HTMLElement.prototype.content= function() {
-          console.log(arguments)
-          const text = generateString(arguments)
-          this.textContent = text
-          return this
-        }
+        HTMLElement.prototype.props = function () {
+          console.log(arguments);
+          const propString = generateString(arguments);
+          console.log(propString.split("\n"));
+          propString
+            .split("\n")
+            .map((it) => {
+              const parts = it.trim().split(":");
+              console.log(parts);
+              const key = parts[0].trim();
+              let value = parts.slice(1).join(":").trim();
+              if (value.indexOf(";") === value.length - 1) {
+                value = value.substring(0, value.length - 1);
+              }
+              return [key, value];
+            })
+            .forEach(([k, v]) => {
+              if (!k) {
+                return;
+              }
+              this[k] = v;
+            });
+          return this;
+        };
+
+        HTMLElement.prototype.content = function () {
+          console.log(arguments);
+          const text = generateString(arguments);
+          this.textContent = text;
+          return this;
+        };
       })();
 
       a.styles`
