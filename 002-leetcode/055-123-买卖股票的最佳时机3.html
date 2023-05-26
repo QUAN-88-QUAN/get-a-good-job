@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      // 同类型题目
+      // 121
+      var maxProfit = function (prices) {
+        // 方法一：动态规划：（）---时间：O（n）（）---空间：O（2n=>n）（二维数组）
+        // 状态转移方程
+        // bass case
+        // dp[-1][...][0] = dp[...][0][0] = 0
+        // dp[-1][...][1] = dp[...][0][1] = -infinity
+        // 今天没有持有股票---昨天休息---今天卖出
+        // dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i]);
+        // 今天持有股票---昨天持有---今天买入
+        // dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i]);
+        const length = prices.length;
+        const maxK = 2;
+        const dp = Array(length)
+          .fill(0)
+          .map(() =>
+            Array(maxK + 1)
+              .fill(0)
+              .map(() => Array(2).fill(0))
+          );
+        for (let i = 0; i < length; i++) {
+          for (let k = maxK; k >= 1; k--) {
+            if (i - 1 === -1) {
+              dp[i][k][0] = 0;
+              dp[i][k][1] = -prices[i];
+              continue;
+            }
+            dp[i][k][0] = Math.max(
+              dp[i - 1][k][0],
+              dp[i - 1][k][1] + prices[i]
+            );
+            dp[i][k][1] = Math.max(
+              dp[i - 1][k][1],
+              dp[i - 1][k - 1][0] - prices[i]
+            );
+          }
+        }
+        return dp[length-1][maxK][0];
+      };
+
+      console.log(maxProfit([1, 2, 3, 4, 5]));
+    </script>
+  </body>
+</html>
