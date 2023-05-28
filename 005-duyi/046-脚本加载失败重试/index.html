@@ -20,7 +20,6 @@
         console.log('script记载失败')
         const url = new URL(tag.src)
         console.log(url.pathname)
-        console.log(retryInfo)
         if(!retryInfo[url.pathname]){
           retryInfo[url.pathname]={
             times:0,
