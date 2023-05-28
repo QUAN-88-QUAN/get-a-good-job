@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function arrange(taskId) {
+        const tasks = [];
+        tasks.push(() => {
+          console.log(`${taskId} is notified`);
+        });
+        async function execute() {
+          for (const t of tasks) {
+            await t();
+          }
+        }
+        function doSomething(something) {
+          tasks.push(() => {
+            console.log(`Starting ${something}`);
+          });
+          return this;
+        }
+        function wait(duration) {
+          tasks.push(() => {
+            return new Promise((resolve) => {
+              setTimeout(()=>{
+                resolve()
+              }, duration * 1000);
+            });
+          });
+          return this;
+        }
+        function waitFirst(duration) {
+          tasks.unshift(() => {
+            return new Promise((resolve) => {
+              setTimeout(resolve, duration * 1000);
+            });
+          });
+          return this;
+        }
+
+        return {
+          execute,
+          doSomething,
+          wait,
+          waitFirst,
+        };
+      }
+
+      arrange("tom").wait(3).doSomething("abc").waitFirst(3).doSomething("bcd").execute();
+    </script>
+  </body>
+</html>

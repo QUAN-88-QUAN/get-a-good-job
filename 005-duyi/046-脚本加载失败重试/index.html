@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    const domians = [
+      'http://127.0.0.1:5500/005-duyi/046-%E8%84%9A%E6%9C%AC%E5%8A%A0%E8%BD%BD%E5%A4%B1%E8%B4%A5%E9%87%8D%E8%AF%95/script1.js',
+      'http://127.0.0.1:5500/005-duyi/046-%E8%84%9A%E6%9C%AC%E5%8A%A0%E8%BD%BD%E5%A4%B1%E8%B4%A5%E9%87%8D%E8%AF%95/script2.js',
+    ]
+    const maxRetry = 3
+    const retryInfo = {}
+    window.addEventListener('error',(e)=>{
+      const tag = e.target
+      if(tag.tagName==='SCRIPT' && !(e instanceof ErrorEvent)){
+        console.log('script记载失败')
+        const url = new URL(tag.src)
+        console.log(url.pathname)
+        console.log(retryInfo)
+        if(!retryInfo[url.pathname]){
+          retryInfo[url.pathname]={
+            times:0,
+            nextIndex:0
+          }
+          const info = retryInfo[url.pathname]
+          const script = document.createElement('script')
+          url.href = domians[info.nextIndex]
+          // 阻塞页面后续的加载
+          document.write(`<script src="${url.toString()}">\<\/script>`)
+          // script.src = url.toString()
+          // document.body.insertBefore(script,tag)
+          info.times++
+          info.nextIndex = (info.nextIndex+1)%domians.length
+        }
+      }
+    },true)
+    // 没有冒泡,得捕获阶段就处理
+  </script>
+  <script src="http://127.0.0.1:5500/005-duyi/046-%E8%84%9A%E6%9C%AC%E5%8A%A0%E8%BD%BD%E5%A4%B1%E8%B4%A5%E9%87%8D%E8%AF%95/script3.js"></script>
+  <script src="http://127.0.0.1:5500/005-duyi/046-%E8%84%9A%E6%9C%AC%E5%8A%A0%E8%BD%BD%E5%A4%B1%E8%B4%A5%E9%87%8D%E8%AF%95/script4.js"></script>
+</body>
+</html>
