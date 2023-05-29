@@ -17,7 +17,7 @@
     window.addEventListener('error',(e)=>{
       const tag = e.target
       if(tag.tagName==='SCRIPT' && !(e instanceof ErrorEvent)){
-        console.log('script记载失败')
+        console.log('script加载失败')
         const url = new URL(tag.src)
         console.log(url.pathname)
         if(!retryInfo[url.pathname]){
