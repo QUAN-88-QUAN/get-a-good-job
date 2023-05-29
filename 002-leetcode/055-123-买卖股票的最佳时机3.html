@@ -21,36 +21,53 @@
         // dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i]);
         // 今天持有股票---昨天持有---今天买入
         // dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i]);
-        const length = prices.length;
-        const maxK = 2;
-        const dp = Array(length)
-          .fill(0)
-          .map(() =>
-            Array(maxK + 1)
-              .fill(0)
-              .map(() => Array(2).fill(0))
-          );
-        for (let i = 0; i < length; i++) {
-          for (let k = maxK; k >= 1; k--) {
-            if (i - 1 === -1) {
-              dp[i][k][0] = 0;
-              dp[i][k][1] = -prices[i];
-              continue;
-            }
-            dp[i][k][0] = Math.max(
-              dp[i - 1][k][0],
-              dp[i - 1][k][1] + prices[i]
-            );
-            dp[i][k][1] = Math.max(
-              dp[i - 1][k][1],
-              dp[i - 1][k - 1][0] - prices[i]
-            );
-          }
+        // const length = prices.length;
+        // const maxK = 2;
+        // const dp = Array(length)
+        //   .fill(0)
+        //   .map(() =>
+        //     Array(maxK + 1)
+        //       .fill(0)
+        //       .map(() => Array(2).fill(0))
+        //   );
+        // for (let i = 0; i < length; i++) {
+        //   // 可升序可降序，因为依赖项不影响
+        //   for (let k = maxK; k >= 1; k--) {
+        //     if (i - 1 === -1) {
+        //       dp[i][k][0] = 0;
+        //       dp[i][k][1] = -prices[i];
+        //       continue;
+        //     }
+        //     dp[i][k][0] = Math.max(
+        //       dp[i - 1][k][0],
+        //       dp[i - 1][k][1] + prices[i]
+        //     );
+        //     dp[i][k][1] = Math.max(
+        //       dp[i - 1][k][1],
+        //       dp[i - 1][k - 1][0] - prices[i]
+        //     );
+        //   }
+        // }
+        // // 为啥是maxKe而不是0，0不是代表把所有的购买机会都用了嘛
+        // // 看输出确实是maxK取到最大利润
+        // return dp[length-1][maxK][0];
+
+        // 方法二：动态规划：（优化空间复杂度）---时间：O（n）（）---空间：O（1）（）
+        let dp_i_1_0 = 0
+        let dp_i_1_1 = -Infinity
+        let dp_i_2_0 = 0
+        let dp_i_2_1 = -Infinity
+        for(let i=0;i<prices.length;i++){
+          dp_i_1_0 = Math.max(dp_i_1_0, dp_i_1_1 + prices[i]);
+          dp_i_1_1 = Math.max(dp_i_1_1, 0 - prices[i]);
+          dp_i_2_0 = Math.max(dp_i_2_0, dp_i_2_1 + prices[i]);
+          dp_i_2_1 = Math.max(dp_i_2_1, dp_i_1_0 - prices[i]);
         }
-        return dp[length-1][maxK][0];
+        return dp_i_2_0
       };
 
-      console.log(maxProfit([1, 2, 3, 4, 5]));
+      // console.log(maxProfit([1, 2, 3, 4, 5]));
+      console.log(maxProfit([3,3,5,0,0,3,1,4]));
     </script>
   </body>
 </html>
