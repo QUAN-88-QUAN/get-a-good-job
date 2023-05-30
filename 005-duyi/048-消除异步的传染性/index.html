@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // async function getUser() {
+      //   return await fetch(
+      //     "https://api.oioweb.cn/api/search/getOlyMedals"
+      //   ).then((resp) => resp.json());
+      // }
+      // async function m1() {
+      //   return await getUser();
+      // }
+      // async function m2() {
+      //   return await m1();
+      // }
+      // async function m3() {
+      //   return await m2();
+      // }
+      // async function main() {
+      //   const user = await m3();
+      //   console.log(user);
+      // }
+      // main();
+
+      function getUser() {
+        return fetch("https://api.oioweb.cn/api/search/getOlyMedals");
+      }
+      function m1() {
+        return getUser();
+      }
+      function m2() {
+        // 为啥我在这里做异步操作就不行了呢
+        _fetch("https://api.oioweb.cn/api/search/getOlyMedals")
+          .then((resp) => resp.json())
+          .then((resp) => {
+            console.log(resp);
+          });
+        return m1();
+      }
+      function m3() {
+        return m2();
+      }
+      function main() {
+        const user = m3();
+        console.log(user);
+      }
+
+      function run(func) {
+        let cache = [];
+        let i = 0;
+        const _fetch = window.fetch;
+        window.fetch = (...args) => {
+          if (cache[i]) {
+            // 交付缓存结果
+            if (cache[i].status === "fulfilled") {
+              return cache[i].data;
+            } else if (cache[i].status === "rejected") {
+              return cache[i].err;
+            }
+          }
+          const result = {
+            status: "pending",
+            data: null,
+            err: null,
+          };
+          cache[i++] = result;
+          // 发送请求
+          const prom = _fetch(...args)
+            .then((resp) => resp.json())
+            .then(
+              (resp) => {
+                result.status = "fulfilled";
+                result.data = resp;
+              },
+              (err) => {
+                result.status = "rejected";
+                result.data = err;
+              }
+            );
+          // 报错
+          throw prom;
+        };
+        try {
+          func();
+        } catch (error) {
+          // 什么时候引发重新执行函数
+          if (error instanceof Promise) {
+            const reRun = () => {
+              // 这里为什么重置
+              i = 0;
+              func();
+            };
+            error.then(reRun, reRun);
+          }
+        }
+      }
+
+      run(main);
+    </script>
+  </body>
+</html>
