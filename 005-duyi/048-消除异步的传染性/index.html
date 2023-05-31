@@ -35,12 +35,13 @@
         return getUser();
       }
       function m2() {
+      // async function m2() {
         // 为啥我在这里做异步操作就不行了呢
-        _fetch("https://api.oioweb.cn/api/search/getOlyMedals")
-          .then((resp) => resp.json())
-          .then((resp) => {
-            console.log(resp);
-          });
+        // await fetch("https://api.oioweb.cn/api/search/getOlyMedals")
+        //   .then((resp) => resp.json())
+        //   .then((resp) => {
+        //     console.log(resp);
+        //   });
         return m1();
       }
       function m3() {
@@ -56,6 +57,7 @@
         let i = 0;
         const _fetch = window.fetch;
         window.fetch = (...args) => {
+          console.log(i)
           if (cache[i]) {
             // 交付缓存结果
             if (cache[i].status === "fulfilled") {
@@ -70,7 +72,7 @@
             err: null,
           };
           cache[i++] = result;
-          // 发送请求
+          // 发送请求(这里只会进来一次)
           const prom = _fetch(...args)
             .then((resp) => resp.json())
             .then(
@@ -92,7 +94,7 @@
           // 什么时候引发重新执行函数
           if (error instanceof Promise) {
             const reRun = () => {
-              // 这里为什么重置
+              // 这里得重置，不然就是0了
               i = 0;
               func();
             };
