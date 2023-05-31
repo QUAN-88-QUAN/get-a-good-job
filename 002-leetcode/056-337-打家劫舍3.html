@@ -32,10 +32,8 @@
         // }
 
         // 方法一：动态规划：（更简单）---时间：O（n）（）---空间：O（n）（）
-        function rob(root) {
-          let res = dp(root);
-          return Math.max(res[0], res[1]);
-        }
+        let res = dp(root);
+        return Math.max(res[0], res[1]);
 
         // arr[0] 表示不抢 root 的话，得到的最大钱数
         // arr[1] 表示抢 root 的话，得到的最大钱数
