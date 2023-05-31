@@ -10,40 +10,76 @@
   <body>
     <script>
       var rob = function (nums) {
-        // 方法一：暴力法：（）---时间：O（n）（）---空间：O（2n=>n）（二维数组）
-        // let sum1 = 0;
-        // let sum2 = 0;
-        // for (let i = 0; i < nums.length; i++) {
-        //   if (i % 2 === 0) {
-        //     sum1 += nums[i];
-        //   } else {
-        //     sum2 += nums[i];
+        // 方法一：动态规划：（类似于股票买卖）---时间：O（n）（）---空间：O（2n=>n）（二维数组）
+        // const length = nums.length;
+        // const dp = Array(length)
+        //   .fill()
+        //   .map(() => Array(2).fill(0));
+        // for (let i = 0; i < length; i++) {
+        //   if (i - 1 === -1) {
+        //     dp[i][0] = 0;
+        //     dp[i][1] = nums[0];
+        //     continue;
         //   }
+        //   // 这一间不抢=上一间不抢&上一间抢的max
+        //   dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1]);
+        //   // 这一间抢=上一间不抢+抢到的
+        //   dp[i][1] = dp[i - 1][0] + nums[i];
         // }
-        // return Math.max(sum1, sum2);
-        // 方法二：动态规划：（）---时间：O（n）（）---空间：O（2n=>n）（二维数组）
+        // return Math.max(dp[length - 1][0], dp[length - 1][1]);
+
+        // 方法一：动态规划：（超出时间限制）---时间：O（n）（）---空间：O（n）（）
+        // return dp(0);
+
+        // function dp(start) {
+        //   if (start >= nums.length) {
+        //     return 0;
+        //   }
+        //   // 这一间不抢&这一间抢,去下下间
+        //   return Math.max(dp(start + 1), (dp(start + 2) + nums[start]));
+        // }
+
+        // 方法一：动态规划：（加备忘录还是超限）---时间：O（n）（）---空间：O（n）（）
+        // const memo = Array(nums.length).fill(0);
+        // return dp(0);
+
+        // function dp(start) {
+        //   if (start >= nums.length) {
+        //     return 0;
+        //   }
+        //   if (memo[start]) {
+        //     return memo[start];
+        //   }
+        //   // 这一间不抢&这一间抢,去下下间
+        //   const res = Math.max(dp(start + 1), dp(start + 2) + nums[start]);
+        //   memo[start] = res;
+        //   return res;
+        // }
+
+        // 方法一：动态规划：（自底向上）---时间：O（n）（）---空间：O（n）（）
+        // const length = nums.length;
+        // // 给最后一个数的后面两位补0
+        // const dp = Array(length + 2).fill(0);
+        // for (let i = length - 1; i >= 0; i--) {
+        //   dp[i] = Math.max(dp[i + 1], dp[i + 2] + nums[i]);
+        // }
+        // return dp[0];
+
+        // 方法一：动态规划：（自底向上去掉数组）---时间：O（n）（）---空间：O（1）（）
         const length = nums.length;
-        const dp = Array(length)
-          .fill()
-          .map(() => Array(2).fill(0));
-        for (let i = 0; i < length; i++) {
-          if (i - 1 === -1) {
-            dp[i][0] = 0;
-            dp[i][1] = nums[i];
-            continue;
-          }
-          if (i - 2 === -1) {
-            dp[i][0] = 0;
-            dp[i][1] = nums[i];
-            continue;
-          }
-          dp[i][0] = dp[i-1][1]
-          dp[i][1] = dp[i-2][1]+nums[i]
+        let dp_i_1=0
+        let dp_i_2=0
+        let dp_i=0
+        for (let i = length - 1; i >= 0; i--) {
+          dp_i = Math.max(dp_i_1, dp_i_2 + nums[i]);
+          dp_i_2 = dp_i_1
+          dp_i_1 = dp_i
         }
-        console.log(dp)
-        return dp[length-1][0]
+        // 都行
+        return dp_i;
+        // return dp_i_1;
       };
-      // console.log(rob([1, 2, 3, 1]));
+      console.log(rob([1, 2, 3, 1]));
       console.log(rob([2, 1, 1, 2]));
     </script>
   </body>

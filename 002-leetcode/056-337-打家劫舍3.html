@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      var rob = function (root) {
+        // 方法一：动态规划：（）---时间：O（n）（）---空间：O（n）（）
+        // const memo = new Map();
+        // return dp(root);
+
+        // function dp(start) {
+        //   if (!start) {
+        //     return 0;
+        //   }
+        //   if (memo.has(start)) {
+        //     return memo.get(start);
+        //   }
+        //   const right =
+        //     (start.left ? dp(start.left.left) + dp(start.left.right) : 0) +
+        //     (start.right ? dp(start.right.left) + dp(start.right.right) : 0) +
+        //     start.val;
+        //   const left = dp(start.left) + dp(start.right);
+        //   const sum = Math.max(left, right);
+        //   memo.set(start, sum);
+        //   return sum;
+        // }
+
+        // 方法一：动态规划：（更简单）---时间：O（n）（）---空间：O（n）（）
+        function rob(root) {
+          let res = dp(root);
+          return Math.max(res[0], res[1]);
+        }
+
+        // arr[0] 表示不抢 root 的话，得到的最大钱数
+        // arr[1] 表示抢 root 的话，得到的最大钱数
+        function dp(root) {
+          if (root === null) return [0, 0];
+          let left = dp(root.left);
+          let right = dp(root.right);
+          // 抢，下家就不能抢了
+          let rob = root.val + left[0] + right[0];
+          // 不抢，下家可抢可不抢，取决于收益大小
+          let not_rob =
+            Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
+          return [not_rob, rob];
+        }
+      };
+      const obj = {
+        val: 3,
+        left: {
+          val: 2,
+          left: null,
+          right: {
+            val: 3,
+            left: null,
+            right: null,
+          },
+        },
+        right: {
+          val: 3,
+          left: null,
+          right: {
+            val: 1,
+            left: null,
+            right: null,
+          },
+        },
+      };
+      console.log(rob(obj));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      var rob = function (nums) {
+        // 方法一：动态规划：（去掉第一个元素和最后一个元素，然后按照打家劫舍1来做就行，然后再对比两个结果的大小）---时间：O（n）（）---空间：O（1）（）
+        if (nums.length === 1) {
+          return nums[0];
+        }
+        return Math.max(
+          maxProfit(nums.slice(0, nums.length - 1)),
+          maxProfit(nums.slice(1, nums.length))
+        );
+        function maxProfit(arr) {
+          const length = arr.length;
+          let dp_i_1 = 0;
+          let dp_i_2 = 0;
+          let dp_i = 0;
+          for (let i = length - 1; i >= 0; i--) {
+            dp_i = Math.max(dp_i_1, dp_i_2 + arr[i]);
+            dp_i_2 = dp_i_1;
+            dp_i_1 = dp_i;
+          }
+          // 都行
+          return dp_i;
+          // return dp_i_1;
+        }
+      };
+      console.log(rob([1, 2, 3, 1]));
+      console.log(rob([2, 1, 1, 2]));
+    </script>
+  </body>
+</html>
