@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      // 同类型题目
+      // 1,167
+      var threeSum = function (nums) {
+        // // 方法一：双指针（）---时间：O（nlogn+n^2=>n^2）（nlogn排序的时间复杂度+双重循环的复杂度）---空间：O（最坏情况n/3=>n）（结果数组）
+        // function compareNumbers(a, b) {
+        //   return a - b;
+        // }
+        // nums.sort(compareNumbers);
+        // const res = [];
+        // for (let i = 0; i < nums.length; i++) {
+        //   const value = 0 - nums[i];
+        //   const temp = twoSum(nums.slice(i + 1), value);
+        //   if (temp.length) {
+        //     temp.forEach((item) => {
+        //       res.push([nums[i]].concat(item));
+        //     });
+        //   }
+        //   // 保证第一个数的值不重复
+        //   while (nums[i + 1] === nums[i]) {
+        //     i++;
+        //   }
+        // }
+        // return res;
+        // function twoSum(arr, target) {
+        //   let left = 0;
+        //   let right = arr.length - 1;
+        //   const result = [];
+        //   while (left < right) {
+        //     const sum = arr[left] + arr[right];
+        //     if (sum > target) {
+        //       // 这里也能优化
+        //       while (arr[right - 1] === arr[right]) {
+        //         right--;
+        //       }
+        //       right--;
+        //     } else if (sum < target) {
+        //       // 这里也能优化
+        //       while (arr[left + 1] === arr[left]) {
+        //         left++;
+        //       }
+        //       left++;
+        //     } else if (sum === target) {
+        //       // 跳过重复元素思路
+        //       result.push([arr[left], arr[right]]);
+        //       while (arr[left + 1] === arr[left]) {
+        //         left++;
+        //       }
+        //       while (arr[right - 1] === arr[right]) {
+        //         right--;
+        //       }
+        //       left++;
+        //       right--;
+        //     }
+        //   }
+        //   return result;
+        // }
+
+        // 方法二：暴力法（时间超限）---时间：O（n^3）（）---空间：O（最坏情况n/3=>n）（结果数组）
+        function compareNumbers(a, b) {
+          return a - b;
+        }
+        nums.sort(compareNumbers);
+        console.log(nums)
+        const result = [];
+        for (let i = 0; i < nums.length; i++) {
+          for (let j = i + 1; j < nums.length; j++) {
+            for (let k = j + 1; k < nums.length; k++) {
+              if (nums[i] + nums[j] + nums[k] === 0) {
+                result.push([nums[i], nums[j], nums[k]]);
+              }
+              while (nums[k + 1] === nums[k]) {
+                k++;
+              }
+            }
+            while (nums[j + 1] === nums[j]) {
+              j++;
+            }
+          }
+          while (nums[i + 1] === nums[i]) {
+            i++;
+          }
+        }
+        return result;
+      };
+      console.log(threeSum([-1, 0, 1, 2, -1, -4]));
+    </script>
+  </body>
+</html>

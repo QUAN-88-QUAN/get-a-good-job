@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      // 同类型题目
+      // 1,167
+      var fourSum = function (nums, target) {
+        // 方法一：双指针（）---时间：O（nlogn+n^2=>n^2）（nlogn排序的时间复杂度+双重循环的复杂度）---空间：O（最坏情况n/3=>n）（结果数组）
+        return nSum(nums, 3, target);
+        function nSum(nums, n, target) {
+          const result = [];
+          const sz = nums.length;
+
+          // Recursive helper function
+          function nSumHelper(start, current, remaining, combination) {
+            if (remaining === 0 && current.length === n) {
+              result.push(combination.slice()); // Add a copy of the combination to the result
+              return;
+            }
+
+            if (remaining < 0 || current.length === n) {
+              return;
+            }
+
+            for (let i = start; i < sz; i++) {
+              if (i > start && nums[i] === nums[i - 1]) {
+                continue; // Skip duplicate elements
+              }
+
+              current.push(nums[i]);
+              nSumHelper(i + 1, current, remaining - nums[i], combination);
+              current.pop();
+            }
+          }
+
+          // Sort the input array (if required) for handling duplicate elements
+          nums.sort((a, b) => a - b);
+
+          // Call the helper function to calculate the n-sum combinations
+          nSumHelper(0, [], target, []);
+          console.log(result)
+          return result;
+        }
+      };
+      // console.log(fourSum([1, 0, -1, 0, -2, 2], 0));
+      console.log(fourSum([-1, 0, 1, 2, -1, -4], 0));
+      console.log(fourSum([1, 2, 3, 4, 5], 8));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      // 同类型题目
+      // 1,167
+      var twoSum = function (nums, target) {
+        // 方法一：双指针（）---时间：O（nlogn）（nlogn排序的时间复杂度，n循环的复杂度）---空间：O（最快情况n/2=>n）（结果数组）
+        function compareNumbers(a, b) {
+          return a - b;
+        }
+        nums.sort(compareNumbers);
+        console.log(nums)
+        let left = 0;
+        let right = nums.length - 1;
+        const result = [];
+        while (left < right) {
+          const sum = nums[left] + nums[right];
+          if (sum > target) {
+            // 这里也能优化
+            while (nums[right - 1] === nums[right]) {
+              right--;
+            }
+            right--;
+          } else if (sum < target) {
+            // 这里也能优化
+            while (nums[left + 1] === nums[left]) {
+              left++;
+            }
+            left++;
+          } else if (sum === target) {
+            // 这是重复元素不加进去的思路
+            // if (includes(nums[left], nums[right])) {
+            //   right--;
+            //   left++;
+            // } else {
+            //   result.push([nums[left++], nums[right--]]);
+            // }
+
+            // 跳过重复元素思路
+            result.push([nums[left], nums[right]]);
+            while (nums[left + 1] === nums[left]) {
+              left++;
+            }
+            while (nums[right - 1] === nums[right]) {
+              right--;
+            }
+            left++;
+            right--;
+          }
+        }
+        return result;
+
+        function includes(num1, num2) {
+          let tag = false;
+          result.forEach((item) => {
+            if (item[0] === num1 || item[0] === num2) {
+              tag = true;
+            }
+          });
+          return tag;
+        }
+      };
+      console.log(twoSum([1, 1, 1, 2, 2, 3, 3], 4));
+      console.log(twoSum([0, 1, -1, -2], -1));
+    </script>
+  </body>
+</html>
