@@ -64,7 +64,54 @@
 
         // 方法二：双指针（不使用slice）---时间：O（nlogn+n^3=>n^3）（nlogn排序的时间复杂度+双重循环的复杂度）---空间：O（）（结果数组）
         return nSumTarget(nums, 4, 0, target);
-        nSumTarget()
+        function nSumTarget(nums, n, start, target) {
+          const res = [];
+          if (nums.length < n || n < 2) {
+            return res;
+          }
+          if (n === 2) {
+            let left = start;
+            let right = nums.length - 1;
+            while (left < right) {
+              const sum = nums[left] + nums[right];
+              if (sum < target) {
+                while (nums[left + 1] === nums[left]) {
+                  left++;
+                }
+                left++;
+              } else if (sum > target) {
+                while (nums[right - 1] === nums[right]) {
+                  right--;
+                }
+                right--;
+              } else {
+                res.push([nums[left], nums[right]]);
+                while (nums[right - 1] === nums[right]) {
+                  right--;
+                }
+                while (nums[left + 1] === nums[left]) {
+                  left++;
+                }
+                right--;
+                left++;
+              }
+            }
+          } else {
+            for (let i = start; i < nums.length; i++) {
+              const temp = nSumTarget(nums, n - 1, i + 1, target - nums[i]);
+              temp.forEach((item) => {
+                item.push(nums[i]);
+                res.push(item);
+              });
+              // i < nums.length - 1
+              // 不加也没事，取不到就是undefined
+              while (i < nums.length - 1 && [i] === nums[i + 1]) {
+                i++;
+              }
+            }
+          }
+          return res;
+        }
       };
       console.log(fourSum([1, 0, -1, 0, -2, 2], 0));
     </script>
