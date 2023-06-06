@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="start" style="background-color: lightblue">start</div>
+    <div class="pause" style="background-color: lightgreen">pause</div>
+    <script>
+      // 大文件分片有用
+      
+      // 一次顺序执行一些任务
+      // 所有任务完成后可以得到每一个任务的执行结果
+      // 需要返回两个方法，start用于启动任务，pause用于暂停任务
+      // 每个人物具有原子性，即不可中断，每个任务无参，异步
+      function processTasks(tasks) {
+        let isRuning = false;
+        let i = 0;
+        const result = [];
+        let prom = null;
+        return {
+          start() {
+            return new Promise(async (resolve, reject) => {
+              // 结束
+              if (prom) {
+                prom.then(resolve, reject);
+                return;
+              }
+              // 正在运行中又点击
+              if (isRuning) {
+                return;
+              }
+              isRuning = true;
+              while (i < tasks.length) {
+                try {
+                  console.log(i,"执行中");
+                  result.push(await tasks[i]());
+                  console.log(i,"执行完成");
+                } catch (error) {
+                  isRuning = false;
+                  reject(error);
+                  prom = Promise.reject(error);
+                  return;
+                }
+                i++;
+                if (!isRuning && i < tasks.length - 1) {
+                  console.log("执行中断");
+                  // 中断
+                  return;
+                }
+              }
+              // 成功
+              isRuning = false;
+              resolve(result);
+              prom = Promise.resolve(result);
+            });
+          },
+          pause() {
+            isRuning = false;
+          },
+        };
+      }
+
+      const tasks = [];
+      for (let i = 0; i < 5; i++) {
+        tasks.push(() => {
+          return new Promise((resolve) => {
+            setTimeout(()=>{resolve(i)}, 2000);
+          });
+        });
+      }
+
+      const processor = processTasks(tasks);
+      const start = document.querySelector(".start");
+      const pause = document.querySelector(".pause");
+      start.addEventListener("click", async () => {
+        console.log("点击了");
+        const results = await processor.start();
+        console.log("任务执行完成", results);
+      });
+      pause.addEventListener("click", async () => {
+        console.log("点击暂停");
+        processor.pause();
+      });
+    </script>
+  </body>
+</html>
