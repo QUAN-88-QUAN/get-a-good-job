@@ -14,57 +14,59 @@
       var fourSum = function (nums, target) {
         // 方法一：双指针（）---时间：O（nlogn+n^3=>n^3）（nlogn排序的时间复杂度+双重循环的复杂度）---空间：O（）（结果数组）
         nums.sort((a, b) => a - b);
-        return nSumTarget(nums, 4, target);
-        function nSumTarget(nums, n, target) {
-          const res = [];
-          let length = nums.length;
-          if (n < 2 || length < n) return res;
-          if (n === 2) {
-            let left = 0;
-            let right = length - 1;
-            while (left < right) {
-              const sum = nums[left] + nums[right];
-              if (sum > target) {
-                // 这里也能优化
-                while (nums[right - 1] === nums[right]) {
-                  right--;
-                }
-                right--;
-              } else if (sum < target) {
-                // 这里也能优化
-                while (nums[left + 1] === nums[left]) {
-                  left++;
-                }
-                left++;
-              } else if (sum === target) {
-                // 跳过重复元素思路
-                res.push([nums[left], nums[right]]);
-                while (nums[left + 1] === nums[left]) {
-                  left++;
-                }
-                while (nums[right - 1] === nums[right]) {
-                  right--;
-                }
-                left++;
-                right--;
-              }
-            }
-          } else {
-            for (let i = 0; i < length; i++) {
-              let sub = nSumTarget(nums.slice(i + 1), n - 1, target - nums[i]);
-              for (let arr of sub) {
-                arr.push(nums[i]);
-                res.push(arr);
-              }
-              while (nums[i] === nums[i + 1]) i++;
-            }
-          }
-          return res;
-        }
+        // return nSumTarget(nums, 4, target);
+        // function nSumTarget(nums, n, target) {
+        //   const res = [];
+        //   let length = nums.length;
+        //   if (n < 2 || length < n) return res;
+        //   if (n === 2) {
+        //     let left = 0;
+        //     let right = length - 1;
+        //     while (left < right) {
+        //       const sum = nums[left] + nums[right];
+        //       if (sum > target) {
+        //         // 这里也能优化
+        //         while (nums[right - 1] === nums[right]) {
+        //           right--;
+        //         }
+        //         right--;
+        //       } else if (sum < target) {
+        //         // 这里也能优化
+        //         while (nums[left + 1] === nums[left]) {
+        //           left++;
+        //         }
+        //         left++;
+        //       } else if (sum === target) {
+        //         // 跳过重复元素思路
+        //         res.push([nums[left], nums[right]]);
+        //         while (nums[left + 1] === nums[left]) {
+        //           left++;
+        //         }
+        //         while (nums[right - 1] === nums[right]) {
+        //           right--;
+        //         }
+        //         left++;
+        //         right--;
+        //       }
+        //     }
+        //   } else {
+        //     for (let i = 0; i < length; i++) {
+        //       let sub = nSumTarget(nums.slice(i + 1), n - 1, target - nums[i]);
+        //       for (let arr of sub) {
+        //         arr.push(nums[i]);
+        //         res.push(arr);
+        //       }
+        //       while (nums[i] === nums[i + 1]) i++;
+        //     }
+        //   }
+        //   return res;
+        // }
+
+        // 方法二：双指针（不使用slice）---时间：O（nlogn+n^3=>n^3）（nlogn排序的时间复杂度+双重循环的复杂度）---空间：O（）（结果数组）
+        return nSumTarget(nums, 4, 0, target);
+        nSumTarget()
       };
       console.log(fourSum([1, 0, -1, 0, -2, 2], 0));
-      // console.log(fourSum([-1, 0, 1, 2, -1, -4], 0));
-      // console.log(fourSum([1, 2, 3, 4, 5], 8));
     </script>
   </body>
 </html>
