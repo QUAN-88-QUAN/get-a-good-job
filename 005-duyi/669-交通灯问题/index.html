@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const serial = ["Red", "Yellow", "Green"];
+
+      function delay(duration=1000){
+        return new Promise(resolve=>{
+          setTimeout(resolve,duration)
+        })
+      }
+
+      class Signal {
+        // 下一个灯的颜色
+        get next() {
+          return serial[(serial.indexOf(this.sig) + 1) % serial.length];
+        }
+
+        // 还剩多少
+        get remain() {
+          let diff = this.end - Date.now();
+          if (diff < 0) {
+            diff = 0;
+          }
+          return diff / 1000;
+        }
+
+        constructor(options) {
+          this.sig = options.init;
+          this.times = options.times;
+          this.eventMap = new Map()
+          this.eventMap.set('change',new Set())
+          this.eventMap.set('tick',new Set())
+          this.setTime()
+          this.exchange()
+        }
+
+        // 注册事件
+        on(event,handler){
+          this.eventMap.get(event).add(handler)
+        }
+
+        // 移除事件
+        off(event,handler){
+          this.eventMap.get(event).delete(handler)
+        }
+
+        // 触发事件
+        emit(event){
+          this.eventMap.get(event).forEach(h=>{
+            h.call(this,this)
+          })
+        }
+
+        // 改变
+        async exchange(){
+          await 1
+          if(this.remain>0){
+            // 不需要切换
+            this.emit('tick')
+            await delay(1000)
+          }else{
+            // 切换
+            this.sig = this.next
+            this.setTime()
+            this.emit('change')
+          }
+          this.exchange()
+        }
+
+        setTime() {
+          this.start = Date.now();
+          const time = this.times[serial.indexOf(this.sig)];
+          this.end = this.start + time*1000;
+        }
+      }
+
+      const s = new Signal({
+        init: "Red",
+        times: [10, 3, 5],
+      });
+      s.on('tick',(e)=>{
+        console.log(e.sig,e.remain)
+      })
+
+      // 问题
+      // 1、类型
+      // 2、拿到sig改动怎么办
+      // 3、暂停功能
+      // 4、动态修改间隔时间
+    </script>
+  </body>
+</html>
