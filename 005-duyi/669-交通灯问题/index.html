@@ -31,6 +31,9 @@
           return diff / 1000;
         }
 
+        // 设置this.#sig得这样声明
+        // #sig
+
         constructor(options) {
           this.sig = options.init;
           this.times = options.times;
@@ -85,13 +88,17 @@
         init: "Red",
         times: [10, 3, 5],
       });
+      // 设置this.#sig之后就会报错
+      // s.init = "Yellow"
       s.on('tick',(e)=>{
         console.log(e.sig,e.remain)
       })
 
       // 问题
       // 1、类型
+      // ts
       // 2、拿到sig改动怎么办
+      // this.#sig表示私有变量
       // 3、暂停功能
       // 4、动态修改间隔时间
     </script>
