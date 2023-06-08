@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- <script src="./request.js"></script> -->
+    <script src="./request2.js"></script>
+    <script>
+      function startRequest() {
+        request({
+          // url: "https://api.oioweb.cn/api/search/getOlyMedals",
+          url:'http://127.0.0.1:5500/flower.mp4'
+        }).then((result) => {
+          // console.log(JSON.parse(result))
+          console.log(result)
+        }).catch((err) => {
+          
+        });
+      }
+      startRequest();
+    </script>
+  </body>
+</html>
