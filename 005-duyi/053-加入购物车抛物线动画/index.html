@@ -117,7 +117,8 @@
         plus.style.setProperty('--y',`${y}px`)
 
         plus.addEventListener('animationend',()=>{
-          plus.remove()
+          // plus.remove()
+          document.body.removeChild(plus)
         })
 
         document.body.appendChild(plus);
