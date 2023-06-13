@@ -13,10 +13,11 @@
         border-radius: 50%;
         left: var(--left);
         top: var(--top);
-        animation: moveY 0.8s cubic-bezier(0.5, -0.5, 1, 1);
+        /* 动画的时候看不到小球,应该时icon小球加载的问题,可以把时间放慢,或者换一种加载小球的方法 */
+        animation: moveY 5s cubic-bezier(0.5, -0.5, 1, 1);
       }
       .plus svg {
-        animation: moveX 0.8s linear;
+        animation: moveX 5s linear;
       }
       .car {
         position: fixed;
@@ -117,8 +118,10 @@
         plus.style.setProperty('--y',`${y}px`)
 
         plus.addEventListener('animationend',()=>{
-          // plus.remove()
-          document.body.removeChild(plus)
+          plus.remove()
+          // 这个方法会报错,但是能移除成功,是因为有两个动画,所以会触发两次,第二次会报错
+          // console.log(document.body)
+          // document.body.removeChild(plus)
         })
 
         document.body.appendChild(plus);
