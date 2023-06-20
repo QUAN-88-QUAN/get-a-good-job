@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="button" style="width: 60px">按钮</div>
+    <script>
+      function getElement(cssSelector) {
+        // 请完成getElement函数，让后续的程序顺利进行
+        const dom = document.querySelector(cssSelector);
+        // 为啥会死循环呢，一直输出，（因为只设置了一遍监听）
+        // dom.waitclick = new Promise((resolve, reject) => {
+        //   dom.addEventListener('click',resolve,{once:true})
+        // });
+        // return dom
+        const domProxy = new Proxy(dom, {
+          get(target, key) {
+            if (!key.startsWith("wait")) {
+              // 这样是为了取到其他事件属性
+              return target[key];
+            }
+            const event = key.replace("wait", "").toLowerCase();
+            return new Promise((resolve) => {
+              target.addEventListener(event, resolve, {
+                once: true,
+              });
+            });
+          },
+        });
+        return domProxy;
+      }
+      (async () => {
+        const btn = getElement(".button");
+        while (1) {
+          // console.log(btn.clientWidth);
+          await btn.waitclick;
+          console.log("按钮被点击了");
+        }
+      })();
+    </script>
+  </body>
+</html>
