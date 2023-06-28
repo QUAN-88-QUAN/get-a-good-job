@@ -45,7 +45,6 @@
         }
 
         // 1、两个参数什么时候调用
-        // 2、什么时候返回的Promise是完成的。什么时候是拒绝的
         then(onFulfilled, onRejected) {
           return new MyPromise((resolve, reject) => {
             this.#handlers.push({
@@ -58,31 +57,121 @@
           });
         }
 
+        // 2、什么时候返回的Promise是完成的，什么时候是拒绝的
+        #runOne(callback, resolve, reject) {
+          // 放微队列
+          this.#runMicroTask(() => {
+            // 回调不是函数取决去上一个promise的状态
+            if (typeof callback !== "function") {
+              const settled = this.#state === FULFILLED ? resolve : reject;
+              settled(this.#result);
+              return;
+            }
+            // 回调是函数取决于调用这个回调是否有错
+            try {
+              const data = callback(this.#result);
+              // 回调的返回值是一个promise,取决于这个promise执行
+              if (this.#isPromiseLike(data)) {
+                data.then(resolve, reject);
+              } else {
+                resolve(this.#result);
+              }
+            } catch (error) {
+              reject(error);
+            }
+          });
+        }
+
         #run() {
           if (this.#state === PENDING) return;
           while (this.#handlers.length) {
             const { onFulfilled, onRejected, resolve, reject } =
               this.#handlers.shift();
             if (this.#state === FULFILLED) {
-              if (typeof onFulfilled === "function") {
-                onFulfilled(this.#result);
-              }
+              this.#runOne(onFulfilled, resolve, reject);
             } else if (this.#state === REJECTED) {
-              if (typeof onRejected === "function") {
-                onRejected(this.#result);
-              }
+              this.#runOne(onRejected, resolve, reject);
             }
           }
+        }
+
+        #isPromiseLike(value) {
+          if (
+            value !== null &&
+            (typeof value === "object" || typeof value === "function")
+          ) {
+            return typeof value.then === "function";
+          }
+          return false;
+        }
+
+        #runMicroTask(func) {
+          if (
+            typeof process === "object" &&
+            typeof process.nextTick === "function"
+          ) {
+            process.nextTick(func);
+          } else if (typeof MutationObserver === "function") {
+            const ob = new MutationObserver(func);
+            const textNode = document.createTextNode("1");
+            ob.observe(textNode, {
+              characterData: true,
+            });
+            textNode.data = "2";
+          } else {
+            setTimeout(func, 0);
+          }
+        }
+
+        catch(onRejected) {
+          return this.then(undefined,onRejected)
+        }
+
+        finally(onFinally) {
+          return this.then(data=>{
+            onFinally()
+            // 和当前promise状态一致
+            return data
+          },err=>{
+            onFinally()
+            throw err
+          })
+        }
+
+        static resolve(value) {
+          // 如果参数是promise,直接返回promise
+          if(value instanceof MyPromise) return value
+          let _resolve,_reject
+          const p = new MyPromise((resolve,reject)=>{
+            _resolve = resolve
+            _reject = reject
+          })
+          if(p.#isPromiseLike(value)){
+            value.then(_resolve,_reject)
+          }else{
+            _resolve(value)
+          }
+          return p
+        }
+
+        static reject(reason) {
+          return new MyPromise((resolve,reject)=>{
+            reject(reason)
+          })
         }
       }
 
       const p1 = new Promise((resolve, reject) => {
+        // 1、基本操作
         // resolve(1);
+        // 2、处理错误
         // throw 123
+        // 3、处理异步错误
         // 异步错误捕获不到
         // setTimeout(()=>{
         //   throw 123
         // })
+        // 4、处理异步操作
         // setTimeout(() => {
         //   resolve(1);
         // });
@@ -95,45 +184,167 @@
       //     console.log("Promise 失败", error);
       //   }
       // );
-      console.log(p1);
-      const p2 = new MyPromise((resolve, reject) => {
-        // resolve(1);
-        // throw 123
-        // 异步错误捕获不到
-        // setTimeout(()=>{
-        //   throw 123
-        // })
-        setTimeout(() => {
-          reject(1);
-        },1000);
-      });
-      p2.then(
-        (res) => {
-          console.log("Promise 完成1", res);
-        },
-        (error) => {
-          console.log("Promise 失败1", error);
-        }
-      );
-      p2.then(
-        (res) => {
-          console.log("Promise 完成2", res);
-        },
-        (error) => {
-          console.log("Promise 失败2", error);
-        }
-      );
-      p2.then(
-        (res) => {
-          // console.log("Promise 完成3", res);
-          123
-          // null
-        },
-        (error) => {
-          console.log("Promise 失败3", error);
-        }
-      );
-      console.log(p2);
+      // console.log(p1);
+      // const p2 = new MyPromise((resolve, reject) => {
+      //   // 1、基本操作
+      //   // resolve(1);
+      //   // 2、处理错误
+      //   // throw 123
+      //   // 3、处理异步错误
+      //   // 异步错误捕获不到
+      //   // setTimeout(()=>{
+      //   //   throw 123
+      //   // })
+      //   // 4、处理异步操作
+      //   // setTimeout(() => {
+      //   //   reject(1);
+      //   // }, 1000);
+      // });
+      // 5、处理链式调用
+      // p2.then(
+      //   (res) => {
+      //     console.log("Promise 完成1", res);
+      //   },
+      //   (error) => {
+      //     console.log("Promise 失败1", error);
+      //   }
+      // );
+      // p2.then(
+      //   (res) => {
+      //     console.log("Promise 完成2", res);
+      //   },
+      //   (error) => {
+      //     console.log("Promise 失败2", error);
+      //   }
+      // );
+      // p2.then(
+      //   (res) => {
+      //     // console.log("Promise 完成3", res);
+      //     123;
+      //     // null
+      //   },
+      //   (error) => {
+      //     console.log("Promise 失败3", error);
+      //   }
+      // );
+      // console.log(p2);
+
+      // 6、promise传递回调
+      // const p2 = new MyPromise((resolve, reject) => {
+      //   setTimeout(() => {
+      //     resolve(1);
+      //   }, 1000);
+      // });
+      // 6-1、回调不是函数
+      // p2.then(123,(error)=>{
+      //   console.log('promise1失败',error)
+      // }).then(res=>{
+      //   console.log('promise2成功',res)
+      // }),(error=>{
+      //   console.log('promise2失败',error)
+      // })
+      // 6-2、回调是函数
+      // p2.then((res)=>{
+      //   console.log('promise1成功',res)
+      // },(error)=>{
+      //   console.log('promise1失败',error)
+      // }).then(res=>{
+      //   console.log('promise2成功',res)
+      // },(error=>{
+      //   console.log('promise2失败',error)
+      // }))
+      // 6-3、回调返回值是promise
+      // p2.then(
+      //   (res) => {
+      //     console.log("promise1成功", res);
+      //     return new Promise((resolve, reject) => {
+      //       setTimeout(() => {
+      //         resolve(2);
+      //       }, 1000);
+      //     });
+      //   },
+      //   (error) => {
+      //     console.log("promise1失败", error);
+      //   }
+      // ).then(
+      //   (res) => {
+      //     console.log("promise2成功", res);
+      //   },
+      //   (error) => {
+      //     console.log("promise2失败", error);
+      //   }
+      // );
+
+      // 7、与promise互相操作
+      // const p2 = new MyPromise((resolve, reject) => {
+      //   setTimeout(() => {
+      //     resolve(1);
+      //   }, 1000);
+      // });
+      // p2.then((data) => {
+      //   console.log("ok1", data);
+      //   return new Promise((resolve, reject) => {
+      //     setTimeout(() => {
+      //       resolve(data * 2);
+      //     }, 1000);
+      //   });
+      // }).then((data) => {
+      //   console.log("ok2", data);
+      // });
+
+      // 7、async和await
+      // function delay(duration){
+      //   return new MyPromise(resolve=>{
+      //     setTimeout(resolve,duration)
+      //   })
+      // }
+      // async function test(){
+      //   await delay(1000)
+      //   console.log('ok')
+      // }
+      // test()
+
+      // 8、微队列
+      // setTimeout(() => {
+      //   console.log(1);
+      // }, 0);
+      // new MyPromise((resolve) => {
+      //   resolve(2);
+      // }).then((data) => {
+      //   console.log(data);
+      // });
+      // console.log(3)
+
+      // 8、catch
+      // new MyPromise((resolve,reject) => {
+      //   reject(2);
+      // }).catch((err) => {
+      //   console.log(err);
+      // });
+
+      // 9、finally
+      // new MyPromise((resolve,reject) => {
+      //   resolve(2);
+      // }).finally(() => {
+      //   console.log('finally');
+      // });
+
+      // 10、resolve
+      // const p2 = new Promise((resolve,reject) => {
+      //   resolve(2);
+      // })
+      // console.log(MyPromise.resolve(p2)===p2)
+      // MyPromise.resolve(p2).then(data=>{
+      //   console.log(data)
+      // })
+
+      // 11、reject
+      const p2 = new Promise((resolve,reject) => {
+        reject(2);
+      })
+      MyPromise.reject(123).catch(data=>{
+        console.log(data)
+      })
     </script>
   </body>
 </html>
