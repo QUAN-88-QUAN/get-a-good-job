@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    *{
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+    body,html{
+      width: 100vw;
+      height: 100vh;
+    }
+    .container{
+      --bg:url('./firefox.png') no-repeat center/cover;
+      background: var(--bg);
+      height: 90vh;
+      /* box-shadow: 10px 10px 10px red; */
+      filter: drop-shadow(10px 10px 10px red);
+    }
+  </style>
+</head>
+<body>
+  <div class="container"></div>
+</body>
+</html>
