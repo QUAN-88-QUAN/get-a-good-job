@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      html,
+      body {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /* 使用hounidi api 将变量变为属性 */
+      @property --x {
+        syntax: "<length>";
+        initial-value: 0px;
+        inherits: false;
+      }
+
+      @property --r {
+        syntax: "<angle>";
+        initial-value: 0deg;
+        inherits: false;
+      }
+
+      .ball {
+        width: 20px;
+        height: 20px;
+        background-color: skyblue;
+        border-radius: 50%;
+        transform: rotate(var(--r)) translate(var(--x));
+        animation: x 2s cubic-bezier(0.5, -800, 0.5, 800), r 4s linear;
+        animation-iteration-count: infinite;
+      }
+
+      @keyframes x {
+        to {
+          --x: 1px;
+        }
+      }
+
+      @keyframes r {
+        to {
+          --r: 360deg;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ball"></div>
+  </body>
+</html>
