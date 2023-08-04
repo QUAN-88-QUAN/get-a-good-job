@@ -14,7 +14,7 @@
       blue 100%,
       transparent 101%
     ),
-    radial-gradient(#{$r}px at 50% #{-$p}px, transparent 90%, red 91%);
+    radial-gradient(#{$r}px at 50% #{-$p}px, transparent 100%, red 101%);
   background-position: calc(50% - #{$x}px) 0, 50% #{$r}px;
   background-size: #{2 * $x}px 100%, #{2 * $x}px 100%;
   background-repeat: repeat-x, repeat-x;
