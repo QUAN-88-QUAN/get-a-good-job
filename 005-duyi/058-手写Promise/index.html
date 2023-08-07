@@ -44,7 +44,7 @@
           this.#run();
         }
 
-        // 1、两个参数什么时候调用
+        // 1、两个参数什么时候调用(上一个promise状态改变的时候调用，通过#run())
         then(onFulfilled, onRejected) {
           return new MyPromise((resolve, reject) => {
             this.#handlers.push({
@@ -58,6 +58,9 @@
         }
 
         // 2、什么时候返回的Promise是完成的，什么时候是拒绝的
+        // a、对应的函数不是回调函数的情况，状态取决去上一个promise状态
+        // b、回调是函数，取决于调用这个回调是否有错
+        // c、回调的返回值是一个promise,取决于这个promise执行
         #runOne(callback, resolve, reject) {
           // 放微队列
           this.#runMicroTask(() => {
@@ -134,6 +137,7 @@
             return data
           },err=>{
             onFinally()
+            // 想失败，直接抛一个错误
             throw err
           })
         }
@@ -141,6 +145,7 @@
         static resolve(value) {
           // 如果参数是promise,直接返回promise
           if(value instanceof MyPromise) return value
+          // 否则，返回一个新的peomise
           let _resolve,_reject
           const p = new MyPromise((resolve,reject)=>{
             _resolve = resolve
