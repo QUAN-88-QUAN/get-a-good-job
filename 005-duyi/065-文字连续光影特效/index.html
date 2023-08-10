@@ -1,62 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>
-      .text-area{
-        width: 100vw;
-        height: 100vh;
-        padding-top: 300px;
-        text-align: center;
-        background-color: #000;
-        font-size: 30px;
-      }
-      .text-area span{
-        color: #faebd7;
-        animation: shadowing 1s ease-in-out infinite alternate;
-      }
-      @keyframes shadowing {
-        to{
-          color: #ff0266;
-          text-shadow: 20px 0 70px #ff0266;
-        }
-      }
-      /* n一直为0 */
-      span:nth-child(n+2){
-        animation-delay: 0.2s;
-      }
-      span:nth-child(n+3){
-        animation-delay: 0.4s;
-      }
-      span:nth-child(n+4){
-        animation-delay: 0.6s;
-      }
-      span:nth-child(n+5){
-        animation-delay: 0.8s;
-      }
-      span:nth-child(n+6){
-        animation-delay: 1s;
-      }
-      span:nth-child(n+7){
-        animation-delay: 1.2s;
-      }
-      span:nth-child(n+8){
-        animation-delay: 1.4s;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="text-area">
-      <span>F</span>
-      <span>O</span>
-      <span>L</span>
-      <span>L</span>
-      <span>O</span>
-      <span>W</span>
-      <span>M</span>
-      <span>E</span>
-    </div>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body,html{
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #949292
+    }
+    h1{
+      font-size: 120px;
+      font-weight: 700;
+      color: #fff;
+      z-index: 10;
+    }
+    h1::before{
+      content: 'SHADOW';
+      position: absolute;
+      color: #000;
+      z-index: -1;
+      transform: translate(-50px,21px) scaleY(0.5) skew(50deg);
+      filter: blur(5px);
+      mask-image: linear-gradient(transparent,#000);
+      -webkit-mask-image: linear-gradient(transparent,#000);
+    }
+  </style>
+</head>
+<body>
+  <h1>SHADOW</h1>
+</body>
 </html>
