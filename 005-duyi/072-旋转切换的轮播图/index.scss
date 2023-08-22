@@ -1,0 +1,66 @@
+@use "sass:math";
+
+body {
+  background: #000;
+}
+
+$size: 200px;
+$n: 6;
+$pDeg: 360deg / $n; //每个扇形的顶角
+$r: $size/2; //小圆半径
+$R: $r/math.sin($pDeg/2);
+$innerSize: $R * 2;
+
+.container {
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  outline: 5px solid #fff;
+  margin: 50px auto;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.inner {
+  width: $innerSize;
+  height: $innerSize;
+  // background: #add8e680;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: $r;
+  img {
+    width: $size;
+    height: $size;
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    margin-left: -$r;
+    margin-top: -$r;
+    transform-origin: center #{$R + $r};
+    @for $i from 1 through $n {
+      &:nth-child(#{$i}) {
+        transform: rotate($pDeg * ($i - 1));
+      }
+    }
+  }
+}
+
+$u:1 / $n * 100%;//动画每个阶段经历的时间百分比
+$rotateDuration: .3s;//每张图片旋转的时间
+$stopDuration:1s;//每张图片停留的时间
+$duration:($rotateDuration + $stopDuration) * $n;//动画总时间
+$backPercent:$stopDuration / ($rotateDuration + $stopDuration) * $u;//动画停留的百分比
+@keyframes rotation {
+  @for $i from 1 through $n {
+    $p:$u * $i;
+    $deg:$pDeg * $i;
+    #{$p - $backPercent},#{$p}{
+      transform: rotate(-$deg);
+    }
+  }
+}
+
+.inner {
+  animation: rotation $duration ease-in infinite;
+}
