@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .container {
+        width: 300px;
+        height: 300px;
+        margin: 0 auto;
+        margin-top: 100px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        grid-template:
+          "A A B"
+          "C D B"
+          "C E E";
+      }
+      .item {
+        overflow: hidden;
+        border: 2px solid;
+      }
+      .item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .item:nth-child(1) {
+        grid-area: A;
+      }
+      .item:nth-child(2) {
+        grid-area: B;
+      }
+      .item:nth-child(3) {
+        grid-area: C;
+      }
+      .item:nth-child(4) {
+        grid-area: D;
+      }
+      .item:nth-child(5) {
+        grid-area: E;
+      }
+      .item{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .container {
+        --r:360deg;
+      }
+      .item img{
+        --r:-360deg;
+        width: 260%;
+        height: 260%;
+      }
+      .container,
+      .item img{
+        animation: rotation 10s linear infinite;
+      }
+      @keyframes rotation {
+        to {
+          transform: rotate(var(--r));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="item">
+        <img src="https://picsum.photos/id/31/400/600/" alt="" />
+      </div>
+      <div class="item">
+        <img src="https://picsum.photos/id/32/400/600/" alt="" />
+      </div>
+      <div class="item">
+        <img src="https://picsum.photos/id/33/400/600/" alt="" />
+      </div>
+      <div class="item">
+        <img src="https://picsum.photos/id/34/400/600/" alt="" />
+      </div>
+      <div class="item">
+        <img src="https://picsum.photos/id/35/400/600/" alt="" />
+      </div>
+    </div>
+  </body>
+</html>
