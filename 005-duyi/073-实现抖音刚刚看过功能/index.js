@@ -70,28 +70,30 @@ function loadPages() {
 
 const loadPagesDebounce = debounce(loadPages, 300);
 
-createElements(1);
+// createElements(1);
 
 async function setIndicatorVisible() {
   const offset = await getOffset(currentId);
   const [minIndex, maxIndex] = getRange();
   // 获取页码
   const page = getPage(offset, SIZE);
+  // 这里创建节点好一些
+  createElements(page);
   if (offset >= minIndex && offset <= maxIndex) {
     indicator.style.display = "none";
   } else {
     indicator.style.display = "block";
   }
-  indicator.dataset.page = page;
+  // indicator.dataset.page = page;
   indicator.dataset.index = offset;
 }
 
 setIndicatorVisible();
 
 indicator.addEventListener("click", function (e) {
-  const page = +e.target.dataset.page;
+  // const page = +e.target.dataset.page;
   const index = +e.target.dataset.index;
-  createElements(page);
+  // createElements(page);
   container.children[index].scrollIntoView({
     behavior: "smooth",
     block: "center",

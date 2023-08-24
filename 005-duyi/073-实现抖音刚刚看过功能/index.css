@@ -37,4 +37,5 @@ body {
   background-color: #fff;
   border-radius: 5px;
   padding: 0px 8px;
+  cursor: pointer;
 }
