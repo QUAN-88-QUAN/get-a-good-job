@@ -1,9 +1,9 @@
 const imgs = [
-  "https://picsum.photos/id/31/600/700",
-  "https://picsum.photos/id/32/600/700",
   "https://picsum.photos/id/33/600/700",
   "https://picsum.photos/id/34/600/700",
   "https://picsum.photos/id/35/600/700",
+  "https://picsum.photos/id/36/600/700",
+  "https://picsum.photos/id/37/600/700",
 ];
 
 function createItem(index) {

@@ -4,14 +4,16 @@ const BAR = 79
 
 // 得到视口坐标
 function getClientPoint(screenX, screenY){
-  let clientX = screenX - window.screenX;
   console.log(window.screenX, window.screenY)
-  let clientY = screenY - window.screenY -BAR;
+  // window.screenY，浏览器顶部距离系统桌面顶部的垂直距离
+  let clientX = screenX - window.screenX;
+  let clientY = screenY - window.screenY - BAR;
   return [clientX, clientY]
 }
 
-// 通过视口坐标得到屏幕坐标
+// 得到位于整个屏幕的坐标
 function getScreenPoint(clientX, clientY){
+  console.log(window.screenX, window.screenY)
   let screenX = clientX + window.screenX;
   let screenY = clientY + window.screenY + BAR;
   return [screenX, screenY]
