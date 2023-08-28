@@ -4,18 +4,18 @@
   box-sizing: border-box;
 }
 
-body,html{
+body{
   position: relative;
+  width: 100%;
+  height: 100vh;
 }
 
 .playground{
   position: relative;
-  width: 100vw;
+  width: 100%;
   height: 200vh;
   background-color: lightblue;
-}
-.playground::after{
-  clear: both;
+  display: inline-block;
 }
 
 .animation-container{
@@ -23,8 +23,8 @@ body,html{
   position: -webkit-sticky;
   top: 0px;
   background-color: #000;
-  margin-top: 30vh;
-  width: 100vw;
+  margin-top: 30%;
+  width: 100%;
   height: 100vh;
 }
 
@@ -45,6 +45,7 @@ body,html{
   width: 30px;
   height: 30px;
   color: #000;
+  text-align: center;
   border-radius: 5px;
   background-color: lightblue;
 }
@@ -56,7 +57,7 @@ body,html{
 }
 
 .header,.footer{
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   background-color: #fff;
   color: #000;

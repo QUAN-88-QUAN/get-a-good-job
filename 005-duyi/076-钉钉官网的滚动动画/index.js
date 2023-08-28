@@ -2,13 +2,14 @@ const items = document.querySelectorAll(".list-item");
 const playGround = document.querySelector(".playground");
 const list = document.querySelector(".list");
 
+// 创建动画
 function createAnimation(scrollStart, scrollEnd, valueStart, valueEnd) {
   return function (scroll) {
     if (scroll <= scrollStart) {
-      return scrollStart;
+      return valueStart;
     }
     if (scroll >= scrollEnd) {
-      return scrollEnd;
+      return valueEnd;
     }
     return (
       valueStart +
@@ -18,12 +19,12 @@ function createAnimation(scrollStart, scrollEnd, valueStart, valueEnd) {
   };
 }
 
-const animate = createAnimation(100, 2000, 0, 1);
-
 const animationMap = new Map();
 
+// 得到每个节点的所有动画
 function getDomAnimation(scrollStart, scrollEnd, dom) {
-  scrollStart = scrollStart + dom.dataset.order * 600;
+  // 每个动画的起点不一样，就这样就产生了视差效果
+  scrollStart = scrollStart + dom.dataset.order * 100;
   const opactyAnimation = createAnimation(scrollStart, scrollEnd, 0, 1);
   const opacity = function (scroll) {
     return opactyAnimation(scroll);
@@ -56,12 +57,13 @@ function getDomAnimation(scrollStart, scrollEnd, dom) {
 
 function updateMap() {
   animationMap.clear();
-  // 提供了元素的大小及其相对于视口的位置
-  console.log(playGround);
+  // getBoundingClientRect提供了元素的大小及其相对于视口的位置
   const playGroundRect = playGround.getBoundingClientRect();
-  console.log(playGroundRect);
   const scrollStart = playGroundRect.top + window.scrollY;
   const scrollEnd = playGroundRect.bottom + window.scrollY - window.innerHeight;
+  // 这样也可以
+  // const scrollStart = playGround.offsetTop
+  // const scrollEnd = playGroundRect.height + scrollStart - window.innerHeight;
   for (const item of items) {
     animationMap.set(item, getDomAnimation(scrollStart, scrollEnd, item));
   }
