@@ -33,17 +33,25 @@ body{
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  /* 子元素居中 */
-  justify-items: center;
-  align-items: center;
+  grid-template-columns: repeat(7, 100px);
+  grid-template-rows: repeat(2, 200px);
+  /* 子元素在容器空间中的对齐 */
+  /* justify-content: center; */
+  /* align-content: center; */
+  /* 子元素在容器空间中的对齐 替代方式*/
+  place-content:center;
+  /* 子元素内的对齐方式 */
+  /* justify-items: center; */
+  /* align-items: center; */
+  /* 子元素内的对其方式 替代方式 */
+  place-items: center;
   overflow: hidden;
 }
 
 .list-item{
   width: 30px;
   height: 30px;
+  line-height: 30px;
   color: #000;
   text-align: center;
   border-radius: 5px;
