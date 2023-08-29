@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- 只有火狐浏览器支持，还得打开about:config 搜索 layout.css.grid-template-masonry-value.enabled 设置为true才行 -->
+  <style>
+    .container {
+      margin: 0 auto;
+      width: 1000px;
+      height: auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: masonry;
+      grid-gap: 10px;
+      overflow: hidden;
+    }
+    .item{
+      overflow: hidden;
+    }
+    .item img{
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="item">
+      <img src="https://picsum.photos/id/38/300/500" alt="">
+    </div>
+    <div class="item">
+      <img src="https://picsum.photos/id/39/600/700" alt="">
+    </div>
+    <div class="item">
+      <img src="https://picsum.photos/id/50/200/300" alt="">
+    </div>
+    <div class="item">
+      <img src="https://picsum.photos/id/51/200/300" alt="">
+    </div>
+    <div class="item">
+      <img src="https://picsum.photos/id/52/350/550" alt="">
+    </div>
+    <div class="item">
+      <img src="https://picsum.photos/id/53/300/600" alt="">
+    </div>
+    <div class="item">
+      <img src="https://picsum.photos/id/54/300/500" alt="">
+    </div>
+    <div class="item">
+      <img src="https://picsum.photos/id/66/300/500" alt="">
+    </div>
+  </div>
+</body>
+</html>
