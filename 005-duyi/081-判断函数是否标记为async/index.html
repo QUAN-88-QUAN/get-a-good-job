@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function isAsyncFunction(fn) {
+      // 不行
+      // console.log(fn.constructor===AsyncFunction)
+      // console.dir(fn)
+      // 方法一
+      const str = Object.prototype.toString.call(fn)
+      // console.log(str)
+      // console.log(str==='[object AsyncFunction]')
+      // 方法二
+      console.log(fn[Symbol.toStringTag]==='AsyncFunction')
+    }
+    isAsyncFunction(function() {})
+    isAsyncFunction(async function() {})
+  </script>
+</body>
+</html>
