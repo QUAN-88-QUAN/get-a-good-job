@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 调用对象的基本方法
+    // const obj = {}
+    // Reflect.set(obj, 'name', '张三')
+    // console.log(obj)
+
+    // const obj  = {
+    //   a:1,
+    //   b:2,
+    //   get c() {
+    //     return this.a + this.b
+    //   }
+    // }
+    // // console.log(obj.c) // 3
+    // const r = Reflect.get(obj, 'c',{a:3,b:4})
+    // console.log(r) // 7
+
+    // const obj  = {
+    //   a:1,
+    //   b:2,
+    //   get c() {
+    //     return this.a + this.b
+    //   }
+    // }
+    // const p = new Proxy(obj,{
+    //   get(target,key,receiver) {
+    //     console.log('get',target,key,receiver)
+    //     // return target[key]
+    //     // 这两种方法可以触发读a,b
+    //     return Reflect.get(target,key,p)
+    //     // return Reflect.get(target,key,receiver)
+    //   }
+    // })
+    // console.log(p.a)
+    // // 没有触发读a,b
+    // console.log(p.c)
+
+    const obj = {
+      a:1,
+      b:2,
+      [Symbol.for('d')]:3
+    }
+    Object.defineProperty(obj, 'c',{
+      value:3,
+      enumerable:false
+    })
+    console.log(Object.keys(obj)) // ['a', 'b']
+    console.log(Reflect.ownKeys(obj)) // ['a', 'b', 'c', Symbol(d)]
+  </script>
+</body>
+</html>
