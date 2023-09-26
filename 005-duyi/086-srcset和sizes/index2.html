@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      img {
+        width: 50vw;
+        height: 50vw;
+        margin: 0 auto;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 150w代表物理像素 -->
+    <img
+      srcset="
+        https://picsum.photos/id/38/150   150w,
+        https://picsum.photos/id/38/300   300w,
+        https://picsum.photos/id/38/600   600w,
+        https://picsum.photos/id/38/900   900w,
+        https://picsum.photos/id/38/1200 1200w
+      "
+      src=""
+      alt=""
+      sizes="
+        (max-width:300px) 50vw,
+        (max-width:600px) 50vw,
+        (max-width:900px) 50vw,
+        (max-width:1200px) 50vw,
+      "
+    />
+  </body>
+</html>
