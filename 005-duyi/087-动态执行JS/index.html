@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // let a = 1;
+      // function exec(code) {
+      //   // 方法一
+      //   // eval是同步代码，且在当前作用域
+      //   let a = 2;
+      //   eval(code);
+      // }
+      // exec('console.log("hello",a)');
+      // console.log("world");
+
+      // let a = 1;
+      // function exec(code) {
+      //   // 方法二
+      //   // 异步，全局作用域
+      //   let a = 2;
+      //   setTimeout(code, 0)
+      // }
+      // exec('console.log("hello",a)');
+      // console.log("world");
+
+      // let a = 1;
+      // function exec(code) {
+      //   // 方法三
+      //   // 同步，全局作用域
+      //   let a = 2;
+      //   const script = document.createElement('script');
+      //   script.innerHTML = code;
+      //   document.body.appendChild(script);
+      // }
+      // exec('console.log("hello",a)');
+      // console.log("world");
+
+      let a = 1;
+      function exec(code) {
+        // 方法四
+        // 同步，全局作用域
+        let a = 2;
+        new Function(code)();
+      }
+      exec('console.log("hello",a)');
+      console.log("world");
+    </script>
+  </body>
+</html>
