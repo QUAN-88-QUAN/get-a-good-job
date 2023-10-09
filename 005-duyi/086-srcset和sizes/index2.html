@@ -14,7 +14,8 @@
     </style>
   </head>
   <body>
-    <!-- 150w代表物理像素 -->
+    <!-- 150w代表物理像素，下面的50vw代表的逻辑像素，比如当dpr=2时，屏幕宽度为800px，50vw就是400px，400*2=800px，找到的就是900w -->
+    <!-- https://juejin.cn/post/6844903922109267976 -->
     <img
       srcset="
         https://picsum.photos/id/38/150   150w,
