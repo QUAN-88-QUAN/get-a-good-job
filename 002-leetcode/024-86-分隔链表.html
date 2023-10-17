@@ -22,11 +22,15 @@
             list2.next = head;
             list2 = list2.next;
           }
-          head = head.next;
+          // 下面方法的另外一种写法2023-10-17
+          const temp = head.next;
+          head.next = null;
+          head = temp;
+          // head = head.next;
         }
         // 注意这里
         // 遍历结束之后，得将list2.next置空，因为当前节点是复用的原链表的节点，而其next指针可能指向小于x的节点，需要切断这个引用
-        list2.next = null;//不太懂，按理说next赋值之后再next应该为null了呀
+        // list2.next = null;//不太懂，按理说next赋值之后再next应该为null了呀
         list1.next = head2.next;
         return head1.next;
 
