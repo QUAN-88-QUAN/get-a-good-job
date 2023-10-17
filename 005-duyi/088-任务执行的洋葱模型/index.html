@@ -1,53 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <script>
-      // let a = 1;
-      // function exec(code) {
-      //   // 方法一
-      //   // eval是同步代码，且在当前作用域
-      //   let a = 2;
-      //   eval(code);
-      // }
-      // exec('console.log("hello",a)');
-      // console.log("world");
-
-      // let a = 1;
-      // function exec(code) {
-      //   // 方法二
-      //   // 异步，全局作用域
-      //   let a = 2;
-      //   setTimeout(code, 0)
-      // }
-      // exec('console.log("hello",a)');
-      // console.log("world");
-
-      // let a = 1;
-      // function exec(code) {
-      //   // 方法三
-      //   // 同步，全局作用域
-      //   let a = 2;
-      //   const script = document.createElement('script');
-      //   script.innerHTML = code;
-      //   document.body.appendChild(script);
-      // }
-      // exec('console.log("hello",a)');
-      // console.log("world");
-
-      let a = 1;
-      function exec(code) {
-        // 方法四
-        // 同步，全局作用域
-        let a = 2;
-        new Function(code)();
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    class TaskPro{
+      constructor(){
+        this._taskList = []
+        this._isRunning = false
+        this.currentIndex = 0
+        this._next=async ()=>{
+          this.currentIndex++
+          await this._runTask()
+        }
       }
-      exec('console.log("hello",a)');
-      console.log("world");
-    </script>
-  </body>
+      addTask(task){
+        this._taskList.push(task)
+      }
+      run(){
+        if(this._isRunning || !this._taskList.length){
+          return 
+        }
+        this._isRunning = true
+        this._runTask()
+      }
+
+      // 取出一个任务运行
+      async _runTask(){
+        if(this.currentIndex >= this._taskList.length){
+          this._reset()
+          return 
+        }
+        const i = this.currentIndex
+        const task = this._taskList[this.currentIndex]
+        await task(this._next)
+        const j = this.currentIndex
+        if(i === j){
+          await this._next()
+        }
+      }
+
+      _reset(){
+        this._currentIndex = 0
+        this._isRunning = false
+        this._taskList = []
+      }
+    }
+    
+    const t = new TaskPro()
+    t.addTask(async (next)=>{
+      console.log('1 start')
+      await next()
+      console.log('1 end')
+    })
+    t.addTask(()=>{
+      console.log('2')
+    })
+    t.addTask(()=>{
+      console.log('3')
+    })
+    t.run()
+  </script>
+</body>
 </html>
