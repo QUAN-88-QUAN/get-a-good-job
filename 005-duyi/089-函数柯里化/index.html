@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // function currying(fn,...args){
+    //   return (...rest) =>{
+    //     const allArgs = [...args, ...rest];
+    //     if(allArgs.length === fn.length){
+    //       return fn(...allArgs);
+    //     }else{
+    //       return currying(fn,...allArgs);
+    //     }
+    //   }
+    // }
+
+    // 考虑this指向
+    function currying(fn,...args){
+      return function (...rest){
+        const allArgs = [...args,...rest];
+        if(allArgs.length === fn.length){
+          return fn.call(this,...allArgs);
+        }else{
+          return currying(fn,...allArgs);
+        }
+      }
+    }
+
+    const sum = (a,b,c,d) => a + b + c + d
+    
+    console.log(currying(sum)(1)(2)(3)(4))
+    console.log(currying(sum,1)(2,3)(4))
+    console.log(currying(sum,1,2)(3)(4))
+    console.log(currying(sum,1,2)(3,4))
+  </script>
+</body>
+</html>
