@@ -24,17 +24,17 @@
           div.innerText = data;
           document.body.appendChild(div);
         };
-        const scheduler = (task) => {
-          setTimeout(() => {
-            const start = Date.now();
-            task(() => Date.now() - start < 50);
-          }, 100);
-        };
-        // const scheduler = (task)=>{
-        //   requestIdleCallback(idle=>{
-        //     task(idle.timeRemaining()>0)
-        //   })
-        // }
+        // const scheduler = (task) => {
+        //   setTimeout(() => {
+        //     const start = Date.now();
+        //     task(() => Date.now() - start < 50);
+        //   }, 100);
+        // };
+        const scheduler = (task)=>{
+          requestIdleCallback(idle=>{
+            task(idle.timeRemaining()>0)
+          })
+        }
         performChunk(datas, taskHandler, scheduler);
         // performChunk(100000,taskHandler);
       };
