@@ -15,7 +15,7 @@
       //     div.innerText = i
       //     document.body.appendChild(div)
       //   }
-      // }
+      // } 
 
       const datas = new Array(100000).fill(0).map((item, index) => index);
       btn.onclick = () => {
@@ -48,20 +48,24 @@
         // 执行下一个任务
         function _run() {
           if (i >= datas.length) return;
-          scheduler((isGoOn) => {
-            while (isGoOn && i < datas.length) {
-              taskHandler(datas[i], i);
-              i++;
-            }
-            _run();
-          });
-          // requestIdleCallback(idle=>{
-          //   while (idle.timeRemaining()>0 && i < datas.length) {
+          // 这两种方法看似一样，但是效果不同，
+          // 第一种会在所有的节点生成完了之后再绘制到页面上
+          // 第二种会生成一批就绘制一批
+          // 产生差异的原因尚不清楚，明明都用了requestIdleCallback
+          // scheduler((isGoOn) => {
+          //   while (isGoOn && i < datas.length) {
           //     taskHandler(datas[i], i);
           //     i++;
           //   }
           //   _run();
-          // })
+          // });
+          requestIdleCallback(idle=>{
+            while (idle.timeRemaining()>0 && i < datas.length) {
+              taskHandler(datas[i], i);
+              i++;
+            }
+            _run();
+          })
         }
         _run();
       }
