@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box{
+      overflow: hidden;
+      width: 30px;
+      height: 30px;
+    }
+    /* 偶数绿色 */
+    .box:nth-child(even){
+      background-color: lightgreen;
+    }
+    /* 奇数蓝色 */
+    .box:nth-child(odd){
+      background-color: lightblue;
+    }
+    .item1{
+      width: 100%;
+      height: 300px;
+      overflow: hidden;
+      background-color: lightgray;
+      display: flex;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="item1">
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box" style="margin-left: auto;margin-right: auto;"></div>
+    <div class="box"></div>
+  </div>
+</body>
+</html>
