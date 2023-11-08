@@ -80,5 +80,6 @@ class Graph {
   }
 }
 
+// 会有一个bug,再切换到其他标签页一段时间再切换回来，这段时间内，点会跑出屏幕
 const g = new Graph();
 g.draw();
