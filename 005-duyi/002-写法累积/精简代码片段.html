@@ -64,8 +64,16 @@
 
       // 8、随机字符串
       // console.log(randomString());
-      const randomString = () => {
-        return Math.random().toString(36).slice(2);
+      const randomString = (len = 6) => {
+        // return Math.random().toString(36).slice(2);
+        if (len <= 11) {
+          return Math.random()
+            .toString(36)
+            .slice(2, 2 + len)
+            .padEnd(len, "0");
+        } else {
+          return randomString(11) + randomString(len - 11);
+        }
       };
 
       // 9、去除字符串的元素标记
