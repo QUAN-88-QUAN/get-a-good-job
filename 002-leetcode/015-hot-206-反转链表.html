@@ -42,6 +42,7 @@
         }
         let curr = reverseList(head.next);
         head.next.next = head;
+        // 防止死循环，先断开
         head.next = null;
         return curr;
       };

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      var reverseBetween = function (head, left, right) {
+        // 方法一：使用数组暴力反转之后再赋值给原来的链表（）---时间：O（3n）（）---空间：O（n）（数组）
+        const arr = [];
+        let list1 = head;
+        let list2 = head;
+        while (list1) {
+          arr.push(list1.val);
+          list1 = list1.next;
+        }
+        while (left < right) {
+          let temp = arr[left - 1];
+          arr[left - 1] = arr[right - 1];
+          arr[right - 1] = temp;
+          left++;
+          right--;
+        }
+        while (list2) {
+          list2.val = arr.shift();
+          list2 = list2.next;
+        }
+        return head;
+      };
+    </script>
+  </body>
+</html>
