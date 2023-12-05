@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 数字类型在对象中的顺序比字符类型的顺序要靠前
+    const obj = {
+      a:0
+    }
+    // {
+    //   '1': 0,
+    //   a: 0,
+    // }
+    obj['1'] = 0
+    // {
+    //   '1': 1,
+    //   a: 2,
+    // }
+    obj[++obj.a] = obj.a++
+    // [1,2]
+    const value = Object.values(obj)
+    // {
+    //   '1': 1,
+    //   '2': 2,
+    //   a: 2,
+    // }
+    obj[value[1]] = obj.a
+    console.log(obj)
+  </script>
+</body>
+</html>
