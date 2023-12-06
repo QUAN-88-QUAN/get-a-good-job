@@ -33,14 +33,22 @@
       // });
 
       // 4
-      let a = new Proxy(
-        { i: 1 },
-        {
-          get(target) {
-            return () => target.i++;
-          },
+      // let a = new Proxy(
+      //   { i: 1 },
+      //   {
+      //     get(target) {
+      //       return () => target.i++;
+      //     },
+      //   }
+      // );
+
+      // 5
+      const a = {
+        value: 1,
+        toString() {
+          return this.value++;
         }
-      );
+      }
       console.log(a == 1 && a == 2 && a == 3);
     </script>
   </body>
