@@ -33,18 +33,18 @@
 
         // 反转前n个节点，递归
         // 记住n+1个节点，反转完之后head得指向这个节点
-        let temp = null
-        function reverseN(head,n){
-          if(n===1){
-            temp = head.next
-            return head;
-          }
-          // newHead 为反转之后的头节点,并且一直没变
-          let newHead = reverseN(head.next,n-1)
-          head.next.next = head;
-          head.next = temp;
-          return newHead;
-        }
+        // let temp = null
+        // function reverseN(head,n){
+        //   if(n===1){
+        //     temp = head.next
+        //     return head;
+        //   }
+        //   // newHead 为反转之后的头节点,并且一直没变
+        //   let newHead = reverseN(head.next,n-1)
+        //   head.next.next = head;
+        //   head.next = temp;
+        //   return newHead;
+        // }
 
         // 反转前n个节点，迭代
         // function reverseN(head, n) {
@@ -60,12 +60,34 @@
         //   return pre;
         // }
 
-        // 方法二：使用使用递归（）---时间：O（n）（栈空间）---空间：O（1）（）
-        if(left===1){
-          return reverseN(head,right)
+        // 方法二：使用使用递归（）---时间：O（n或者n^2）（栈空间）---空间：O（1）（）
+        // if(left===1){
+        //   return reverseN(head,right)
+        // }
+        // head.next = reverseBetween(head.next,left-1,right-1);
+        // return head;
+
+        // 方法二：使用使用迭代（）---时间：O（）（栈空间）---空间：O（1）（）
+        let temp = null;
+        function reverseN(head, n) {
+          if (n === left) {
+            temp = head.next;
+            return head;
+          }
+          // newHead 为反转之后的头节点,并且一直没变
+          let newHead = reverseN(head.next, n - 1);
+          head.next.next = head;
+          head.next = temp;
+          return newHead;
         }
-        head.next = reverseBetween(head.next,left-1,right-1);
-        return head;
+        let i = 0;
+        let curr = head;
+        while (i < left) {
+          head = head.next;
+          i++;
+        }
+        head.next = reverseN(head.next, right);
+        return curr.next
       };
     </script>
   </body>
