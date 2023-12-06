@@ -11,24 +11,60 @@
     <script>
       var reverseBetween = function (head, left, right) {
         // 方法一：使用数组暴力反转之后再赋值给原来的链表（）---时间：O（3n）（）---空间：O（n）（数组）
-        const arr = [];
-        let list1 = head;
-        let list2 = head;
-        while (list1) {
-          arr.push(list1.val);
-          list1 = list1.next;
+        // const arr = [];
+        // let list1 = head;
+        // let list2 = head;
+        // while (list1) {
+        //   arr.push(list1.val);
+        //   list1 = list1.next;
+        // }
+        // while (left < right) {
+        //   let temp = arr[left - 1];
+        //   arr[left - 1] = arr[right - 1];
+        //   arr[right - 1] = temp;
+        //   left++;
+        //   right--;
+        // }
+        // while (list2) {
+        //   list2.val = arr.shift();
+        //   list2 = list2.next;
+        // }
+        // return head;
+
+        // 反转前n个节点，递归
+        // 记住n+1个节点，反转完之后head得指向这个节点
+        let temp = null
+        function reverseN(head,n){
+          if(n===1){
+            temp = head.next
+            return head;
+          }
+          // newHead 为反转之后的头节点,并且一直没变
+          let newHead = reverseN(head.next,n-1)
+          head.next.next = head;
+          head.next = temp;
+          return newHead;
         }
-        while (left < right) {
-          let temp = arr[left - 1];
-          arr[left - 1] = arr[right - 1];
-          arr[right - 1] = temp;
-          left++;
-          right--;
+
+        // 反转前n个节点，迭代
+        // function reverseN(head, n) {
+        //   let pre = null;
+        //   let cur = head;
+        //   for(let i = 0; i < n; i++) {
+        //     let temp = cur.next;
+        //     cur.next = pre;
+        //     pre = cur;
+        //     cur = temp;
+        //   }
+        //   head.next = cur;
+        //   return pre;
+        // }
+
+        // 方法二：使用使用递归（）---时间：O（n）（栈空间）---空间：O（1）（）
+        if(left===1){
+          return reverseN(head,right)
         }
-        while (list2) {
-          list2.val = arr.shift();
-          list2 = list2.next;
-        }
+        head.next = reverseBetween(head.next,left-1,right-1);
         return head;
       };
     </script>
