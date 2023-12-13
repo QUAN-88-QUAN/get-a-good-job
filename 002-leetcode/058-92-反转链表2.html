@@ -68,27 +68,74 @@
         // return head;
 
         // 方法二：使用使用迭代（）---时间：O（）（栈空间）---空间：O（1）（）
-        let temp = null;
+        let tempHead = null;
+        let tempFotter = null;
         function reverseN(head, n) {
           if (n === left) {
-            temp = head.next;
+          tempFotter = head.next;
             return head;
           }
           // newHead 为反转之后的头节点,并且一直没变
-          let newHead = reverseN(head.next, n - 1);
+          let newHead = reverseN(head.next, n-1);
           head.next.next = head;
-          head.next = temp;
+          head.next = tempFotter;
           return newHead;
         }
-        let i = 0;
-        let curr = head;
+        let i = 1;
         while (i < left) {
+          tempHead = head;
           head = head.next;
           i++;
         }
-        head.next = reverseN(head.next, right);
-        return curr.next
+        if(tempHead && tempHead.next){
+          tempHead.next = reverseN(head, right);
+        }else{
+          tempHead = reverseN(head, right);
+        }
+        return tempHead;
       };
+
+      // const obj = {
+      //   val: 1,
+      //   next: {
+      //     val: 2,
+      //     next: {
+      //       val: 3,
+      //       next: {
+      //         val: 4,
+      //         next: {
+      //           val: 5,
+      //           next: {
+      //             val: 6,
+      //             next: {
+      //               val: 7,
+      //               next: null,
+      //             },
+      //           },
+      //         },
+      //       },
+      //     },
+      //   },
+      // };
+      // console.log(reverseBetween(obj, 2, 5));
+      
+      const obj = {
+        val: 1,
+        next: {
+          val: 2,
+          next: {
+            val: 3,
+            next: {
+              val: 4,
+              next: {
+                val: 5,
+                next: null,
+              },
+            },
+          },
+        },
+      };
+      console.log(reverseBetween(obj, 1, 4));
     </script>
   </body>
 </html>
