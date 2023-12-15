@@ -68,57 +68,42 @@
         // return head;
 
         // 方法二：使用使用迭代（）---时间：O（）（栈空间）---空间：O（1）（）
-        let tempHead = null;
+        let tempHead = new ListNode(0);
+        // 符合测试用例
+        // let tempHead = {}
+        let tempHeadP = tempHead;
         let tempFotter = null;
         function reverseN(head, n) {
           if (n === left) {
-          tempFotter = head.next;
+            tempFotter = head.next;
             return head;
           }
           // newHead 为反转之后的头节点,并且一直没变
-          let newHead = reverseN(head.next, n-1);
+          let newHead = reverseN(head.next, n - 1);
           head.next.next = head;
           head.next = tempFotter;
           return newHead;
         }
         let i = 1;
-        while (i < left) {
-          tempHead = head;
+        while (left < right && i < left) {
+            tempHead.val = head.val;
+            // tempHead.next = {};
+            tempHead.next =  new ListNode(0);
+            if(i!==left-1){
+              tempHead = tempHead.next;
+            }
           head = head.next;
           i++;
         }
-        if(tempHead && tempHead.next){
+        console.log(tempHead);
+        if(tempHead.next){
           tempHead.next = reverseN(head, right);
+          return tempHeadP;
         }else{
-          tempHead = reverseN(head, right);
+          return reverseN(head, right);
         }
-        return tempHead;
       };
 
-      // const obj = {
-      //   val: 1,
-      //   next: {
-      //     val: 2,
-      //     next: {
-      //       val: 3,
-      //       next: {
-      //         val: 4,
-      //         next: {
-      //           val: 5,
-      //           next: {
-      //             val: 6,
-      //             next: {
-      //               val: 7,
-      //               next: null,
-      //             },
-      //           },
-      //         },
-      //       },
-      //     },
-      //   },
-      // };
-      // console.log(reverseBetween(obj, 2, 5));
-      
       const obj = {
         val: 1,
         next: {
@@ -135,7 +120,30 @@
           },
         },
       };
-      console.log(reverseBetween(obj, 1, 4));
+      // console.log(reverseBetween(obj, 1, 4));
+      console.log(reverseBetween(obj, 2, 4));
+      // console.log(reverseBetween(obj, 3, 4));
+
+      // const obj = {
+      //   val: 1,
+      //   next: {
+      //     val: 2,
+      //     next: {
+      //       val: 3,
+      //       next: null,
+      //     },
+      //   },
+      // };
+      // console.log(reverseBetween(obj, 3, 3));
+
+      // const obj = {
+      //   val: 3,
+      //   next: {
+      //     val: 4,
+      //     next: null,
+      //   },
+      // };
+      // console.log(reverseBetween(obj, 1, 2));
     </script>
   </body>
 </html>
