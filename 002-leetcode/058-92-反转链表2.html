@@ -60,48 +60,50 @@
         //   return pre;
         // }
 
-        // 方法二：使用使用递归（）---时间：O（n或者n^2）（栈空间）---空间：O（1）（）
+        // 方法二：使用递归（）---时间：O（n或者n^2）（栈空间）---空间：O（1）（）
         // if(left===1){
         //   return reverseN(head,right)
         // }
         // head.next = reverseBetween(head.next,left-1,right-1);
         // return head;
 
-        // 方法二：使用使用迭代（）---时间：O（）（栈空间）---空间：O（1）（）
-        let tempHead = new ListNode(0);
-        // 符合测试用例
-        // let tempHead = {}
-        let tempHeadP = tempHead;
-        let tempFotter = null;
-        function reverseN(head, n) {
-          if (n === left) {
-            tempFotter = head.next;
-            return head;
-          }
-          // newHead 为反转之后的头节点,并且一直没变
-          let newHead = reverseN(head.next, n - 1);
-          head.next.next = head;
-          head.next = tempFotter;
-          return newHead;
-        }
-        let i = 1;
-        while (left < right && i < left) {
-            tempHead.val = head.val;
-            // tempHead.next = {};
-            tempHead.next =  new ListNode(0);
-            if(i!==left-1){
-              tempHead = tempHead.next;
-            }
-          head = head.next;
-          i++;
-        }
-        console.log(tempHead);
-        if(tempHead.next){
-          tempHead.next = reverseN(head, right);
-          return tempHeadP;
-        }else{
-          return reverseN(head, right);
-        }
+        // 方法三：使用使用迭代（自己想的）---时间：O（）（栈空间）---空间：O（1）（）
+        // let tempHead = new ListNode(0);
+        // // 符合测试用例
+        // // let tempHead = {}
+        // let tempHeadP = tempHead;
+        // let tempFotter = null;
+        // function reverseN(head, n) {
+        //   if (n === left) {
+        //     tempFotter = head.next;
+        //     return head;
+        //   }
+        //   // newHead 为反转之后的头节点,并且一直没变
+        //   let newHead = reverseN(head.next, n - 1);
+        //   head.next.next = head;
+        //   head.next = tempFotter;
+        //   return newHead;
+        // }
+        // let i = 1;
+        // while (left < right && i < left) {
+        //     tempHead.val = head.val;
+        //     // tempHead.next = {};
+        //     tempHead.next =  new ListNode(0);
+        //     if(i!==left-1){
+        //       tempHead = tempHead.next;
+        //     }
+        //   head = head.next;
+        //   i++;
+        // }
+        // if(tempHead.next){
+        //   tempHead.next = reverseN(head, right);
+        //   return tempHeadP;
+        // }else{
+        //   return reverseN(head, right);
+        // }
+
+        // 方法四：使用迭代（）---时间：O（）（栈空间）---空间：O（1）（）
+        
       };
 
       const obj = {
