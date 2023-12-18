@@ -148,7 +148,7 @@
             cur = temp;
           }
         }
-        let list = ListNode(-1);
+        let list = new ListNode(-1);
         list.next = head;
         let tempLeft = list;
         // 开始节点的前一个节点
@@ -170,7 +170,7 @@
         // 反转
         reverseN(reverseList);
         // 接上
-        tempLeft.next = reverseList;
+        tempLeft.next = tempRight;
         reverseList.next = footerList;
         return list.next;
       };
