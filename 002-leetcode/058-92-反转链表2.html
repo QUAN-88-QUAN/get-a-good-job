@@ -180,7 +180,46 @@
         // reverseList.next = footerList;
         // return list.next;
 
-        // 方法六：穿针引线法（官方）---时间：O（N）（遍历整个链表）---空间：O（1）（）
+        // 方法六：穿针引线头插法（官方）---时间：O（N）（遍历整个链表）---空间：O（1）（）
+        // let list = new ListNode(-1);
+        // let list = {}
+        // list.next = head;
+        // // 这里不能等于head，不然还得考虑特殊情况，就算改成left-2也不行
+        // let prev = list;
+        // for (let i = 0; i < left - 1; i++) {
+        //   prev = prev.next;
+        // }
+        // let curr = prev.next;
+        // for (let i = 0; i < right - left; i++) {
+        //   const next = curr.next;
+        //   curr.next = next.next;
+        //   next.next = prev.next;
+        //   prev.next = next;
+        // }
+        // return list.next;
+
+        // 改造上面自己研究的两个方法
+        let list = new ListNode(0);
+        // let list = {}
+        list.next = head;
+        let leftHead = list
+        function reverseN(head, n) {
+          let pre = null;
+          let cur = head;
+          for(let i = 0; i < n; i++) {
+            let temp = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = temp;
+          }
+          head.next = cur;
+          return pre;
+        }
+        for(let i = 0; i < left-1; i++) {
+          leftHead = leftHead.next;
+        }
+        leftHead.next = reverseN(leftHead.next, right-left+1);
+        return list.next;
       };
 
       const obj = {
