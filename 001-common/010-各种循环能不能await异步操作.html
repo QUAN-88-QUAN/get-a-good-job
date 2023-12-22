@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head> </head>
+  <body>
+    <script>
+      let arr = [1, 2, 3, 4, 5];
+      function asyncEvent(ele) {
+        return new Promise((resolve) => {
+          setTimeout(
+            (e) => {
+              console.log(e);
+              resolve(e);
+            },
+            1000,
+            ele
+          );
+        });
+      }
+      async function test() {
+        // 卡的住
+        // for (let i in arr) {
+        //   await asyncEvent(i);
+        // }
+        // for (let i of arr) {
+        //   await asyncEvent(i);
+        // }
+        // for(let i=0;i<arr.length;i++){
+        //   await asyncEvent(arr[i]);
+        // }
+        // 卡不住
+        // arr.forEach(async (ele) => {
+        //   await asyncEvent(ele);
+        // });
+        // arr.map(async (ele) => {
+        //   await asyncEvent(ele);
+        // });
+        arr.reduce(async (ele, ele2) => {
+          await asyncEvent(ele2);
+          return ele;
+        }, {});
+        // 卡的住，但是并发了
+        await Promise.all(arr.map((ele) => asyncEvent(ele)));
+        console.log("next");
+      }
+      test();
+    </script>
+  </body>
+</html>
