@@ -36,16 +36,17 @@
       //   let _ = await f1()
       //   console.log(next)
       //   console.log(_)
-      // });
+      //   return pre
+      // },{});
 
-      // 能卡住(按理说是卡不住的)
+      // 卡不住
       // await arr.forEach(async item => {
       //   let _ = await f1()
       //   console.log(item)
       //   console.log(_)
       // });
 
-      // reduce和map的卡住的顺序也很奇怪，暂时理解不了，正常的顺序反而是原理上卡不住的forEach
+      // 只有forEach卡不住
       console.log('-------------------------')
     }
     async function fun2() {
