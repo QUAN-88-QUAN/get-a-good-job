@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .p {
+        stroke: lightblue;
+        stroke-width: 10;
+        stroke-dasharray: var(--l);
+        stroke-dashoffset: var(--l);
+        animation: stroke 2s forwards;
+      }
+      @keyframes stroke {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <svg class="icon" width="200" height="200">
+      <line class="p" x1="0" y1="50%" x2="50%" y2="50%"></line>
+    </svg>
+    <script>
+      const paths = document.querySelectorAll(".icon .p");
+      paths.forEach((path) => {
+        path.style.setProperty("--l", path.getTotalLength());
+      });
+    </script>
+  </body>
+</html>

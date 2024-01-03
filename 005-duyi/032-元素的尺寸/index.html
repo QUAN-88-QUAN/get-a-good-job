@@ -38,6 +38,22 @@
       // 边框以内的尺寸，实际的宽度，滚动条隐藏的也算，没有滚动条的时候和clientWidth一样
       console.log(father.scrollWidth);//400+10+10=420
       console.log(father.scrollHeight);//1100+10+10+10=1120
+
+      // 2024-01-03更新
+      // 获取元素尺寸的几种方式
+      // 1、getComputedStyle(dom).width
+      // 是CSSOM树尺寸，有padding，border就不一样
+      // console.log(getComputedStyle(father).width);//282.2
+      // 2、father.style
+      // DOM树的尺寸，如果设置在css上就读不到
+      // console.log(father.style.width);//''
+      // 3、上述的clientWidth，offsetWidth，scrollWidth
+      // 布局树，如果元素有transform，因为是GPU画的所以上述的可能不准
+      // father.style.transform = "scale(0.5)";
+      // console.log(father.clientWidth);//303
+      // 4、dom.getBoundingClientRect()
+      // father.style.transform = "scale(0.5)";
+      // console.log(father.getBoundingClientRect().width);//169.6
     </script>
   </body>
 </html>
