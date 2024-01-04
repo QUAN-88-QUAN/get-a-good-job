@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body{
+      background: #141414;
+      box-sizing: border-box;
+    }
+    .container {
+      display: grid;
+      margin: 0 auto;
+      width: 90%;
+      margin-top: 1em;
+      color: #f0f0f0;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      text-align: center;
+    }
+    .card{
+      aspect-ratio: 4/3;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    .card .inner{
+      position: absolute;
+      inset: 2px;
+      background-color: #222;
+      border-radius: inherit;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 3;
+    }
+    .card::before{
+      content: '';
+      position: absolute;
+      z-index: 2;
+      inset: 0;
+      /* 自我理解有了inset，left和top可以去掉 */
+      left: 0;
+      top: 0;
+      border-radius: inherit;
+      background: radial-gradient(
+        closest-side circle,
+        rgba(255, 255, 255, 0.6) 0%,
+        transparent 100%
+      );
+      transform: translate(var(--x, -1000px), var(--y, -10000px));
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="inner">
+        111
+      </div>
+    </div>
+    <div class="card">
+      <div class="inner">
+        111
+      </div>
+    </div>
+    <div class="card">
+      <div class="inner">
+        111
+      </div>
+    </div>
+    <div class="card">
+      <div class="inner">
+        111
+      </div>
+    </div>
+    <div class="card">
+      <div class="inner">
+        111
+      </div>
+    </div>
+    <div class="card">
+      <div class="inner">
+        111
+      </div>
+    </div>
+  </div>
+  <script>
+    const container = document.querySelector('.container');
+    const cards = document.querySelectorAll('.card');
+    container.onmousemove = (e) => {
+      for(const card of cards){
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        card.style.setProperty('--x', `${x}px`);
+        card.style.setProperty('--y', `${y}px`);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 和45差不多
+    function arrange(name) {
+      const tasks = [()=>console.log(`${name} is notified`)]
+
+      function wait(seconds) {
+        tasks.push(() => new Promise(resolve => setTimeout(resolve, seconds * 1000)))
+        return this
+      }
+
+      function doSomething(action) {
+        tasks.push(() => console.log(`Start to ${action}`))
+        return this
+      }
+
+      function waitFirst(seconds) {
+        tasks.unshift(() => new Promise(resolve => setTimeout(resolve, seconds * 1000)))
+        return this
+      }
+
+      async function execute(name) {
+        for (const task of tasks) {
+          await task()
+        }
+        return this
+      }
+
+      return {
+        wait,
+        do:doSomething,
+        waitFirst, 
+        execute
+      }
+    }
+
+    arrange('William')
+    .wait(5)
+    .do('commit')
+    .waitFirst(3)
+    .execute()
+    // 等待3秒
+    // William is notified
+    // 等待5秒
+    // Start to commit
+  </script>
+</body>
+</html>
