@@ -48,6 +48,8 @@
             console.log(args)
             // 处理函数使用new的情况
             return function F(...args2) {
+                // 2024-01-08
+                // if (new.target) {
                 if (this instanceof F) {
                     return new _this(...args, ...args2)
                 } else {
@@ -73,11 +75,12 @@
             if (typeof this !== 'function') {
                 throw new TypeError('not function')
             }
-            return ()=>{
+            return (...args2)=>{
                 console.log(this)
                 console.log(context)
                 console.log(args)
-                return this.apply(context, args)
+                console.log(args2)
+                return this.apply(context, [...args,...args2])
             }
         }
 
@@ -87,8 +90,8 @@
         // 采用new
         // let _ = sayName.myBind(quan)
         // new _('tt3')
-        // let vv = sayName.myBind2(quan, 'tt','tt2')
-        // vv()
+        let vv = sayName.myBind2(quan, 'tt','tt2')
+        vv('tt3')
     </script>
 </body>
 
