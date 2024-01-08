@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      var reverseKGroup = function (head, k) {
+        // 方法一：使用数组暴力反转之后再赋值给原来的链表（）---时间：O（）（）---空间：O（）（）
+
+        // 方法二：每找到一条长度为K的链表就拿去反转，之后再拼接上（）---时间：O（n）（）---空间：O（1）（）
+        // function reverse(head) {
+        //   let pre = null;
+        //   let cur = head;
+        //   while (cur) {
+        //     let next = cur.next;
+        //     cur.next = pre;
+        //     pre = cur;
+        //     cur = next;
+        //   }
+        //   return pre;
+        // }
+
+        // let list = new ListNode(-1);
+        // list.next = head;
+        // let listHead = list;
+        // let count = 0;
+        // let left = listHead;
+        // while (listHead) {
+        //   if (count && count % k === 0) {
+        //     let leftList = left.next;
+        //     let rightList = listHead.next;
+        //     // 断开连接
+        //     listHead.next = null;
+        //     left.next = null;
+        //     // 翻转
+        //     reverse(leftList);
+        //     // 拼接
+        //     left.next = listHead;
+        //     leftList.next = rightList;
+        //     // listHead到反转这一段链表的结尾
+        //     listHead = leftList;
+        //     // 重置left
+        //     left = listHead;
+        //   }
+        //   count++;
+        //   listHead = listHead.next;
+        // }
+        // return list.next;
+
+        // 方法三：递归（）---时间：O（n）（）---空间：O（1）（）
+        function reverse(a,b){
+          let pre = null;
+          let cur = a;
+          while(cur!==b){
+            let next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+          }
+          return pre;
+        }
+
+        let list = new ListNode(-1);
+      };
+    </script>
+  </body>
+</html>
