@@ -28,6 +28,8 @@
         let slow = 0;
         // 为什么不是nums.length-1，
         // 改fast=nums.length-1，下面fast-1改为fast不行
+        // 2024-01-09
+        // 改fast=nums.length-1，下面fast-1改为fast，slow<fast改为slow<=fast
         let fast = nums.length;
         while (slow < fast) {
           if (nums[slow] === val) {
@@ -40,9 +42,9 @@
         return slow
       };
       // console.log(removeElement([3, 2, 2, 3], 3));
-      // console.log(removeElement([1,2,3,4,5,6], 1));
-      console.log(removeElement([2], 3));
-      console.log(removeElement([1], 1));
+      console.log(removeElement([1,2,3,4,5,6], 1));
+      // console.log(removeElement([2], 3));
+      // console.log(removeElement([1], 1));
     </script>
   </body>
 </html>
