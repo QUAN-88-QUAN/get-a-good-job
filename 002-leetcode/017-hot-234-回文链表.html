@@ -11,10 +11,7 @@
     <script>
       var isPalindrome = function (head) {
         // 方法一：暴力法（还有一种就是直接在数组里用两个指针，能降低时间复杂度）---时间：O（4n）（如果JSON序列化不算的话）---空间：O（n）（需要数组存节点数据）
-        // 提交的时候用这个
         // let curr = head;
-        // 本地测试数据的时候用这个
-        // let curr = head.next;
         // const arr = [];
         // while (curr) {
         //   arr.push(curr.val);
@@ -27,71 +24,73 @@
         //   return false;
         // }
         // 方法二：递归---时间：O（n）（）---空间：O（n）（）
-        // 实验（反向遍历链表）
-        // function reversePrint(head){
-        //   if(!head){
-        //     return true
+        // let temp = head;
+        // return check(head);
+        // function check(head) {
+        //   if (!head) {
+        //     return true;
         //   }
-        //   reversePrint(head.next)
-        //   console.log(head)
+        //   const res = check(head.next) && head.val === temp.val;
+        //   temp = temp.next;
+        //   return res;
         // }
-        // let temp = head.next;
-        let temp = head;
-        // return check(head.next);
-        return check(head);
-        function check(head) {
-          if (!head) {
-            return true;
-          }
-          const res = check(head.next) && (head.val === temp.val);
-          temp = temp.next;
-          return res
+        // 方法三：快慢指针（）---时间：O（n/2+n/2+n/2）（）---空间：O（1）（）
+        let slow = head;
+        let fast = head;
+        while (fast && fast.next) {
+          fast = fast.next.next;
+          slow = slow.next;
         }
-        // reversePrint(head.next)
-        // 方法三：快慢指针---时间：O（n/2+n/2+n/2）（）---空间：O（1）（）
-        // let slow = head;
-        // let fast = head;
-        // while (fast && fast.next) {
-        //   fast = fast.next.next;
-        //   slow = slow.next;
-        // }
-        // // fast不为空，说明链表的长度是个偶数
-        // if (fast) {
-        //   slow = slow.next;
-        // }
-        // slow = reverse(slow);
-        // // 提交的时候用这个
-        // // fast = head;
-        // // 本地测试数据的时候用这个
-        // fast = head.next;
-        // while (slow) {
-        //   if (slow.val !== fast.val) {
-        //     return false;
-        //   }
-        //   fast = fast.next;
-        //   slow = slow.next;
-        // }
-        // return true;
-        // // 翻转链表
-        // function reverse(head) {
-        //   let prev = null;
-        //   let curr = head;
-        //   while (curr) {
-        //     const temp = curr.next;
-        //     curr.next = prev;
-        //     prev = curr;
-        //     curr = temp;
-        //   }
-        //   return prev;
-        // }
+        // fast不为空，说明链表的长度是个偶数
+        if (fast) {
+          slow = slow.next;
+        }
+        slow = reverse(slow);
+        fast = head;
+        while (slow) {
+          if (slow.val !== fast.val) {
+            return false;
+          }
+          fast = fast.next;
+          slow = slow.next;
+        }
+        return true;
+        // 翻转链表
+        function reverse(head) {
+          let prev = null;
+          let curr = head;
+          while (curr) {
+            const temp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = temp;
+          }
+          return prev;
+        }
       };
 
       const obj = {
-        val: "head",
+        val: 1,
         next: {
-          val: 1,
+          val: 2,
           next: {
-            val: 2,
+            val: 3,
+            next: {
+              val: 2,
+              next: {
+                val: 1,
+                next: null,
+              },
+            },
+          },
+        },
+      };
+      const obj1 = {
+        val: 1,
+        next: {
+          val: 2,
+          next: {
+            val: 3,
             next: {
               val: 3,
               next: {
@@ -99,28 +98,6 @@
                 next: {
                   val: 1,
                   next: null,
-                },
-              },
-            },
-          },
-        },
-      };
-      const obj1 = {
-        val: "head",
-        next: {
-          val: 1,
-          next: {
-            val: 2,
-            next: {
-              val: 3,
-              next: {
-                val: 3,
-                next: {
-                  val: 2,
-                  next: {
-                    val: 1,
-                    next: null,
-                  },
                 },
               },
             },

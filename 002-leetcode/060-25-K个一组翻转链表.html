@@ -53,10 +53,10 @@
         // return list.next;
 
         // 方法三：递归（）---时间：O（n）（）---空间：O（1）（）
-        function reverse(a,b){
+        function reverse(a, b) {
           let pre = null;
           let cur = a;
-          while(cur!==b){
+          while (cur !== b) {
             let next = cur.next;
             cur.next = pre;
             pre = cur;
@@ -65,7 +65,14 @@
           return pre;
         }
 
-        let list = new ListNode(-1);
+        let a = (b = head);
+        for (let i = 0; i < k; i++) {
+          if (b === null) return head;
+          b = b.next;
+        }
+        let newHead = reverse(a, b);
+        a.next = reverseKGroup(b, k);
+        return newHead;
       };
     </script>
   </body>
