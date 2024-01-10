@@ -12,9 +12,33 @@
       var NumMatrix = function (matrix) {
         // 暴力搜索（时间超限）
         // this.matrix = matrix;
-
         // 前缀和
-
+        // 方法一：二维数组算行前缀和（）---时间：O（mn）（二维数组维度）---空间：O（1）（）
+        // const row = matrix.length;
+        // const col = matrix[0].length;
+        // this.preSum = new Array(row).fill().map(() => new Array(col+1).fill(0));
+        // for (let i = 0; i < row; i++) {
+        //   for (let j = 0; j < col; j++) {
+        //     this.preSum[i][j+1] = this.preSum[i][j] + matrix[i][j]
+        //   }
+        // }
+        // 方法二：二维数组算行列前缀和（）---时间：O（mn）（二维数组维度）---空间：O（）（）
+        this.nums = matrix;
+        const row = this.nums.length;
+        const col = this.nums[0].length;
+        this.preSum = new Array(row + 1)
+          .fill()
+          .map(() => new Array(col + 1).fill(0));
+        for (let i = 1; i <= row; i++) {
+          for (let j = 1; j <= col; j++) {
+            this.preSum[i][j] =
+              this.preSum[i - 1][j] +
+              this.preSum[i][j - 1] -
+              this.preSum[i - 1][j - 1] +
+              this.nums[i - 1][j - 1];
+          }
+        }
+        console.log(this.preSum);
       };
       NumMatrix.prototype.sumRegion = function (row1, col1, row2, col2) {
         // 暴力搜索（时间超限）
@@ -27,17 +51,63 @@
         // return sum;
 
         // 前缀和
+        // 方法一
+        // for(let i = row1; i <= row2; i++){
+        //   sum += this.preSum[i][col2+1] - this.preSum[i][col1]
+        // }
+        // return sum;
 
+        // 方法二
+        return (
+          this.preSum[row2 + 1][col2 + 1] -
+          this.preSum[row1][col2 + 1] -
+          this.preSum[row2 + 1][col1] +
+          this.preSum[row1][col1]
+        );
       };
+      // const arr = [
+      //   [3, 0, 1, 4, 2],
+      //   [5, 6, 3, 2, 1],
+      //   [1, 2, 0, 1, 5],
+      //   [4, 1, 0, 1, 7],
+      //   [1, 0, 3, 0, 5],
+      // ];
+
+      // 方法一
+      // const arr = [
+      //   [3, 0, 1],
+      //   [5, 6, 3],
+      //   [1, 2, 0],
+      // ];
+      // const arr = [
+      //   [0, 3, 3, 4],
+      //   [0, 5, 11, 14],
+      //   [0, 1, 3, 3],
+      // ];
+      // 0,0,1,1
+      // 3-0+11-0=14
+
+      // 方法二
       const arr = [
-        [3, 0, 1, 4, 2],
-        [5, 6, 3, 2, 1],
-        [1, 2, 0, 1, 5],
-        [4, 1, 0, 1, 7],
-        [1, 0, 3, 0, 5],
+        [3, 0, 1],
+        [5, 6, 3],
+        [1, 2, 0],
       ];
+      // const arr = [
+      //   [0, 0, 0, 0],
+      //   [0, 3, 3, 4],
+      //   [0, 8, 14, 18],
+      //   [0, 9, 17, 21],
+      // ];
+      // 0,0,1,1
+      // 14-0-0+0=14
+      // 1,1,2,2
+      // 21-4-9+3=11
+      // 2,2,2,2
+      // 21-17-18+14=0
       const obj = new NumMatrix(arr);
-      console.log(obj.sumRegion(2, 1, 4, 3));
+      // console.log(obj.sumRegion(2, 1, 4, 3));
+      console.log(obj.sumRegion(1, 1, 2, 2));
     </script>
   </body>
 </html>
