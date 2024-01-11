@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var getModifiedArray = function (length, updates) {
+        // 方法一：暴力法（）---时间：O（n^2）（）---空间：O（）（）
+        const arr = new Array(length).fill(0);
+        for (let i = 0; i < updates.length; i++) {
+          const start = updates[i][0];
+          const end = updates[i][1];
+          const val = updates[i][2];
+          for (let j = start; j <= end; j++) {
+            arr[j] += val;
+          }
+        }
+        return arr;
+
+        // 方法一：差分数组（）---时间：O（）（）---空间：O（）（）
+      };
+      console.log(
+        getModifiedArray(5, [
+          [1, 3, 2],
+          [2, 4, 3],
+          [0, 2, -2],
+        ])
+      );
+    </script>
+  </body>
+</html>
