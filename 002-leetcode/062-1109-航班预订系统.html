@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var corpFlightBookings = function (bookings, n) {
+        // 方法一：差分法（）---时间：O（m+n）（其中 n 为要求的数组长度，m 为预定记录的数量，我们需要对于每一条预定记录处理一次差分数组，并最后对差分数组求前缀和）---空间：O（1）（）
+        const diff = new Array(n).fill(0);
+        const res = new Array(n).fill(0);
+        function add(start, end, val) {
+          diff[start] += val;
+          if (end + 1 < n) {
+            diff[end + 1] -= val;
+          }
+        }
+        for (let i = 0; i < bookings.length; i++) {
+          add(bookings[i][0] - 1, bookings[i][1] - 1, bookings[i][2]);
+        }
+        res[0] = diff[0];
+        for (let i = 1; i < n; i++) {
+          res[i] = res[i - 1] + diff[i];
+        }
+        return res;
+      };
+      console.log(
+        corpFlightBookings(
+          [
+            [1, 2, 10],
+            [2, 3, 20],
+            [2, 5, 25],
+          ],
+          5
+        )
+      );
+    </script>
+  </body>
+</html>
