@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      var reverseWords = function (s) {
+        // 方法一：暴力法（）---时间：O（）（）---空间：O（1）（）
+        return s.trim().replace(/\s+/g, " ").split(" ").reverse().join(" ");
+      };
+      console.log(reverseWords("the sky is blue"));
+    </script>
+  </body>
+</html>
