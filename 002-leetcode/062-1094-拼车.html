@@ -9,6 +9,25 @@
     <script>
       var carPooling = function (trips, capacity) {
         // 方法一：差分法（）---时间：O（m+n）（）---空间：O（1）（）
+        const diff = new Array(1001).fill(0);
+        const res = new Array(1001).fill(0);
+        function update(start, end, val) {
+          diff[start] += val;
+          diff[end] -= val;
+        }
+        for (let i = 0; i < trips.length; i++) {
+          update(trips[i][1], trips[i][2], trips[i][0]);
+        }
+        res[0] = diff[0];
+        for (let i = 1; i < diff.length; i++) {
+          res[i] = res[i - 1] + diff[i];
+        }
+        for (let i = 0; i < res.length; i++) {
+          if (res[i] > capacity) {
+            return false;
+          }
+        }
+        return true;
       };
       console.log(
         carPooling(
