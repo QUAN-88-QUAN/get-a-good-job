@@ -9,7 +9,6 @@
     <script>
       var rotate = function (matrix) {
         // 方法一：（）---时间：O（）（n^2）---空间：O（1）（）
-
         function reverse(arr) {
           const start = 0;
           const end = arr.length - 1;
@@ -20,23 +19,39 @@
           }
         }
 
-        if (matrix.length === 0) {
-          return matrix;
-        }
+        // if (matrix.length === 0) {
+        //   return matrix;
+        // }
+        // const row = matrix.length;
+        // for (let i = 0; i < row; i++) {
+        //   for (let j = i+1; j < row; j++) {
+        //     const temp = matrix[i][j];
+        //     matrix[i][j] = matrix[j][i];
+        //     matrix[j][i] = temp;
+        //   }
+        // }
+        // for (let i = 0; i < row; i++) {
+        //   // matrix[i].reverse();
+        //   // 用自己写的reverse好像也一样
+        //   reverse(matrix[i]);
+        // }
+        // return matrix;
+
+        // 方法二：（）---时间：O（）（n^2）---空间：O（n^2）（）
+        if (matrix.length === 0) return matrix;
         const row = matrix.length;
+        const arr = Array(row).fill(0).map(() => Array(row).fill(0));
         for (let i = 0; i < row; i++) {
-          for (let j = i+1; j < row; j++) {
-            const temp = matrix[i][j];
-            matrix[i][j] = matrix[j][i];
-            matrix[j][i] = temp;
+          for (let j = 0; j < row; j++) {
+            arr[j][row - i - 1] = matrix[i][j]
           }
         }
         for (let i = 0; i < row; i++) {
-          // matrix[i].reverse();
-          // 用自己写的reverse好像也一样
-          reverse(matrix[i]);
+          for (let j = 0; j < row; j++) {
+            matrix[i][j] = arr[i][j]
+          }
         }
-        return matrix;
+        return arr;
       };
       console.log(
         rotate([
@@ -45,6 +60,8 @@
           [7, 8, 9],
         ])
       );
+      // 对于矩阵中第 i 行的第 j 个元素，在旋转后，它出现在倒数第 i 列的第 j 个位置
+      // 即 [i,j]=>[j,n-i-1]
       // [0,0]=>[0,2]
       // [0,1]=>[1,2]
       // [0,2]=>[2,2]

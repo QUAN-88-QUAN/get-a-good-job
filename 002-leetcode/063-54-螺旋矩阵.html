@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 同渡一667
+      var spiralOrder = function (matrix) {
+        // 方法一：暴力法（）---时间：O（）（）---空间：O（1）（）
+        const row = matrix.length;
+        const col = matrix[0].length;
+        const arr = Array.from({ length: row }, () => new Array(col).fill(0));
+        // const result = matrix.flat()
+        const result = [];
+        for (let i = 0; i < row; i++) {
+          for (let j = 0; j < col; j++) {
+            result.push(matrix[i][j]);
+          }
+        }
+        let i = 0;
+        let j = 0;
+        let stepi = 0;
+        let stepj = 1;
+        let count = 0;
+        while (1) {
+          arr[i][j] = result[count++];
+          i += stepi;
+          j += stepj;
+          if (hasBlock(arr, i, j)) {
+            // 掉头
+            i -= stepi;
+            j -= stepj;
+            if (stepi === 0) {
+              stepi = stepj;
+              stepj = 0;
+            } else {
+              stepj = -stepi;
+              stepi = 0;
+            }
+            i += stepi;
+            j += stepj;
+          }
+          if (hasBlock(arr, i, j)) break;
+        }
+        return arr;
+
+        function hasBlock(arr, i, j) {
+          return !arr[i] || arr[i][j] !== 0;
+        }
+      };
+      console.log(
+        spiralOrder([
+          [1, 2, 3],
+          [4, 5, 6],
+          [7, 8, 9],
+        ])
+      );
+      console.log(
+        spiralOrder([
+          [1, 2, 3, 4],
+          [5, 6, 7, 8],
+          [9, 10, 11, 12],
+        ])
+      );
+    </script>
+  </body>
+</html>

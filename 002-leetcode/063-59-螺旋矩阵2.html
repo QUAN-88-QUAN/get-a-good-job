@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 同渡一667
+      var generateMatrix = function (n) {
+        // 方法一：暴力法（）---时间：O（）（）---空间：O（1）（）
+        const arr = Array.from({ length: n }, () => new Array(n).fill(0));
+        let i = 0;
+        let j = 0;
+        let stepi = 0;
+        let stepj = 1;
+        let count = 1;
+        while (1) {
+          arr[i][j] = count++;
+          i += stepi;
+          j += stepj;
+          if (hasBlock(arr, i, j)) {
+            // 掉头
+            i -= stepi;
+            j -= stepj;
+            if (stepi === 0) {
+              stepi = stepj;
+              stepj = 0;
+            } else {
+              stepj = -stepi;
+              stepi = 0;
+            }
+            i += stepi;
+            j += stepj;
+          }
+          if (hasBlock(arr, i, j)) break;
+        }
+        return arr;
+
+        function hasBlock(arr, i, j) {
+          return !arr[i] || arr[i][j] !== 0;
+        }
+      };
+      console.log(generateMatrix(3));
+    </script>
+  </body>
+</html>

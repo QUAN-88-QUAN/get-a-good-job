@@ -11,6 +11,7 @@
     function vortex(n,m){
       // const arr = Array(n).fill(0).map(()=>Array(m).fill(0))
       const arr = Array.from(Array(n).fill(0),()=>Array(m).fill(0))
+      // i代表纵列，j代表横列
       let i=0
       let j=0
       let stepi=1
@@ -46,7 +47,8 @@
         return !arr[j] || arr[j][i]!==0
       }
     }
-    console.log(vortex(5,6))
+    // console.log(vortex(5,6))
+    console.log(vortex(3,3))
   </script>
 </body>
 </html>
