@@ -8,8 +8,35 @@
   <body>
     <script>
       var rotate = function (matrix) {
-        // 方法一：（）---时间：O（）（）---空间：O（1）（）
+        // 方法一：（）---时间：O（）（n^2）---空间：O（1）（）
 
+        function reverse(arr) {
+          const start = 0;
+          const end = arr.length - 1;
+          while (start < end) {
+            [arr[start], arr[end]] = [arr[end], arr[start]];
+            start++;
+            end--;
+          }
+        }
+
+        if (matrix.length === 0) {
+          return matrix;
+        }
+        const row = matrix.length;
+        for (let i = 0; i < row; i++) {
+          for (let j = i+1; j < row; j++) {
+            const temp = matrix[i][j];
+            matrix[i][j] = matrix[j][i];
+            matrix[j][i] = temp;
+          }
+        }
+        for (let i = 0; i < row; i++) {
+          // matrix[i].reverse();
+          // 用自己写的reverse好像也一样
+          reverse(matrix[i]);
+        }
+        return matrix;
       };
       console.log(
         rotate([
@@ -22,7 +49,7 @@
       // [0,1]=>[1,2]
       // [0,2]=>[2,2]
       // [1,0]=>[0,1]
-      // 这样不还找关系
+      // 这样不找关系
       // 可以延左上角到右下角的对角线翻转
       // [1,4,7]
       // [2,5,8]
