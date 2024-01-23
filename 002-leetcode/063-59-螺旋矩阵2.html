@@ -9,38 +9,98 @@
     <script>
       // 同渡一667
       var generateMatrix = function (n) {
-        // 方法一：暴力法（）---时间：O（）（）---空间：O（1）（）
+        // 方法一：暴力法（）---时间：O（n^2）（）---空间：O（n^2）（）
+        // const arr = Array.from({ length: n }, () => new Array(n).fill(0));
+        // let i = 0;
+        // let j = 0;
+        // let stepi = 0;
+        // let stepj = 1;
+        // let count = 1;
+        // while (1) {
+        //   arr[i][j] = count++;
+        //   i += stepi;
+        //   j += stepj;
+        //   if (hasBlock(arr, i, j)) {
+        //     // 掉头
+        //     i -= stepi;
+        //     j -= stepj;
+        //     if (stepi === 0) {
+        //       stepi = stepj;
+        //       stepj = 0;
+        //     } else {
+        //       stepj = -stepi;
+        //       stepi = 0;
+        //     }
+        //     i += stepi;
+        //     j += stepj;
+        //   }
+        //   if (hasBlock(arr, i, j)) break;
+        // }
+        // return arr;
+
+        // function hasBlock(arr, i, j) {
+        //   return !arr[i] || arr[i][j] !== 0;
+        // }
+
+        // 方法二：循环模拟（）---时间：O（n^2）（）---空间：O（n^2）（）
+        // const arr = Array.from({ length: n }, () => new Array(n).fill(0));
+        // let l = 0;
+        // let r = n - 1;
+        // let u = 0;
+        // let b = n - 1;
+        // let count = 1;
+        // while(count<=n*n){
+        //   for(let i=l;i<=r;i++){
+        //     arr[u][i]=count++;
+        //   }
+        //   u++;
+        //   for(let i=u;i<=b;i++){
+        //     arr[i][r]=count++;
+        //   }
+        //   r--;
+        //   for(let i=r;i>=l;i--){
+        //     arr[b][i]=count++;
+        //   }
+        //   b--;
+        //   for(let i=b;i>=u;i--){
+        //     arr[i][l]=count++;
+        //   }
+        //   l++;
+        // }
+        // return arr;
+
+        // 方法三：按层模拟（）---时间：O（n^2）（）---空间：O（n^2）（）
         const arr = Array.from({ length: n }, () => new Array(n).fill(0));
-        let i = 0;
-        let j = 0;
-        let stepi = 0;
-        let stepj = 1;
+        let l = 0;
+        let r = n - 1;
+        let u = 0;
+        let b = n - 1;
         let count = 1;
-        while (1) {
-          arr[i][j] = count++;
-          i += stepi;
-          j += stepj;
-          if (hasBlock(arr, i, j)) {
-            // 掉头
-            i -= stepi;
-            j -= stepj;
-            if (stepi === 0) {
-              stepi = stepj;
-              stepj = 0;
-            } else {
-              stepj = -stepi;
-              stepi = 0;
-            }
-            i += stepi;
-            j += stepj;
+        while (l < r && u < b) {
+          for (let i = l; i <= r; i++) {
+            arr[u][i] = count++;
           }
-          if (hasBlock(arr, i, j)) break;
+          for (let i = u+1; i <= b; i++) {
+            arr[i][r] = count++;
+          }
+          for (let i = r-1; i >= l; i--) {
+            arr[b][i] = count++;
+          }
+          for (let i = b-1; i >= u+1; i--) {
+            arr[i][l] = count++;
+          }
+          l++, u++, r--, b--;
+        }
+        if(l===r){
+          for(let i=u;i<=b;i++){
+            arr[i][l]=count++;
+          }
+        }else if(u===b){
+          for(let i=l;i<=r;i++){
+            arr[u][i]=count++;
+          }
         }
         return arr;
-
-        function hasBlock(arr, i, j) {
-          return !arr[i] || arr[i][j] !== 0;
-        }
       };
       console.log(generateMatrix(3));
     </script>
