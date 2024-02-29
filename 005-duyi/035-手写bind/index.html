@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function fn(...args) {
+        console.log(args);
+        console.log(this);
+        return 123;
+      }
+
+      const bindFn1 = fn.bind({ name: "quan" }, 1, 2);
+      // console.log(bindFn1(3,4));
+      console.log(new bindFn1(3, 4));
+
+      Function.prototype.myBind = function (context, ...args1) {
+        const _this = this;
+        return function (...args2) {
+          const allArgs = [...args1, ...args2];
+          // 是否是通过new调用的
+          if (new.target) {
+            return new _this(...allArgs);
+          } else {
+            // 切记加return
+            return _this.apply(context, allArgs);
+          }
+        };
+      };
+
+      const bindFn2 = fn.myBind({ name: "quan" }, 1, 2);
+      // console.log(bindFn2(3,4));
+      console.log(new bindFn2(3, 4));
+    </script>
+  </body>
+</html>
