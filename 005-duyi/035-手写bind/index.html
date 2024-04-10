@@ -19,6 +19,7 @@
 
       Function.prototype.myBind = function (context, ...args1) {
         const _this = this;
+        context = typeof context==="undefined" || typeof context==='null' ? globalThis : Object(context);
         return function (...args2) {
           const allArgs = [...args1, ...args2];
           // 是否是通过new调用的
